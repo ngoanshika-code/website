@@ -293,15 +293,18 @@ export default function HomePage() {
               </motion.p>
 
               <motion.div variants={fadeInUp}>
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full text-lg lg:text-xl shadow-xl"
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Link href="/donation">DONATE NOW</Link>
-                </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full text-lg lg:text-xl shadow-xl"
+                  >
+                    <Link href="/donation/form">DONATE NOW</Link>
+                  </Button>
+                </motion.div>
               </motion.div>
             </motion.div>
 
@@ -594,27 +597,33 @@ export default function HomePage() {
             variants={staggerContainer}
           >
             <motion.div variants={fadeInUp}>
-              <Button 
-                asChild 
-                size="lg" 
-                className="bg-white text-primary hover:bg-white/90 font-semibold"
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/donation">Start Donating</Link>
-              </Button>
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="bg-white text-primary hover:bg-white/90 font-semibold"
+                >
+                  <Link href="/donation/form">Start Donating</Link>
+                </Button>
+              </motion.div>
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-primary bg-transparent font-semibold"
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/contact">Get Involved</Link>
-              </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-primary bg-transparent font-semibold"
+                >
+                  <Link href="/contact">Get Involved</Link>
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>

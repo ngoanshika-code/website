@@ -13,6 +13,7 @@ export function Navigation() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/donation", label: "Donation" },
+    { href: "/gallery", label: "Gallery" },
     { href: "/contact", label: "Contact" },
   ]
 
@@ -44,7 +45,7 @@ export function Navigation() {
               </Link>
             ))}
             <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link href="/donation">Donate Now</Link>
+              <Link href="/donation/form">Donate Now</Link>
             </Button>
           </div>
 
@@ -72,7 +73,7 @@ export function Navigation() {
               ))}
               <div className="px-3 py-2">
                 <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                  <Link href="/donation">Donate Now</Link>
+                  <Link href="/donation/form">Donate Now</Link>
                 </Button>
               </div>
             </div>

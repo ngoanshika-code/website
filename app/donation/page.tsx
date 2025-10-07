@@ -21,15 +21,165 @@ import {
   GraduationCap,
   HandHeart,
 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Separator } from "@/components/ui/separator"
+import {
+  Eye,
+  ArrowRight,
+  ArrowLeft,
+} from "lucide-react"
+
+interface Campaign {
+  _id: string
+  title: string
+  description: string
+  goalAmount: number
+  raisedAmount: number
+  backersCount: number
+  progress: number
+  category: string
+  categoryName: string
+  status: string
+  location: string
+  organizer: string
+  endDate: string
+  daysLeft: number
+  images: string[]
+  featuredImage?: string
+}
+
+interface DonationForm {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  amount: string
+  customAmount: string
+  message: string
+  anonymous: boolean
+  recurring: boolean
+}
 
 export default function DonationPage() {
+  const router = useRouter()
   const [selectedAmount, setSelectedAmount] = useState("500")
   const [customAmount, setCustomAmount] = useState("")
   const [donationType, setDonationType] = useState("general")
+  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
+  const [isDonationDialogOpen, setIsDonationDialogOpen] = useState(false)
+  const [donationStep, setDonationStep] = useState(1) // 1: Form, 2: Payment
+  const [donationForm, setDonationForm] = useState<DonationForm>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    amount: "",
+    customAmount: "",
+    message: "",
+    anonymous: false,
+    recurring: false,
+  })
+  const [paymentMethod, setPaymentMethod] = useState("card")
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(true)
+  const [campaignError, setCampaignError] = useState<string | null>(null)
 
   const predefinedAmounts = ["100", "500", "1000", "2500", "5000", "10000"]
+
+  const fetchCampaigns = async () => {
+    setIsLoadingCampaigns(true)
+    setCampaignError(null)
+    try {
+      const response = await fetch('/api/campaigns')
+      const result = await response.json()
+      
+      if (result.success) {
+        setCampaigns(result.campaigns)
+        console.log("Campaigns fetched:", result.campaigns)
+      } else {
+        setCampaignError("Failed to load campaigns")
+        console.error("Failed to fetch campaigns:", result.error)
+      }
+    } catch (error) {
+      setCampaignError("Error loading campaigns")
+      console.error("Error fetching campaigns:", error)
+    } finally {
+      setIsLoadingCampaigns(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchCampaigns()
+  }, [])
+
+  const handleDonateNow = (campaign: Campaign) => {
+    setSelectedCampaign(campaign)
+    setDonationForm(prev => ({
+      ...prev,
+      amount: "500",
+      customAmount: "",
+    }))
+    setDonationStep(1)
+    setIsDonationDialogOpen(true)
+  }
+
+  const handleViewDetails = (campaign: Campaign) => {
+    // Navigate to campaign details page
+    router.push(`/donation/${campaign._id}`)
+  }
+
+  const handleFormSubmit = () => {
+    // Validate form
+    if (!donationForm.firstName || !donationForm.lastName || !donationForm.email || !donationForm.phone) {
+      alert("Please fill in all required fields")
+      return
+    }
+    
+    const amount = donationForm.customAmount || donationForm.amount
+    if (!amount || parseInt(amount) < 100) {
+      alert("Please enter a valid amount (minimum ₹100)")
+      return
+    }
+    
+    setDonationStep(2)
+  }
+
+  const handlePaymentSubmit = () => {
+    // In a real app, this would process the payment
+    if (selectedCampaign) {
+      alert(`Payment processed for ${selectedCampaign.title}. Amount: ₹${donationForm.customAmount || donationForm.amount}`)
+    }
+    setIsDonationDialogOpen(false)
+    setDonationStep(1)
+    setSelectedCampaign(null)
+  }
+
+  const resetDonationForm = () => {
+    setDonationForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      amount: "500",
+      customAmount: "",
+      message: "",
+      anonymous: false,
+      recurring: false,
+    })
+    setDonationStep(1)
+  }
 
   const donationCategories = [
     {
@@ -112,63 +262,6 @@ export default function DonationPage() {
     },
   ]
 
-  const donationCampaigns = [
-    {
-      id: 1,
-      title: "Earn Divine Blessings by Help to Rebuild Lord Hanuman Temple in Ayodhya Kshetra",
-      image: "/ancient-temple-construction-site-with-workers.jpg",
-      raised: 65441.0,
-      backers: 2522,
-      progress: 65,
-      category: "Temple Restoration",
-    },
-    {
-      id: 2,
-      title: "Help us to Restore the 120 Year Old Shankar Mahadev Temple in Gaya",
-      image: "/old-damaged-temple-structure-needing-restoration.jpg",
-      raised: 67098.0,
-      backers: 0,
-      progress: 12,
-      category: "Heritage Conservation",
-    },
-    {
-      id: 3,
-      title: "Restore the Ancient Shani Dev Temple at Kamkheda Tirth Kshetra",
-      image: "/ancient-temple-with-deity-statue-restoration-work.jpg",
-      raised: 690052.0,
-      backers: 1564,
-      progress: 85,
-      category: "Sacred Site Revival",
-    },
-    {
-      id: 4,
-      title: "Build New Community Health Center for Rural Villages",
-      image: "/rural-healthcare-facility-construction.jpg",
-      raised: 125000.0,
-      backers: 456,
-      progress: 45,
-      category: "Healthcare Infrastructure",
-    },
-    {
-      id: 5,
-      title: "Establish Digital Learning Centers for Underprivileged Children",
-      image: "/children-learning-with-computers-in-classroom.jpg",
-      raised: 89500.0,
-      backers: 234,
-      progress: 30,
-      category: "Education Technology",
-    },
-    {
-      id: 6,
-      title: "Provide Clean Water Access to 50 Remote Villages",
-      image: "/water-well-construction-in-rural-village.jpg",
-      raised: 234000.0,
-      backers: 789,
-      progress: 78,
-      category: "Water & Sanitation",
-    },
-  ]
-
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -197,67 +290,128 @@ export default function DonationPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {donationCampaigns.map((campaign) => (
-              <Card
-                key={campaign.id}
-                className="border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={campaign.image || "/placeholder.svg"}
-                    alt={campaign.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                      {campaign.category}
-                    </span>
-                  </div>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-3 line-clamp-2 leading-tight">{campaign.title}</h3>
-
-                  <div className="space-y-3 mb-4">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-2xl font-bold text-primary">₹{campaign.raised.toLocaleString()}</span>
-                      <span className="text-muted-foreground">Raised</span>
+            {isLoadingCampaigns ? (
+              // Loading state
+              Array.from({ length: 6 }).map((_, index) => (
+                <Card key={index} className="border-border overflow-hidden">
+                  <div className="relative h-48 bg-muted animate-pulse"></div>
+                  <CardContent className="p-6">
+                    <div className="space-y-3">
+                      <div className="h-4 bg-muted rounded animate-pulse"></div>
+                      <div className="h-4 bg-muted rounded animate-pulse w-3/4"></div>
+                      <div className="h-8 bg-muted rounded animate-pulse"></div>
+                      <div className="h-2 bg-muted rounded animate-pulse"></div>
+                      <div className="flex gap-2">
+                        <div className="flex-1 h-10 bg-muted rounded animate-pulse"></div>
+                        <div className="flex-1 h-10 bg-muted rounded animate-pulse"></div>
+                      </div>
                     </div>
-
-                    <Progress value={campaign.progress} className="h-2" />
-
-                    <div className="flex justify-between items-center text-sm text-muted-foreground">
-                      <span>{campaign.progress}% Complete</span>
-                      <span className="flex items-center gap-1">
-                        <Users className="h-4 w-4" />
-                        {campaign.backers} Backers
+                  </CardContent>
+                </Card>
+              ))
+            ) : campaignError ? (
+              // Error state
+              <div className="col-span-full text-center py-12">
+                <div className="text-red-500 mb-4">
+                  <Heart className="h-12 w-12 mx-auto mb-2" />
+                  <h3 className="text-lg font-semibold">Failed to load campaigns</h3>
+                  <p className="text-muted-foreground mb-4">{campaignError}</p>
+                  <Button onClick={fetchCampaigns} variant="outline">
+                    Try Again
+                  </Button>
+                </div>
+              </div>
+            ) : campaigns.length === 0 ? (
+              // Empty state
+              <div className="col-span-full text-center py-12">
+                <div className="text-muted-foreground">
+                  <Heart className="h-12 w-12 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">No campaigns available</h3>
+                  <p>Check back later for new donation campaigns</p>
+                </div>
+              </div>
+            ) : (
+              // Campaigns display
+              campaigns.map((campaign) => (
+                <Card
+                  key={campaign._id}
+                  className="border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group"
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={campaign.featuredImage || campaign.images?.[0] || "https://res.cloudinary.com/djyp5yzil/image/upload/v1759814188/donation-campaigns/placeholder.svg"}
+                      alt={campaign.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        {campaign.categoryName}
+                      </span>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        campaign.status === 'active' ? 'bg-green-500 text-white' :
+                        campaign.status === 'completed' ? 'bg-blue-500 text-white' :
+                        campaign.status === 'paused' ? 'bg-yellow-500 text-white' :
+                        'bg-gray-500 text-white'
+                      }`}>
+                        {campaign.status}
                       </span>
                     </div>
                   </div>
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-lg mb-3 line-clamp-2 leading-tight">{campaign.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{campaign.description}</p>
 
-                  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold" size="lg">
-                    Donate Now →
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                    <div className="space-y-3 mb-4">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-2xl font-bold text-primary">₹{campaign.raisedAmount?.toLocaleString() || 0}</span>
+                        <span className="text-muted-foreground">Raised of ₹{campaign.goalAmount?.toLocaleString() || 0}</span>
+                      </div>
+
+                      <Progress value={campaign.progress || 0} className="h-2" />
+
+                      <div className="flex justify-between items-center text-sm text-muted-foreground">
+                        <span>{campaign.progress || 0}% Complete</span>
+                        <span className="flex items-center gap-1">
+                          <Users className="h-4 w-4" />
+                          {campaign.backersCount || 0} Backers
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center text-xs text-muted-foreground">
+                        <span>📍 {campaign.location}</span>
+                        <span>⏰ {campaign.daysLeft || 0} days left</span>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => handleViewDetails(campaign)}
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Details
+                      </Button>
+                      <Button 
+                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold"
+                        onClick={() => handleDonateNow(campaign)}
+                        disabled={campaign.status !== 'active'}
+                      >
+                        <Heart className="h-4 w-4 mr-2" />
+                        {campaign.status === 'active' ? 'Donate Now' : 'Campaign Ended'}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-br from-muted to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/30">
-            <Heart className="h-4 w-4 text-primary" />
-            <span className="text-primary text-sm font-semibold">Every Donation Creates Impact</span>
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">Make a Difference Today</h1>
-          <p className="text-xl text-white/90 mb-8 leading-relaxed">
-            Your generous donation helps us continue our mission of creating positive change in communities that need it
-            most. Every contribution, no matter the size, transforms lives and builds hope for a better tomorrow.
-          </p>
-        </div>
-      </section>
 
       <section className="py-16 bg-gradient-to-br from-muted to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -423,10 +577,11 @@ export default function DonationPage() {
                 </div>
 
                 <Button
+                  asChild
                   size="lg"
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg h-12"
                 >
-                  Donate ₹{customAmount || selectedAmount || "0"} Now
+                  <Link href="/donation/form">Donate ₹{customAmount || selectedAmount || "0"} Now</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -531,6 +686,274 @@ export default function DonationPage() {
           </div>
         </div>
       </div>
+
+      {/* Donation Dialog */}
+      <Dialog open={isDonationDialogOpen} onOpenChange={(open) => {
+        setIsDonationDialogOpen(open)
+        if (!open) {
+          resetDonationForm()
+        }
+      }}>
+        <DialogContent className="w-[90vw] max-w-[1400px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Heart className="h-5 w-5 text-primary" />
+              {donationStep === 1 ? "Donation Details" : "Payment Method"}
+            </DialogTitle>
+            <DialogDescription>
+              {donationStep === 1 
+                ? `Supporting: ${selectedCampaign?.title}` 
+                : "Choose your preferred payment method"
+              }
+            </DialogDescription>
+          </DialogHeader>
+
+          {donationStep === 1 ? (
+            // Step 1: Donation Form
+            <div className="space-y-6">
+              {/* Campaign Info */}
+              {selectedCampaign && (
+                <div className="p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Heart className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{selectedCampaign.title}</h3>
+                      <p className="text-sm text-muted-foreground">{selectedCampaign.category}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Personal Information */}
+              <div className="space-y-4">
+                <h3 className="font-semibold">Personal Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">First Name *</Label>
+                    <Input
+                      id="firstName"
+                      value={donationForm.firstName}
+                      onChange={(e) => setDonationForm(prev => ({ ...prev, firstName: e.target.value }))}
+                      placeholder="Enter your first name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      value={donationForm.lastName}
+                      onChange={(e) => setDonationForm(prev => ({ ...prev, lastName: e.target.value }))}
+                      placeholder="Enter your last name"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={donationForm.email}
+                    onChange={(e) => setDonationForm(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="Enter your email address"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={donationForm.phone}
+                    onChange={(e) => setDonationForm(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+              </div>
+
+              {/* Donation Amount */}
+              <div className="space-y-4">
+                <h3 className="font-semibold">Donation Amount</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {predefinedAmounts.map((amount) => (
+                    <Button
+                      key={amount}
+                      variant={donationForm.amount === amount ? "default" : "outline"}
+                      onClick={() => setDonationForm(prev => ({ 
+                        ...prev, 
+                        amount: amount, 
+                        customAmount: "" 
+                      }))}
+                      className="h-12 font-semibold"
+                    >
+                      ₹{amount}
+                    </Button>
+                  ))}
+                </div>
+                <div>
+                  <Label htmlFor="customAmount">Custom Amount (₹)</Label>
+                  <Input
+                    id="customAmount"
+                    type="number"
+                    min="100"
+                    value={donationForm.customAmount}
+                    onChange={(e) => setDonationForm(prev => ({ 
+                      ...prev, 
+                      customAmount: e.target.value, 
+                      amount: "" 
+                    }))}
+                    placeholder="Enter custom amount (minimum ₹100)"
+                  />
+                </div>
+              </div>
+
+              {/* Additional Options */}
+              <div className="space-y-4">
+                <h3 className="font-semibold">Additional Options</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="anonymous"
+                      checked={donationForm.anonymous}
+                      onCheckedChange={(checked) => setDonationForm(prev => ({ ...prev, anonymous: !!checked }))}
+                    />
+                    <Label htmlFor="anonymous">Make this donation anonymous</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="recurring"
+                      checked={donationForm.recurring}
+                      onCheckedChange={(checked) => setDonationForm(prev => ({ ...prev, recurring: !!checked }))}
+                    />
+                    <Label htmlFor="recurring">Make this a recurring monthly donation</Label>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="message">Message (Optional)</Label>
+                  <Textarea
+                    id="message"
+                    value={donationForm.message}
+                    onChange={(e) => setDonationForm(prev => ({ ...prev, message: e.target.value }))}
+                    placeholder="Share why you're donating or any special message"
+                    rows={3}
+                  />
+                </div>
+              </div>
+
+              {/* Proceed Button */}
+              <div className="flex justify-end">
+                <Button onClick={handleFormSubmit} className="bg-primary hover:bg-primary/90">
+                  Proceed to Payment
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            // Step 2: Payment Method
+            <div className="space-y-6">
+              {/* Donation Summary */}
+              <div className="p-4 bg-muted/50 rounded-lg">
+                <h3 className="font-semibold mb-3">Donation Summary</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>Campaign:</span>
+                    <span className="font-medium">{selectedCampaign?.title}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Donor:</span>
+                    <span className="font-medium">
+                      {donationForm.anonymous ? "Anonymous" : `${donationForm.firstName} ${donationForm.lastName}`}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Amount:</span>
+                    <span className="font-bold text-primary">
+                      ₹{(donationForm.customAmount || donationForm.amount || "0").toLocaleString()}
+                    </span>
+                  </div>
+                  {donationForm.recurring && (
+                    <div className="flex justify-between">
+                      <span>Frequency:</span>
+                      <span className="text-orange-500 font-medium">Monthly</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Payment Methods */}
+              <div className="space-y-4">
+                <h3 className="font-semibold">Choose Payment Method</h3>
+                <RadioGroup
+                  value={paymentMethod}
+                  onValueChange={setPaymentMethod}
+                  className="grid grid-cols-1 gap-4"
+                >
+                  <div className="relative">
+                    <RadioGroupItem value="card" id="card" className="peer sr-only" />
+                    <Label
+                      htmlFor="card"
+                      className="flex items-center justify-between p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <CreditCard className="h-6 w-6 text-primary" />
+                        <div>
+                          <div className="font-medium">Credit/Debit Card</div>
+                          <div className="text-sm text-muted-foreground">Visa, Mastercard, RuPay</div>
+                        </div>
+                      </div>
+                    </Label>
+                  </div>
+                  <div className="relative">
+                    <RadioGroupItem value="upi" id="upi" className="peer sr-only" />
+                    <Label
+                      htmlFor="upi"
+                      className="flex items-center justify-between p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Smartphone className="h-6 w-6 text-primary" />
+                        <div>
+                          <div className="font-medium">UPI/Digital Wallet</div>
+                          <div className="text-sm text-muted-foreground">PhonePe, GPay, Paytm</div>
+                        </div>
+                      </div>
+                    </Label>
+                  </div>
+                  <div className="relative">
+                    <RadioGroupItem value="netbanking" id="netbanking" className="peer sr-only" />
+                    <Label
+                      htmlFor="netbanking"
+                      className="flex items-center justify-between p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Building className="h-6 w-6 text-primary" />
+                        <div>
+                          <div className="font-medium">Net Banking</div>
+                          <div className="text-sm text-muted-foreground">All major banks</div>
+                        </div>
+                      </div>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setDonationStep(1)}
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Button>
+                <Button onClick={handlePaymentSubmit} className="bg-primary hover:bg-primary/90">
+                  Complete Donation
+                  <Heart className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>
