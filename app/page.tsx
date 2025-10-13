@@ -625,7 +625,7 @@ export default function HomePage() {
 
           {/* Stories Slider */}
           <motion.div 
-            className="relative max-w-4xl mx-auto"
+            className="relative w-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -638,7 +638,7 @@ export default function HomePage() {
               >
                 {/* Story 1 */}
                 <div className="w-full flex-shrink-0">
-                  <div className="relative h-96 lg:h-[600px] rounded-xl overflow-hidden">
+                  <div className="relative h-[300px] lg:h-[400px] rounded-xl overflow-hidden">
                     <Image
                       src="/Anshika1.jpeg"
                       alt="Transformation Story 1"
@@ -648,33 +648,21 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     
                     {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Success Story
-                        </Badge>
-                        <span className="text-sm text-white/80">January 2024</span>
-                      </div>
-                      <h3 className="text-2xl lg:text-4xl font-bold mb-4">
-                        Empowering Education in Rural Communities
-                      </h3>
-                      <p className="text-white/90 leading-relaxed mb-6 max-w-2xl">
-                        Through your generous donations, we established a learning center in a remote village, 
-                        providing quality education to 150+ children who previously had no access to schools.
-                      </p>
-                      <div className="flex items-center gap-6">
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-green-300">150+</div>
-                          <div className="text-sm text-white/80">Children Helped</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-green-300">95%</div>
-                          <div className="text-sm text-white/80">Success Rate</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-green-300">3</div>
-                          <div className="text-sm text-white/80">Teachers Hired</div>
+                    <div className="absolute inset-0 flex items-end justify-center pb-8 text-white">
+                      <div className="text-center px-8">
+                        <div className="flex items-center justify-center gap-8">
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-green-300">150+</div>
+                            <div className="text-sm text-white/90">Children Helped</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-green-300">95%</div>
+                            <div className="text-sm text-white/90">Success Rate</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-green-300">3</div>
+                            <div className="text-sm text-white/90">Teachers Hired</div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -683,7 +671,7 @@ export default function HomePage() {
 
                 {/* Story 2 */}
                 <div className="w-full flex-shrink-0">
-                  <div className="relative h-96 lg:h-[600px] rounded-xl overflow-hidden">
+                  <div className="relative h-[300px] lg:h-[400px] rounded-xl overflow-hidden">
                     <Image
                       src="/anshika2.jpeg"
                       alt="Transformation Story 2"
@@ -693,34 +681,21 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     
                     {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
-                          <Users className="h-3 w-3 mr-1" />
-                          Community Impact
-                        </Badge>
-                        <span className="text-sm text-white/80">December 2023</span>
-                      </div>
-                      <h3 className="text-2xl lg:text-4xl font-bold mb-4">
-                        Building Hope Through Healthcare Access
-                      </h3>
-                      <p className="text-white/90 leading-relaxed mb-6 max-w-2xl">
-                        Our mobile health clinic initiative, funded by your donations, has brought essential 
-                        healthcare services to underserved communities. Over 500 families now have access to 
-                        regular medical checkups and emergency care.
-                      </p>
-                      <div className="flex items-center gap-6">
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-blue-300">500+</div>
-                          <div className="text-sm text-white/80">Families Served</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-blue-300">2K+</div>
-                          <div className="text-sm text-white/80">Health Checkups</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-blue-300">15</div>
-                          <div className="text-sm text-white/80">Villages Covered</div>
+                    <div className="absolute inset-0 flex items-end justify-center pb-8 text-white">
+                      <div className="text-center px-8">
+                        <div className="flex items-center justify-center gap-8">
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-blue-300">500+</div>
+                            <div className="text-sm text-white/90">Families Served</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-blue-300">2K+</div>
+                            <div className="text-sm text-white/90">Health Checkups</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-blue-300">15</div>
+                            <div className="text-sm text-white/90">Villages Covered</div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -729,7 +704,7 @@ export default function HomePage() {
 
                 {/* Story 3 */}
                 <div className="w-full flex-shrink-0">
-                  <div className="relative h-96 lg:h-[600px] rounded-xl overflow-hidden">
+                  <div className="relative h-[300px] lg:h-[400px] rounded-xl overflow-hidden">
                     <Image
                       src="/Anshika3.jpeg"
                       alt="Transformation Story 3"
@@ -739,34 +714,21 @@ export default function HomePage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     
                     {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge className="bg-orange-500/20 text-orange-300 border-orange-400/30">
-                          <Home className="h-3 w-3 mr-1" />
-                          Shelter & Support
-                        </Badge>
-                        <span className="text-sm text-white/80">November 2023</span>
-                      </div>
-                      <h3 className="text-2xl lg:text-4xl font-bold mb-4">
-                        Creating Safe Havens for Families
-                      </h3>
-                      <p className="text-white/90 leading-relaxed mb-6 max-w-2xl">
-                        With your support, we've helped rebuild homes for families affected by natural disasters. 
-                        Our shelter program has provided safe, permanent housing for 75 families, giving them 
-                        not just a roof over their heads, but a foundation for rebuilding their lives.
-                      </p>
-                      <div className="flex items-center gap-6">
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-orange-300">75</div>
-                          <div className="text-sm text-white/80">Homes Built</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-orange-300">300+</div>
-                          <div className="text-sm text-white/80">Lives Transformed</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl lg:text-3xl font-bold text-orange-300">5</div>
-                          <div className="text-sm text-white/80">Communities</div>
+                    <div className="absolute inset-0 flex items-end justify-center pb-8 text-white">
+                      <div className="text-center px-8">
+                        <div className="flex items-center justify-center gap-8">
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-orange-300">75</div>
+                            <div className="text-sm text-white/90">Homes Built</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-orange-300">300+</div>
+                            <div className="text-sm text-white/90">Lives Transformed</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl lg:text-4xl font-bold text-orange-300">5</div>
+                            <div className="text-sm text-white/90">Communities</div>
+                          </div>
                         </div>
                       </div>
                     </div>
