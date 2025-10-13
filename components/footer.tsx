@@ -108,14 +108,17 @@ export function Footer() {
               </li>
               <li className="flex items-start text-muted-foreground">
                 <MapPin className="h-4 w-4 mr-3 text-primary mt-0.5" />
-                <a 
-                  href="https://share.google/lv8Tan60Ino69gCx1" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm hover:text-primary transition-colors"
-                >
-                  View Location on Google Maps
-                </a>
+                <div className="text-sm">
+                  <p className="mb-1">Shop No, New Sagar Samrat, 2, Cabin Cross Rd, Hema Kunj, Narmada Nagar, Bhayandar East, Thane, Mira Bhayandar, Maharashtra 401105</p>
+                  <a 
+                    href="https://share.google/lv8Tan60Ino69gCx1" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline transition-colors"
+                  >
+                    View Location on Google Maps
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
