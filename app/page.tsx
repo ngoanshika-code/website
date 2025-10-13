@@ -775,60 +775,37 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Slider Navigation */}
-            <div className="flex items-center justify-center gap-4 mt-8">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentStoryIndex((prev) => (prev > 0 ? prev - 1 : 2))}
-                className="h-10 w-10 p-0"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              
-              {/* Dots Indicator */}
-              <div className="flex gap-2">
-                {[0, 1, 2].map((index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentStoryIndex(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                      currentStoryIndex === index
-                        ? "bg-primary scale-125"
-                        : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                    }`}
-                  />
-                ))}
-              </div>
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentStoryIndex((prev) => (prev < 2 ? prev + 1 : 0))}
-                className="h-10 w-10 p-0"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
+            {/* Slider Navigation Arrows - Positioned on sides */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentStoryIndex((prev) => (prev > 0 ? prev - 1 : 2))}
+              className="absolute left-4 top-1/2 -translate-y-1/2 h-12 w-12 p-0 bg-black/50 hover:bg-black/70 border-white/20 text-white backdrop-blur-sm z-10"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentStoryIndex((prev) => (prev < 2 ? prev + 1 : 0))}
+              className="absolute right-4 top-1/2 -translate-y-1/2 h-12 w-12 p-0 bg-black/50 hover:bg-black/70 border-white/20 text-white backdrop-blur-sm z-10"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
 
-            {/* Story Navigation Labels */}
-            <div className="flex justify-center gap-8 mt-6">
-              {[
-                "Education Initiative",
-                "Healthcare Program", 
-                "Shelter Project"
-              ].map((label, index) => (
+            {/* Dots Indicator - Positioned at bottom center */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {[0, 1, 2].map((index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentStoryIndex(index)}
-                  className={`text-sm font-medium transition-colors ${
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
                     currentStoryIndex === index
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-primary scale-125"
+                      : "bg-white/50 hover:bg-white/70"
                   }`}
-                >
-                  {label}
-                </button>
+                />
               ))}
             </div>
           </motion.div>
