@@ -123,7 +123,10 @@ export function Footer() {
 
         <div className="border-t border-border mt-8 pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-muted-foreground text-sm">© 2024 Anshika Helping Hands Foundation. All rights reserved.</p>
+            <div className="flex flex-col sm:flex-row items-center gap-2 text-sm">
+              <p className="text-muted-foreground">© 2025 Anshika Helping Hands Foundation. All rights reserved.</p>
+              <p className="text-muted-foreground/70 text-xs">Develop by AITIK Software pvt ltd</p>
+            </div>
             <div className="flex items-center gap-4 text-sm">
               <TermsAndConditions triggerText="Terms & Conditions" />
               <TermsAndConditions triggerText="Privacy Policy" />
