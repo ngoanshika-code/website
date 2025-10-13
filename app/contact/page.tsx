@@ -33,19 +33,19 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: "Email Us",
-      details: "info@anshikahelpinghands.org",
+      details: "anshikahelpinghandsfoundation@gmail.com",
       description: "Send us an email anytime",
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: "+91 98765 43210",
+      details: "+91 99204 46089",
       description: "Mon-Fri 9AM-6PM IST",
     },
     {
       icon: MapPin,
       title: "Visit Us",
-      details: "123 Community Street, New Delhi, India 110001",
+      details: "Shop No, New Sagar Samrat, 2, Cabin Cross Rd, Hema Kunj, Narmada Nagar, Bhayandar East, Thane, Mira Bhayandar, Maharashtra 401105",
       description: "Our main office location",
     },
     {
@@ -195,23 +195,6 @@ export default function ContactPage() {
               </CardContent>
             </Card>
 
-            {/* Quick Links */}
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button asChild variant="outline" className="w-full justify-start bg-transparent">
-                  <a href="/donation">Make a Donation</a>
-                </Button>
-                <Button asChild variant="outline" className="w-full justify-start bg-transparent">
-                  <a href="/about">Learn About Our Work</a>
-                </Button>
-                <Button asChild variant="outline" className="w-full justify-start bg-transparent">
-                  <a href="mailto:volunteer@anshikahelpinghands.org">Volunteer With Us</a>
-                </Button>
-              </CardContent>
-            </Card>
 
             {/* Emergency Contact */}
             <Card className="border-border bg-destructive/5">
@@ -220,7 +203,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-2">For urgent matters or emergencies:</p>
-                <p className="font-semibold text-foreground">+91 98765 43211</p>
+                <p className="font-semibold text-foreground">+91 99204 46089</p>
                 <p className="text-xs text-muted-foreground mt-1">Available 24/7 for emergency situations</p>
               </CardContent>
             </Card>
@@ -235,12 +218,28 @@ export default function ContactPage() {
               <CardDescription>Visit our office or find us on the map</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="w-full h-96 bg-muted rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Interactive map would be embedded here</p>
-                  <p className="text-sm text-muted-foreground mt-2">123 Community Street, New Delhi, India 110001</p>
-                </div>
+              <div className="w-full h-96 rounded-lg overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3769.0233456789012!2d72.8533853!3d19.3040151!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b167bbe02049%3A0x19667a7b339ad0e!2sAnshika%20Helping%20Hands%20Foundation!5e0!3m2!1sen-GB!2sin!4v1704723456789!5m2!1sen-GB!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Anshika Helping Hands Foundation Location"
+                ></iframe>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-muted-foreground">Shop No, New Sagar Samrat, 2, Cabin Cross Rd, Hema Kunj, Narmada Nagar, Bhayandar East, Thane, Mira Bhayandar, Maharashtra 401105</p>
+                <a 
+                  href="https://www.google.com/maps/place/Anshika+Helping+Hands+Foundation/@19.3040151,72.8533853,17z/data=!3m1!4b1!4m6!3m5!1s0x3be7b167bbe02049:0x19667a7b339ad0e!8m2!3d19.3040101!4d72.8559602!16s%2Fg%2F11yd6sfds1?hl=en-GB&entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline text-sm mt-2 inline-block"
+                >
+                  Open in Google Maps
+                </a>
               </div>
             </CardContent>
           </Card>

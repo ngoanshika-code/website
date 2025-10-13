@@ -78,7 +78,7 @@ export default function HomePage() {
       subtitle: "Transforming Lives Since 2015",
       description:
         "Join Anshika Helping Hands Foundation in our mission to create lasting positive change through compassionate action, quality education, healthcare access, and sustainable community development programs that transform lives across India.",
-      image: "/diverse-group-of-volunteers-helping-community-memb.jpg",
+      image: "/Anshika1.jpeg",
       stats: { number: "15,000+", label: "Lives Transformed" },
       secondaryStat: { number: "120+", label: "Communities" },
       badges: [
@@ -93,7 +93,7 @@ export default function HomePage() {
       subtitle: "Healing Hearts, Saving Lives",
       description:
         "Through mobile health clinics, preventive care programs, and mental health support, we ensure that quality healthcare reaches even the most remote communities across India.",
-      image: "/mobile-health-clinic-in-rural-area.jpg",
+      image: "/anshika2.jpeg",
       stats: { number: "25+", label: "Health Camps" },
       secondaryStat: { number: "10,000+", label: "Patients Treated" },
       badges: [
@@ -108,7 +108,7 @@ export default function HomePage() {
       subtitle: "Inspiring Change, Creating Leaders",
       description:
         "Our women empowerment programs focus on entrepreneurship training, leadership development, and creating self-help groups that enable women to achieve economic independence.",
-      image: "/women-entrepreneurs-working-together.jpg",
+      image: "/Anshika3.jpeg",
       stats: { number: "500+", label: "Women Empowered" },
       secondaryStat: { number: "50+", label: "Self-Help Groups" },
       badges: [
@@ -222,19 +222,18 @@ export default function HomePage() {
       <Navigation />
 
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background Image */}
+        {/* Background Image Slider */}
         <div className="absolute inset-0">
           <Image
-            src="/diverse-group-of-volunteers-helping-community-memb.jpg"
+            src={heroSlides[currentSlide].image || "/placeholder.svg"}
             alt="Hero background"
             fill
-            className="object-cover"
+            className="object-cover transition-opacity duration-500"
             priority
           />
         </div>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/80 via-red-400/80 to-pink-400/80"></div>
-        <div className="absolute inset-0 bg-black/30"></div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/50"></div>
 
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-20">
@@ -258,42 +257,16 @@ export default function HomePage() {
         </button>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-20">
+          <div className="flex flex-col items-center justify-center min-h-screen py-20">
             <motion.div 
-              className="relative"
+              className="relative mt-112"
               key={currentSlide}
               initial="initial"
               animate="animate"
               exit="exit"
               variants={slideIn}
             >
-              {/* Main Content */}
-              <motion.h1 
-                className="text-2xl lg:text-4xl xl:text-5xl font-bold text-white mb-6 text-balance leading-tight"
-                variants={fadeInUp}
-              >
-                {heroSlides[currentSlide].title.includes("Helping Hands") ? (
-                  <>
-                    SUPPORT COMMUNITIES WITH <span className="text-blue-200 drop-shadow-lg">ANSHIKA HELPING HANDS</span>
-                  </>
-                ) : heroSlides[currentSlide].title.includes("Healthcare") ? (
-                  <>
-                    <span className="text-blue-200 drop-shadow-lg">HEALTHCARE ACCESS</span> FOR EVERY COMMUNITY
-                  </>
-                ) : (
-                  <>
-                    <span className="text-blue-200 drop-shadow-lg">WOMEN EMPOWERMENT</span> & LEADERSHIP
-                  </>
-                )}
-              </motion.h1>
-
-              <motion.p 
-                className="text-xl lg:text-2xl text-white/90 mb-8 text-pretty leading-relaxed max-w-2xl"
-                variants={fadeInUp}
-              >
-                {heroSlides[currentSlide].description}
-              </motion.p>
-
+              {/* Donate Now Button */}
               <motion.div variants={fadeInUp}>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -309,60 +282,7 @@ export default function HomePage() {
                 </motion.div>
               </motion.div>
             </motion.div>
-
-            <motion.div 
-              className="relative"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              variants={fadeInRight}
-            >
-              <motion.div 
-                className="relative w-80 h-80 lg:w-96 lg:h-96 mx-auto"
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Blue Circular Frame */}
-                <motion.div 
-                  className="absolute inset-0 rounded-full border-6 border-blue-500 shadow-2xl"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                ></motion.div>
-                <div className="absolute inset-2 rounded-full overflow-hidden">
-                  <Image
-                    src={heroSlides[currentSlide].image || "/placeholder.svg"}
-                    alt="Hero slide"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-
-                {/* Floating Badges */}
-                {heroSlides[currentSlide].badges.map((badge, index) => (
-                  <motion.div
-                    key={index}
-                    className={`absolute ${
-                      badge.position === "top-left"
-                        ? "-top-3 -left-6"
-                        : badge.position === "top-right"
-                          ? "-top-3 -right-6"
-                          : badge.position === "bottom-left"
-                            ? "-bottom-3 -left-6"
-                            : "-bottom-3 -right-6"
-                    } bg-white rounded-full px-3 py-1.5 shadow-lg flex items-center gap-1.5`}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.3 }}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                  >
-                    <badge.icon className="h-3.5 w-3.5 text-orange-500" />
-                    <span className="text-xs font-semibold text-gray-800">{badge.text}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
           </div>
-
         </div>
 
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
@@ -794,7 +714,7 @@ export default function HomePage() {
       </section>
 
       {/* Floating Social Media Icons */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3">
+      <div className="fixed right-6 top-1/2 translate-y-8 z-30 flex flex-col gap-3">
         {/* Instagram */}
         <a 
           href="https://www.instagram.com/anshikahelpinghands?igsh=cnZpa3M4ZXd0dXZo" 
