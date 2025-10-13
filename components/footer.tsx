@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Heart, Mail, Phone, MapPin } from "lucide-react"
+import { Heart, Mail, Phone, MapPin, Facebook, Instagram } from "lucide-react"
 
 export function Footer() {
   return (
@@ -23,9 +23,42 @@ export function Footer() {
               Dedicated to creating positive change in communities through compassionate action, education, and
               sustainable development programs.
             </p>
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-sm text-muted-foreground mb-4">
               <Heart className="h-4 w-4 text-primary mr-2" />
               Making a difference, one life at a time
+            </div>
+            {/* Social Media Links */}
+            <div className="flex items-center gap-3">
+              <Link 
+                href="https://www.instagram.com/anshikahelpinghands?igsh=cnZpa3M4ZXd0dXZo" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-primary/10 hover:bg-primary/20 p-2 rounded-full transition-colors"
+              >
+                <Instagram className="h-5 w-5 text-primary" />
+              </Link>
+              <Link 
+                href="https://www.facebook.com/share/1BAfy4GJcE/?mibextid=wwXIfr" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-primary/10 hover:bg-primary/20 p-2 rounded-full transition-colors"
+              >
+                <Facebook className="h-5 w-5 text-primary" />
+              </Link>
+              <Link 
+                href="mailto:anshikahelpinghandsfoundation@gmail.com"
+                className="bg-primary/10 hover:bg-primary/20 p-2 rounded-full transition-colors"
+              >
+                <Mail className="h-5 w-5 text-primary" />
+              </Link>
+              <Link 
+                href="https://share.google/lv8Tan60Ino69gCx1" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-primary/10 hover:bg-primary/20 p-2 rounded-full transition-colors"
+              >
+                <MapPin className="h-5 w-5 text-primary" />
+              </Link>
             </div>
           </div>
 
@@ -62,19 +95,26 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center text-muted-foreground">
                 <Mail className="h-4 w-4 mr-3 text-primary" />
-                <span className="text-sm">info@anshikahelpinghands.org</span>
+                <a href="mailto:anshikahelpinghandsfoundation@gmail.com" className="text-sm hover:text-primary transition-colors">
+                  anshikahelpinghandsfoundation@gmail.com
+                </a>
               </li>
               <li className="flex items-center text-muted-foreground">
                 <Phone className="h-4 w-4 mr-3 text-primary" />
-                <span className="text-sm">+91 98765 43210</span>
+                <a href="tel:+919920446089" className="text-sm hover:text-primary transition-colors">
+                  +91 99204 46089
+                </a>
               </li>
               <li className="flex items-start text-muted-foreground">
                 <MapPin className="h-4 w-4 mr-3 text-primary mt-0.5" />
-                <span className="text-sm">
-                  123 Community Street
-                  <br />
-                  New Delhi, India
-                </span>
+                <a 
+                  href="https://share.google/lv8Tan60Ino69gCx1" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm hover:text-primary transition-colors"
+                >
+                  View Location on Google Maps
+                </a>
               </li>
             </ul>
           </div>
