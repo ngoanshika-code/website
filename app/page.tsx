@@ -625,7 +625,7 @@ export default function HomePage() {
 
           {/* Stories Slider */}
           <motion.div 
-            className="relative"
+            className="relative max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -638,44 +638,43 @@ export default function HomePage() {
               >
                 {/* Story 1 */}
                 <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden">
-                      <Image
-                        src="/Anshika1.jpeg"
-                        alt="Transformation Story 1"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-green-500/10 text-green-700 border-green-200">
+                  <div className="relative h-96 lg:h-[600px] rounded-xl overflow-hidden">
+                    <Image
+                      src="/Anshika1.jpeg"
+                      alt="Transformation Story 1"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    
+                    {/* Content Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
                           <CheckCircle className="h-3 w-3 mr-1" />
                           Success Story
                         </Badge>
-                        <span className="text-sm text-muted-foreground">January 2024</span>
+                        <span className="text-sm text-white/80">January 2024</span>
                       </div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
+                      <h3 className="text-2xl lg:text-4xl font-bold mb-4">
                         Empowering Education in Rural Communities
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-white/90 leading-relaxed mb-6 max-w-2xl">
                         Through your generous donations, we established a learning center in a remote village, 
-                        providing quality education to 150+ children who previously had no access to schools. 
-                        Today, 95% of these children are continuing their education and dreaming bigger dreams.
+                        providing quality education to 150+ children who previously had no access to schools.
                       </p>
-                      <div className="flex items-center gap-4 pt-4">
+                      <div className="flex items-center gap-6">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">150+</div>
-                          <div className="text-sm text-muted-foreground">Children Helped</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-green-300">150+</div>
+                          <div className="text-sm text-white/80">Children Helped</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">95%</div>
-                          <div className="text-sm text-muted-foreground">Success Rate</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-green-300">95%</div>
+                          <div className="text-sm text-white/80">Success Rate</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">3</div>
-                          <div className="text-sm text-muted-foreground">Teachers Hired</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-green-300">3</div>
+                          <div className="text-sm text-white/80">Teachers Hired</div>
                         </div>
                       </div>
                     </div>
@@ -684,44 +683,44 @@ export default function HomePage() {
 
                 {/* Story 2 */}
                 <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden">
-                      <Image
-                        src="/anshika2.jpeg"
-                        alt="Transformation Story 2"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-blue-500/10 text-blue-700 border-blue-200">
+                  <div className="relative h-96 lg:h-[600px] rounded-xl overflow-hidden">
+                    <Image
+                      src="/anshika2.jpeg"
+                      alt="Transformation Story 2"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    
+                    {/* Content Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
                           <Users className="h-3 w-3 mr-1" />
                           Community Impact
                         </Badge>
-                        <span className="text-sm text-muted-foreground">December 2023</span>
+                        <span className="text-sm text-white/80">December 2023</span>
                       </div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
+                      <h3 className="text-2xl lg:text-4xl font-bold mb-4">
                         Building Hope Through Healthcare Access
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-white/90 leading-relaxed mb-6 max-w-2xl">
                         Our mobile health clinic initiative, funded by your donations, has brought essential 
                         healthcare services to underserved communities. Over 500 families now have access to 
-                        regular medical checkups, vaccinations, and emergency care.
+                        regular medical checkups and emergency care.
                       </p>
-                      <div className="flex items-center gap-4 pt-4">
+                      <div className="flex items-center gap-6">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">500+</div>
-                          <div className="text-sm text-muted-foreground">Families Served</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-blue-300">500+</div>
+                          <div className="text-sm text-white/80">Families Served</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">2K+</div>
-                          <div className="text-sm text-muted-foreground">Health Checkups</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-blue-300">2K+</div>
+                          <div className="text-sm text-white/80">Health Checkups</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">15</div>
-                          <div className="text-sm text-muted-foreground">Villages Covered</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-blue-300">15</div>
+                          <div className="text-sm text-white/80">Villages Covered</div>
                         </div>
                       </div>
                     </div>
@@ -730,44 +729,44 @@ export default function HomePage() {
 
                 {/* Story 3 */}
                 <div className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden">
-                      <Image
-                        src="/Anshika3.jpeg"
-                        alt="Transformation Story 3"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-orange-500/10 text-orange-700 border-orange-200">
+                  <div className="relative h-96 lg:h-[600px] rounded-xl overflow-hidden">
+                    <Image
+                      src="/Anshika3.jpeg"
+                      alt="Transformation Story 3"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    
+                    {/* Content Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Badge className="bg-orange-500/20 text-orange-300 border-orange-400/30">
                           <Home className="h-3 w-3 mr-1" />
                           Shelter & Support
                         </Badge>
-                        <span className="text-sm text-muted-foreground">November 2023</span>
+                        <span className="text-sm text-white/80">November 2023</span>
                       </div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
+                      <h3 className="text-2xl lg:text-4xl font-bold mb-4">
                         Creating Safe Havens for Families
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-white/90 leading-relaxed mb-6 max-w-2xl">
                         With your support, we've helped rebuild homes for families affected by natural disasters. 
                         Our shelter program has provided safe, permanent housing for 75 families, giving them 
                         not just a roof over their heads, but a foundation for rebuilding their lives.
                       </p>
-                      <div className="flex items-center gap-4 pt-4">
+                      <div className="flex items-center gap-6">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">75</div>
-                          <div className="text-sm text-muted-foreground">Homes Built</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-orange-300">75</div>
+                          <div className="text-sm text-white/80">Homes Built</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">300+</div>
-                          <div className="text-sm text-muted-foreground">Lives Transformed</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-orange-300">300+</div>
+                          <div className="text-sm text-white/80">Lives Transformed</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-primary">5</div>
-                          <div className="text-sm text-muted-foreground">Communities</div>
+                          <div className="text-2xl lg:text-3xl font-bold text-orange-300">5</div>
+                          <div className="text-sm text-white/80">Communities</div>
                         </div>
                       </div>
                     </div>
