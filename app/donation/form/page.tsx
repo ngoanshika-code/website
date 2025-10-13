@@ -32,6 +32,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { initializePayment, validateAmount } from "@/lib/payment"
+import { TermsAndConditions } from "@/components/terms-and-conditions"
 
 interface FormData {
   firstName: string
@@ -482,13 +483,9 @@ export default function DonationFormPage() {
                     <div className="text-sm">
                       <Label htmlFor="terms" className="cursor-pointer">
                         I agree to the{" "}
-                        <Link href="/terms" className="text-primary hover:underline">
-                          Terms and Conditions
-                        </Link>{" "}
-                        and{" "}
-                        <Link href="/privacy" className="text-primary hover:underline">
-                          Privacy Policy
-                        </Link>
+                        <TermsAndConditions triggerText="Terms and Conditions" triggerClassName="text-primary hover:underline" />
+                        {" "}and{" "}
+                        <TermsAndConditions triggerText="Privacy Policy" triggerClassName="text-primary hover:underline" />
                         . I understand that my donation is non-refundable and will be used for charitable purposes.
                       </Label>
                       {errors.agreeToTerms && <p className="text-red-500 text-sm mt-1">{errors.agreeToTerms}</p>}

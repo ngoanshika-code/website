@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Heart, Mail, Phone, MapPin, Facebook, Instagram } from "lucide-react"
+import { TermsAndConditions } from "@/components/terms-and-conditions"
 
 export function Footer() {
   return (
@@ -120,8 +121,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center">
-          <p className="text-muted-foreground text-sm">© 2024 Anshika Helping Hands Foundation. All rights reserved.</p>
+        <div className="border-t border-border mt-8 pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-muted-foreground text-sm">© 2024 Anshika Helping Hands Foundation. All rights reserved.</p>
+            <div className="flex items-center gap-4 text-sm">
+              <TermsAndConditions triggerText="Terms & Conditions" />
+              <TermsAndConditions triggerText="Privacy Policy" />
+            </div>
+          </div>
         </div>
       </div>
     </footer>

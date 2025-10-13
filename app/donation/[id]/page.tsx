@@ -44,6 +44,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { TermsAndConditions } from "@/components/terms-and-conditions"
 
 interface Campaign {
   _id: string
@@ -97,6 +98,7 @@ export default function CampaignDetailsPage() {
     message: "",
     anonymous: false,
     recurring: false,
+    agreeToTerms: false,
   })
   const [paymentMethod, setPaymentMethod] = useState("card")
 
@@ -120,6 +122,11 @@ export default function CampaignDetailsPage() {
       return
     }
     
+    if (!donationForm.agreeToTerms) {
+      alert("You must agree to the Terms & Conditions to proceed")
+      return
+    }
+    
     setDonationStep(2)
   }
 
@@ -139,6 +146,7 @@ export default function CampaignDetailsPage() {
       message: "",
       anonymous: false,
       recurring: false,
+      agreeToTerms: false,
     })
   }
 
@@ -153,6 +161,7 @@ export default function CampaignDetailsPage() {
       message: "",
       anonymous: false,
       recurring: false,
+      agreeToTerms: false,
     })
     setDonationStep(1)
   }
@@ -803,6 +812,27 @@ export default function CampaignDetailsPage() {
                     placeholder="Share why you're donating or any special message"
                     rows={3}
                   />
+                </div>
+              </div>
+
+              {/* Terms and Conditions */}
+              <div className="p-4 border border-border rounded-lg">
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="terms"
+                    checked={donationForm.agreeToTerms}
+                    onCheckedChange={(checked) => setDonationForm(prev => ({ ...prev, agreeToTerms: !!checked }))}
+                    className="mt-1"
+                  />
+                  <div className="text-sm">
+                    <Label htmlFor="terms" className="cursor-pointer">
+                      I agree to the{" "}
+                      <TermsAndConditions triggerText="Terms and Conditions" triggerClassName="text-primary hover:underline" />
+                      {" "}and{" "}
+                      <TermsAndConditions triggerText="Privacy Policy" triggerClassName="text-primary hover:underline" />
+                      . I understand that my donation is non-refundable and will be used for charitable purposes.
+                    </Label>
+                  </div>
                 </div>
               </div>
 
