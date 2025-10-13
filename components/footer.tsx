@@ -125,7 +125,17 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex flex-col sm:flex-row items-center gap-2 text-sm">
               <p className="text-muted-foreground">© 2025 Anshika Helping Hands Foundation. All rights reserved.</p>
-              <p className="text-muted-foreground/70 text-xs">Develop by AITIK Software pvt ltd</p>
+              <p className="text-muted-foreground/70 text-xs">
+                Develop by{" "}
+                <Link 
+                  href="https://www.aitiksoftware.com/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline font-medium"
+                >
+                  AITIK Software pvt ltd
+                </Link>
+              </p>
             </div>
             <div className="flex items-center gap-4 text-sm">
               <TermsAndConditions triggerText="Terms & Conditions" />
