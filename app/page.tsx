@@ -29,6 +29,7 @@ import { motion } from "framer-motion"
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
 
   // Animation variants
   const fadeInUp = {
@@ -596,6 +597,261 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* Stories of Transformation Section */}
+      <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Badge className="bg-primary/10 text-primary border-primary/20 mb-4">
+              <Heart className="h-3 w-3 mr-1" />
+              Real Impact Stories
+            </Badge>
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
+              Stories of Transformation
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Every donation creates a ripple effect of positive change. Here are real stories of lives transformed 
+              through the generosity of our community.
+            </p>
+          </motion.div>
+
+          {/* Stories Slider */}
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="relative overflow-hidden rounded-2xl">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentStoryIndex * 100}%)` }}
+              >
+                {/* Story 1 */}
+                <div className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden">
+                      <Image
+                        src="/Anshika1.jpeg"
+                        alt="Transformation Story 1"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-green-500/10 text-green-700 border-green-200">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          Success Story
+                        </Badge>
+                        <span className="text-sm text-muted-foreground">January 2024</span>
+                      </div>
+                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
+                        Empowering Education in Rural Communities
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Through your generous donations, we established a learning center in a remote village, 
+                        providing quality education to 150+ children who previously had no access to schools. 
+                        Today, 95% of these children are continuing their education and dreaming bigger dreams.
+                      </p>
+                      <div className="flex items-center gap-4 pt-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">150+</div>
+                          <div className="text-sm text-muted-foreground">Children Helped</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">95%</div>
+                          <div className="text-sm text-muted-foreground">Success Rate</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">3</div>
+                          <div className="text-sm text-muted-foreground">Teachers Hired</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Story 2 */}
+                <div className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden">
+                      <Image
+                        src="/anshika2.jpeg"
+                        alt="Transformation Story 2"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-blue-500/10 text-blue-700 border-blue-200">
+                          <Users className="h-3 w-3 mr-1" />
+                          Community Impact
+                        </Badge>
+                        <span className="text-sm text-muted-foreground">December 2023</span>
+                      </div>
+                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
+                        Building Hope Through Healthcare Access
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Our mobile health clinic initiative, funded by your donations, has brought essential 
+                        healthcare services to underserved communities. Over 500 families now have access to 
+                        regular medical checkups, vaccinations, and emergency care.
+                      </p>
+                      <div className="flex items-center gap-4 pt-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">500+</div>
+                          <div className="text-sm text-muted-foreground">Families Served</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">2K+</div>
+                          <div className="text-sm text-muted-foreground">Health Checkups</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">15</div>
+                          <div className="text-sm text-muted-foreground">Villages Covered</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Story 3 */}
+                <div className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden">
+                      <Image
+                        src="/Anshika3.jpeg"
+                        alt="Transformation Story 3"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-orange-500/10 text-orange-700 border-orange-200">
+                          <Home className="h-3 w-3 mr-1" />
+                          Shelter & Support
+                        </Badge>
+                        <span className="text-sm text-muted-foreground">November 2023</span>
+                      </div>
+                      <h3 className="text-2xl lg:text-3xl font-bold text-foreground">
+                        Creating Safe Havens for Families
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        With your support, we've helped rebuild homes for families affected by natural disasters. 
+                        Our shelter program has provided safe, permanent housing for 75 families, giving them 
+                        not just a roof over their heads, but a foundation for rebuilding their lives.
+                      </p>
+                      <div className="flex items-center gap-4 pt-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">75</div>
+                          <div className="text-sm text-muted-foreground">Homes Built</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">300+</div>
+                          <div className="text-sm text-muted-foreground">Lives Transformed</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">5</div>
+                          <div className="text-sm text-muted-foreground">Communities</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Slider Navigation */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentStoryIndex((prev) => (prev > 0 ? prev - 1 : 2))}
+                className="h-10 w-10 p-0"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              {/* Dots Indicator */}
+              <div className="flex gap-2">
+                {[0, 1, 2].map((index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentStoryIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                      currentStoryIndex === index
+                        ? "bg-primary scale-125"
+                        : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    }`}
+                  />
+                ))}
+              </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentStoryIndex((prev) => (prev < 2 ? prev + 1 : 0))}
+                className="h-10 w-10 p-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Story Navigation Labels */}
+            <div className="flex justify-center gap-8 mt-6">
+              {[
+                "Education Initiative",
+                "Healthcare Program", 
+                "Shelter Project"
+              ].map((label, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentStoryIndex(index)}
+                  className={`text-sm font-medium transition-colors ${
+                    currentStoryIndex === index
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Call to Action */}
+          <motion.div 
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <p className="text-lg text-muted-foreground mb-6">
+              Be part of the next transformation story. Your donation can change lives today.
+            </p>
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+              <Link href="/donation/form">
+                <Heart className="h-4 w-4 mr-2" />
+                Create Your Impact Story
+              </Link>
+            </Button>
+          </motion.div>
+        </div>
       </section>
 
       <Footer />
