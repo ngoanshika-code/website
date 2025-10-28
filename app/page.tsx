@@ -22,6 +22,9 @@ import {
   Clock,
   Shield,
   Gift,
+  Calendar,
+  ArrowRight,
+  Target,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -78,7 +81,7 @@ export default function HomePage() {
       subtitle: "Transforming Lives Since 2015",
       description:
         "Join Anshika Helping Hands Foundation in our mission to create lasting positive change through compassionate action, quality education, healthcare access, and sustainable community development programs that transform lives across India.",
-      image: "/Anshika1.jpeg",
+      image: "/WhatsApp Image 2025-10-28 at 12.40.22 PM.jpeg",
       stats: { number: "15,000+", label: "Lives Transformed" },
       secondaryStat: { number: "120+", label: "Communities" },
       badges: [
@@ -93,7 +96,7 @@ export default function HomePage() {
       subtitle: "Healing Hearts, Saving Lives",
       description:
         "Through mobile health clinics, preventive care programs, and mental health support, we ensure that quality healthcare reaches even the most remote communities across India.",
-      image: "/anshika2.jpeg",
+      image: "/WhatsApp Image 2025-10-28 at 12.40.25 PM.jpeg",
       stats: { number: "25+", label: "Health Camps" },
       secondaryStat: { number: "10,000+", label: "Patients Treated" },
       badges: [
@@ -108,7 +111,7 @@ export default function HomePage() {
       subtitle: "Inspiring Change, Creating Leaders",
       description:
         "Our women empowerment programs focus on entrepreneurship training, leadership development, and creating self-help groups that enable women to achieve economic independence.",
-      image: "/Anshika3.jpeg",
+      image: "/WhatsApp Image 2025-10-28 at 12.40.25 PM (1).jpeg",
       stats: { number: "500+", label: "Women Empowered" },
       secondaryStat: { number: "50+", label: "Self-Help Groups" },
       badges: [
@@ -116,6 +119,36 @@ export default function HomePage() {
         { text: "Micro Finance", icon: Gift, position: "top-right" },
         { text: "Leadership Dev", icon: Users, position: "bottom-left" },
         { text: "Success Stories", icon: Award, position: "bottom-right" },
+      ],
+    },
+    {
+      title: "Community Development Initiatives",
+      subtitle: "Building Sustainable Futures",
+      description:
+        "Our comprehensive programs focus on education, healthcare, and infrastructure development to create lasting positive change in communities across India.",
+      image: "/WhatsApp Image 2025-10-28 at 12.40.26 PM.jpeg",
+      stats: { number: "200+", label: "Projects Completed" },
+      secondaryStat: { number: "15+", label: "Years of Service" },
+      badges: [
+        { text: "Impact Driven", icon: Target, position: "top-left" },
+        { text: "Community First", icon: Users, position: "top-right" },
+        { text: "Transparent", icon: Shield, position: "bottom-left" },
+        { text: "Sustainable", icon: Globe, position: "bottom-right" },
+      ],
+    },
+    {
+      title: "Education & Skill Development",
+      subtitle: "Empowering Through Learning",
+      description:
+        "Comprehensive education programs and vocational training initiatives that equip individuals with skills for better employment opportunities and economic growth.",
+      image: "/WhatsApp Image 2025-10-28 at 12.40.26 PM (1).jpeg",
+      stats: { number: "5,000+", label: "Students Educated" },
+      secondaryStat: { number: "85+", label: "Education Programs" },
+      badges: [
+        { text: "Quality Education", icon: BookOpen, position: "top-left" },
+        { text: "Skill Building", icon: GraduationCap, position: "top-right" },
+        { text: "Job Placement", icon: Award, position: "bottom-left" },
+        { text: "Digital Literacy", icon: Globe, position: "bottom-right" },
       ],
     },
   ]
@@ -136,17 +169,9 @@ export default function HomePage() {
     setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
   }
 
-  const impactStats = [
-    { number: "15,000+", label: "Lives Transformed", icon: Heart },
-    { number: "120+", label: "Communities Served", icon: Users },
-    { number: "85+", label: "Education Programs", icon: BookOpen },
-    { number: "500+", label: "Active Volunteers", icon: Users },
-    { number: "25+", label: "Healthcare Camps", icon: Stethoscope },
-    { number: "50+", label: "Awards Received", icon: Award },
-  ]
-
   const programs = [
     {
+      slug: "education-skill-development",
       title: "Education & Skill Development",
       description:
         "Comprehensive education programs, vocational training, and digital literacy initiatives for sustainable growth.",
@@ -155,6 +180,7 @@ export default function HomePage() {
       bgColor: "bg-primary/10",
     },
     {
+      slug: "healthcare-wellness",
       title: "Healthcare & Wellness",
       description:
         "Mobile health clinics, preventive care programs, and mental health support for holistic well-being.",
@@ -163,6 +189,7 @@ export default function HomePage() {
       bgColor: "bg-accent/10",
     },
     {
+      slug: "food-security-nutrition",
       title: "Food Security & Nutrition",
       description: "Community kitchens, nutrition education, and sustainable farming initiatives to combat hunger.",
       icon: Utensils,
@@ -170,6 +197,7 @@ export default function HomePage() {
       bgColor: "bg-secondary/10",
     },
     {
+      slug: "shelter-infrastructure",
       title: "Shelter & Infrastructure",
       description: "Safe housing projects, clean water access, and community infrastructure development programs.",
       icon: Home,
@@ -177,6 +205,7 @@ export default function HomePage() {
       bgColor: "bg-primary/10",
     },
     {
+      slug: "women-empowerment",
       title: "Women Empowerment",
       description:
         "Self-help groups, entrepreneurship training, and leadership development for women's economic independence.",
@@ -185,6 +214,7 @@ export default function HomePage() {
       bgColor: "bg-accent/10",
     },
     {
+      slug: "environmental-conservation",
       title: "Environmental Conservation",
       description: "Tree plantation drives, waste management, and renewable energy projects for a sustainable future.",
       icon: Globe,
@@ -193,27 +223,30 @@ export default function HomePage() {
     },
   ]
 
-  const successStories = [
+  const blogs = [
     {
-      name: "Priya Sharma",
-      story:
-        "From a small village girl to a successful entrepreneur, our vocational training program helped Priya start her own tailoring business.",
-      image: "/young-indian-woman-entrepreneur-smiling.jpg",
-      impact: "Now employs 15 women",
+      title: "Empowering Women Through Skill Development",
+      excerpt: "Discover how our vocational training programs are transforming lives and creating economic independence for women in rural communities.",
+      image: "/women-entrepreneurs-working-together.jpg",
+      date: "March 15, 2024",
+      author: "Anshika Foundation",
+      category: "Women Empowerment",
     },
     {
-      name: "Rajesh Kumar",
-      story:
-        "Our healthcare program provided life-saving treatment for Rajesh's diabetes, and now he advocates for health awareness in his community.",
-      image: "/middle-aged-indian-man-healthcare-volunteer.jpg",
-      impact: "Reached 500+ families",
+      title: "Healthcare Camps: Bringing Medical Care to Remote Villages",
+      excerpt: "Our mobile healthcare initiative reaches thousands of underserved families, providing free medical check-ups and treatments in remote areas.",
+      image: "/mobile-health-clinic-in-rural-area.jpg",
+      date: "March 8, 2024",
+      author: "Anshika Foundation",
+      category: "Healthcare",
     },
     {
-      name: "Anita Devi",
-      story:
-        "Through our education support, Anita became the first in her family to graduate college and is now a teacher in her village.",
-      image: "/young-indian-woman-teacher-with-children.jpg",
-      impact: "Teaching 200+ children",
+      title: "Education for All: Building Brighter Futures",
+      excerpt: "Learn about our comprehensive education programs that support underprivileged children with scholarships, learning resources, and digital literacy training.",
+      image: "/children-studying-in-classroom.jpg",
+      date: "February 28, 2024",
+      author: "Anshika Foundation",
+      category: "Education",
     },
   ]
 
@@ -221,7 +254,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      <section className="relative h-[70vh] flex items-center overflow-hidden">
         {/* Background Image Slider */}
         <div className="absolute inset-0">
           <Image
@@ -257,9 +290,9 @@ export default function HomePage() {
         </button>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full">
-          <div className="flex flex-col items-center justify-center min-h-screen py-20">
+          <div className="flex flex-col items-center justify-start h-full pt-82">
             <motion.div 
-              className="relative mt-112"
+              className="relative"
               key={currentSlide}
               initial="initial"
               animate="animate"
@@ -300,65 +333,6 @@ export default function HomePage() {
 
       </section>
 
-      <section className="py-16 bg-gradient-to-br from-muted to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-12"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Impact Across India</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Together with our dedicated volunteers and generous donors, we've created meaningful change in communities
-              across multiple states, touching thousands of lives with hope and opportunity.
-            </p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-          >
-            {impactStats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="text-center group"
-                variants={scaleIn}
-                whileHover={{ y: -10, scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.div
-                  className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 transition-all duration-300 ${
-                    index % 3 === 0 ? "bg-primary/10" : index % 3 === 1 ? "bg-accent/10" : "bg-secondary/10"
-                  }`}
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <stat.icon
-                    className={`h-8 w-8 ${
-                      index % 3 === 0 ? "text-primary" : index % 3 === 1 ? "text-accent" : "text-secondary"
-                    }`}
-                  />
-                </motion.div>
-                <motion.div 
-                  className="text-2xl lg:text-3xl font-bold text-foreground mb-2"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5, type: "spring" }}
-                >
-                  {stat.number}
-                </motion.div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -388,21 +362,23 @@ export default function HomePage() {
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="border-border hover:shadow-xl transition-all duration-300 group">
-                  <CardHeader className="text-center pb-4">
-                    <motion.div
-                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto transition-all duration-300 ${program.bgColor}`}
-                      whileHover={{ rotate: 360, scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <program.icon className={`h-8 w-8 ${program.color}`} />
-                    </motion.div>
-                    <CardTitle className="text-xl text-balance">{program.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center leading-relaxed">{program.description}</CardDescription>
-                  </CardContent>
-                </Card>
+                <Link href={`/programs/${program.slug}`}>
+                  <Card className="border-border hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                    <CardHeader className="text-center pb-4">
+                      <motion.div
+                        className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto transition-all duration-300 ${program.bgColor}`}
+                        whileHover={{ rotate: 360, scale: 1.1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <program.icon className={`h-8 w-8 ${program.color}`} />
+                      </motion.div>
+                      <CardTitle className="text-xl text-balance">{program.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-center leading-relaxed">{program.description}</CardDescription>
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </motion.div>
@@ -418,10 +394,9 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Stories of Transformation</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Latest Blogs</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Real stories from real people whose lives have been transformed through our programs and your generous
-              support.
+              Stay updated with our latest initiatives, impact stories, and insights on community development and social change.
             </p>
           </motion.div>
           <motion.div 
@@ -431,7 +406,7 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.2 }}
             variants={staggerContainer}
           >
-            {successStories.map((story, index) => (
+            {blogs.map((blog, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
@@ -444,15 +419,23 @@ export default function HomePage() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Image src={story.image || "/placeholder.svg"} alt={story.name} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <div className="font-semibold">{story.name}</div>
-                      <div className="text-sm opacity-90">{story.impact}</div>
+                    <Image src={blog.image || "/placeholder.svg"} alt={blog.title} fill className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div className="absolute top-4 left-4">
+                      <Badge className="bg-primary text-primary-foreground">{blog.category}</Badge>
                     </div>
                   </motion.div>
                   <CardContent className="p-6">
-                    <p className="text-muted-foreground leading-relaxed">{story.story}</p>
+                    <div className="flex items-center text-sm text-muted-foreground mb-3">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      {blog.date}
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-3">{blog.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed mb-4">{blog.excerpt}</p>
+                    <Button variant="ghost" className="w-full">
+                      Read More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -520,198 +503,7 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* Stories of Transformation Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Badge className="bg-primary/10 text-primary border-primary/20 mb-4">
-              <Heart className="h-3 w-3 mr-1" />
-              Real Impact Stories
-            </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Stories of Transformation
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Every donation creates a ripple effect of positive change. Here are real stories of lives transformed 
-              through the generosity of our community.
-            </p>
-          </motion.div>
-
-          {/* Stories Slider */}
-          <motion.div 
-            className="relative w-full"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="relative overflow-hidden rounded-2xl">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentStoryIndex * 100}%)` }}
-              >
-                {/* Story 1 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="relative h-[300px] lg:h-[400px] rounded-xl overflow-hidden">
-                    <Image
-                      src="/Anshika1.jpeg"
-                      alt="Transformation Story 1"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    
-                    {/* Content Overlay */}
-                    <div className="absolute inset-0 flex items-end justify-center pb-8 text-white">
-                      <div className="text-center px-8">
-                        <div className="flex items-center justify-center gap-8">
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-green-300">150+</div>
-                            <div className="text-sm text-white/90">Children Helped</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-green-300">95%</div>
-                            <div className="text-sm text-white/90">Success Rate</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-green-300">3</div>
-                            <div className="text-sm text-white/90">Teachers Hired</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Story 2 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="relative h-[300px] lg:h-[400px] rounded-xl overflow-hidden">
-                    <Image
-                      src="/anshika2.jpeg"
-                      alt="Transformation Story 2"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    
-                    {/* Content Overlay */}
-                    <div className="absolute inset-0 flex items-end justify-center pb-8 text-white">
-                      <div className="text-center px-8">
-                        <div className="flex items-center justify-center gap-8">
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-blue-300">500+</div>
-                            <div className="text-sm text-white/90">Families Served</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-blue-300">2K+</div>
-                            <div className="text-sm text-white/90">Health Checkups</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-blue-300">15</div>
-                            <div className="text-sm text-white/90">Villages Covered</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Story 3 */}
-                <div className="w-full flex-shrink-0">
-                  <div className="relative h-[300px] lg:h-[400px] rounded-xl overflow-hidden">
-                    <Image
-                      src="/Anshika3.jpeg"
-                      alt="Transformation Story 3"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    
-                    {/* Content Overlay */}
-                    <div className="absolute inset-0 flex items-end justify-center pb-8 text-white">
-                      <div className="text-center px-8">
-                        <div className="flex items-center justify-center gap-8">
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-orange-300">75</div>
-                            <div className="text-sm text-white/90">Homes Built</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-orange-300">300+</div>
-                            <div className="text-sm text-white/90">Lives Transformed</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-3xl lg:text-4xl font-bold text-orange-300">5</div>
-                            <div className="text-sm text-white/90">Communities</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Slider Navigation Arrows - Positioned on sides */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentStoryIndex((prev) => (prev > 0 ? prev - 1 : 2))}
-              className="absolute left-4 top-1/2 -translate-y-1/2 h-12 w-12 p-0 bg-black/50 hover:bg-black/70 border-white/20 text-white backdrop-blur-sm z-10"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentStoryIndex((prev) => (prev < 2 ? prev + 1 : 0))}
-              className="absolute right-4 top-1/2 -translate-y-1/2 h-12 w-12 p-0 bg-black/50 hover:bg-black/70 border-white/20 text-white backdrop-blur-sm z-10"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-
-            {/* Dots Indicator - Positioned at bottom center */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-              {[0, 1, 2].map((index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentStoryIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    currentStoryIndex === index
-                      ? "bg-primary scale-125"
-                      : "bg-white/50 hover:bg-white/70"
-                  }`}
-                />
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Call to Action */}
-          <motion.div 
-            className="text-center mt-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <p className="text-lg text-muted-foreground mb-6">
-              Be part of the next transformation story. Your donation can change lives today.
-            </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-              <Link href="/donation/form">
-                <Heart className="h-4 w-4 mr-2" />
-                Create Your Impact Story
-              </Link>
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+      
 
       {/* Floating Social Media Icons */}
       <div className="fixed right-6 top-1/2 translate-y-8 z-30 flex flex-col gap-3">
@@ -736,38 +528,6 @@ export default function HomePage() {
         >
           <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-          </svg>
-        </a>
-
-        {/* Email */}
-        <a 
-          href="mailto:anshikahelpinghandsfoundation@gmail.com"
-          className="bg-red-600 hover:bg-red-700 rounded-full p-3 shadow-lg cursor-pointer transition-all duration-200 hover:scale-110"
-        >
-          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819l6.545 4.91 6.545-4.91h3.819c.904 0 1.636.732 1.636 1.636z"/>
-          </svg>
-        </a>
-
-        {/* Phone */}
-        <a 
-          href="tel:+919920446089"
-          className="bg-green-600 hover:bg-green-700 rounded-full p-3 shadow-lg cursor-pointer transition-all duration-200 hover:scale-110"
-        >
-          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-          </svg>
-        </a>
-
-        {/* Google Maps */}
-        <a 
-          href="https://share.google/lv8Tan60Ino69gCx1" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-orange-500 hover:bg-orange-600 rounded-full p-3 shadow-lg cursor-pointer transition-all duration-200 hover:scale-110"
-        >
-          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
           </svg>
         </a>
       </div>

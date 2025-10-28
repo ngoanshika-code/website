@@ -176,7 +176,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <section className="py-20 relative overflow-hidden">
+      <section className="relative h-[70vh] flex items-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -197,7 +197,7 @@ export default function AboutPage() {
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-yellow-200 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }}></div>
           <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-blue-200 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <Carousel
             opts={{
               align: "start",
@@ -208,7 +208,7 @@ export default function AboutPage() {
             <CarouselContent>
               {heroSlides.map((slide) => (
                 <CarouselItem key={slide.id}>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[500px]">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
                     <motion.div 
                       className="text-center lg:text-left"
                       initial="initial"
@@ -253,7 +253,7 @@ export default function AboutPage() {
                       variants={fadeInRight}
                     >
                       <motion.div 
-                        className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl"
+                        className="relative w-full h-52 lg:h-64 rounded-2xl overflow-hidden shadow-2xl"
                         whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.3 }}
                       >
