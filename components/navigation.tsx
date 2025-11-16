@@ -33,14 +33,14 @@ export function Navigation() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
               src="/logo.png"
               alt="Anshika Helping Hands Foundation"
-              width={40}
-              height={40}
+              width={64}
+              height={64}
               className="rounded-full"
             />
             <span className="font-bold text-lg text-foreground">Anshika Helping Hands Foundation</span>

@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description:
     "Dedicated to creating positive change in communities through compassionate action, education, and sustainable development programs.",
   generator: "v0.app",
+  icons: {
+    icon: "/logo.png",
+  },
 }
 
 export default function RootLayout({

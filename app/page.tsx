@@ -34,6 +34,7 @@ import { motion } from "framer-motion"
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
+  const [activeProgramId, setActiveProgramId] = useState("education")
 
   // Animation variants
   const fadeInUp = {
@@ -171,57 +172,85 @@ export default function HomePage() {
 
   const programs = [
     {
-      slug: "education-skill-development",
-      title: "Education & Skill Development",
-      description:
-        "Comprehensive education programs, vocational training, and digital literacy initiatives for sustainable growth.",
+      id: "education",
+      title: "Skill & Education Development",
+      subtitle: "Empowering Minds, Building Futures",
       icon: GraduationCap,
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
-      slug: "healthcare-wellness",
+      id: "healthcare",
       title: "Healthcare & Wellness",
-      description:
-        "Mobile health clinics, preventive care programs, and mental health support for holistic well-being.",
+      subtitle: "Healing Hearts, Saving Lives",
       icon: Stethoscope,
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
-      slug: "food-security-nutrition",
-      title: "Food Security & Nutrition",
-      description: "Community kitchens, nutrition education, and sustainable farming initiatives to combat hunger.",
-      icon: Utensils,
-      color: "text-secondary",
-      bgColor: "bg-secondary/10",
-    },
-    {
-      slug: "shelter-infrastructure",
-      title: "Shelter & Infrastructure",
-      description: "Safe housing projects, clean water access, and community infrastructure development programs.",
-      icon: Home,
-      color: "text-primary",
-      bgColor: "bg-primary/10",
-    },
-    {
-      slug: "women-empowerment",
-      title: "Women Empowerment",
-      description:
-        "Self-help groups, entrepreneurship training, and leadership development for women's economic independence.",
-      icon: HandHeart,
-      color: "text-accent",
-      bgColor: "bg-accent/10",
-    },
-    {
-      slug: "environmental-conservation",
+      id: "environment",
       title: "Environmental Conservation",
-      description: "Tree plantation drives, waste management, and renewable energy projects for a sustainable future.",
+      subtitle: "Protecting Nature, Securing Tomorrow",
       icon: Globe,
       color: "text-secondary",
       bgColor: "bg-secondary/10",
     },
   ]
+
+  const programDetails: Record<string, { title: string; subtitle: string; intro: string[]; bullets: string[]; closing: string }> = {
+    education: {
+      title: "Skill & Education Development",
+      subtitle: "Empowering Minds, Building Futures",
+      intro: [
+        "Education is the first step towards a better life, and skills are what help people build that life.",
+        "At AHHF, we make sure that every child and youth gets the support they need to learn, grow, and succeed.",
+        "We work on:",
+      ],
+      bullets: [
+        "📚 Providing Educational Support: Distributing free books, stationery, school supplies, and other learning materials to students from underprivileged families.",
+        "🎓 Skill Development Programs: Helping people learn practical and job-ready skills like computer knowledge, communication, and technical training so they can earn a stable income.",
+        "🧭 Career Guidance & Counseling: Guiding students and youth about the right courses, skills, and career paths that suit their interests and help them achieve success.",
+        "💬 Motivational & Awareness Sessions: Encouraging young people to stay positive, keep learning, and work hard toward their dreams.",
+      ],
+      closing: "Our aim is to build confident individuals who can stand on their own feet and contribute positively to society.",
+    },
+    healthcare: {
+      title: "Healthcare & Wellness",
+      subtitle: "Healing Hearts, Saving Lives",
+      intro: [
+        "Good health is the foundation of a happy life.",
+        "Many people in our communities cannot afford regular health check-ups or proper medical guidance — and that’s where we step in.",
+        "We organize and support:",
+      ],
+      bullets: [
+        "🩺 Free Health Check-up Camps: Bringing doctors and healthcare professionals to local areas so that people can get medical check-ups without spending money.",
+        "💊 Free Medical Consultancy: Providing free advice and basic treatment guidance to help people take care of their health.",
+        "🍎 Health & Fitness Awareness: Teaching simple ways to stay fit — such as yoga, proper diet, and daily exercise — to improve overall well-being.",
+        "📄 Government Health Scheme Assistance: Helping people understand and apply for government health benefits like Ayushman Bharat and other schemes.",
+        "❤️ Mental & Emotional Wellness Sessions: Promoting awareness about mental health and stress management to create a more balanced life.",
+      ],
+      closing:
+        "Our vision is to create a Healthy and Happy India where everyone has access to healthcare and the knowledge to live a healthy lifestyle.",
+    },
+    environment: {
+      title: "Environmental Conservation",
+      subtitle: "Protecting Nature, Securing Tomorrow",
+      intro: [
+        "The environment is our home — it gives us air to breathe, water to drink, and food to eat.",
+        "At AHHF, we believe it is our duty to protect and care for our planet so that our future generations can also enjoy its beauty.",
+        "Our environmental efforts include:",
+      ],
+      bullets: [
+        "🌳 Tree Plantation Drives: Organizing regular plantation events and encouraging people to plant trees in their localities.",
+        "🧹 Cleanliness & Awareness Camps: Conducting cleanliness drives in schools, communities, and public areas to promote the importance of hygiene and waste management.",
+        "🔄 Reduce, Reuse, Recycle Programs: Teaching people how to manage waste properly and reduce plastic usage.",
+        "💧 Water & Energy Conservation Awareness: Guiding families and students on saving water, reducing electricity waste, and living a sustainable lifestyle.",
+        "🌎 Eco-Education for Children: Conducting fun and informative sessions for school children to make them understand how to take care of our planet.",
+      ],
+      closing:
+        "We believe that a clean and green environment means a healthy and safe life for everyone.",
+    },
+  }
 
   const blogs = [
     {
@@ -342,10 +371,15 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Comprehensive Programs</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Focus Areas</h2>
+            <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3">
+              At Anshika Helping Hands Foundation (AHHF), we work with one goal — to bring real change in people&apos;s lives.
+            </p>
+            <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3">
+              Our mission is to help individuals grow with education, stay healthy, and protect our environment for a better tomorrow.
+            </p>
             <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              We focus on six key areas to create sustainable positive change, addressing the root causes of poverty and
-              inequality while empowering communities to build their own bright futures.
+              We mainly focus on three key areas that make the biggest difference in every community.
             </p>
           </motion.div>
           <motion.div 
@@ -361,27 +395,68 @@ export default function HomePage() {
                 variants={fadeInUp}
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
+                onClick={() => setActiveProgramId(program.id)}
+                className="cursor-pointer"
               >
-                <Link href={`/programs/${program.slug}`}>
-                  <Card className="border-border hover:shadow-xl transition-all duration-300 group cursor-pointer">
-                    <CardHeader className="text-center pb-4">
-                      <motion.div
-                        className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto transition-all duration-300 ${program.bgColor}`}
-                        whileHover={{ rotate: 360, scale: 1.1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <program.icon className={`h-8 w-8 ${program.color}`} />
-                      </motion.div>
-                      <CardTitle className="text-xl text-balance">{program.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-center leading-relaxed">{program.description}</CardDescription>
-                    </CardContent>
-                  </Card>
-                </Link>
+                <Card
+                  className={`border-border hover:shadow-xl transition-all duration-300 group ${
+                    activeProgramId === program.id ? "ring-2 ring-primary shadow-xl" : ""
+                  }`}
+                >
+                  <CardHeader className="text-center pb-4">
+                    <motion.div
+                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto transition-all duration-300 ${program.bgColor}`}
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <program.icon className={`h-8 w-8 ${program.color}`} />
+                    </motion.div>
+                    <CardTitle className="text-xl text-balance mb-1">{program.title}</CardTitle>
+                    <p className="text-sm text-muted-foreground">{program.subtitle}</p>
+                  </CardHeader>
+                </Card>
               </motion.div>
             ))}
           </motion.div>
+          {activeProgramId && (
+            <motion.div
+              className="mt-12 max-w-5xl mx-auto"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={fadeInUp}
+            >
+              <Card className="border-border shadow-lg">
+                <CardHeader className="pb-2">
+                  <p className="text-sm font-semibold text-primary uppercase tracking-wide">
+                    {programDetails[activeProgramId].subtitle}
+                  </p>
+                  <CardTitle className="text-2xl">{programDetails[activeProgramId].title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 leading-relaxed">
+                  {programDetails[activeProgramId].intro.map((text, idx) => (
+                    <p key={idx} className="text-muted-foreground">
+                      {text}
+                    </p>
+                  ))}
+                  <ul className="mt-2 space-y-2 text-muted-foreground">
+                    {programDetails[activeProgramId].bullets.map((item, idx) => (
+                      <li key={idx} className="flex gap-2">
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="pt-2 font-medium text-foreground">
+                    {programDetails[activeProgramId].closing}
+                  </p>
+                  <p className="pt-2 text-sm text-muted-foreground">
+                    💖 Together for a Better Tomorrow — by supporting education, health, and the environment, we are
+                    building a stronger and more compassionate society, one step at a time.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
         </div>
       </section>
 
