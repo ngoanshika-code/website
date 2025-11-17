@@ -877,17 +877,46 @@ export default function DonationPage() {
                   </p>
                 </div>
 
+                {/* Bank Account Details */}
+                <div className="w-full max-w-md mx-auto p-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20">
+                  <h4 className="font-semibold text-center mb-4 flex items-center justify-center gap-2">
+                    <Building className="h-5 w-5 text-primary" />
+                    Bank Account Details
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground font-medium">Account Number:</span>
+                      <span className="font-semibold text-foreground">077722010002763</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground font-medium">IFSC Code:</span>
+                      <span className="font-semibold text-foreground">UBIN0907774</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground font-medium">Bank:</span>
+                      <span className="font-semibold text-foreground text-right">Union Bank of India</span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-muted-foreground font-medium">Branch:</span>
+                      <span className="font-semibold text-foreground text-right">Mira Bhayander Road (Kasturi Park) Branch, Thane - 401107</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-center text-muted-foreground mt-4 pt-4 border-t border-border">
+                    You can also transfer directly to this bank account
+                  </p>
+                </div>
+
                 {/* QR Code Display */}
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <div className="p-6 bg-white rounded-lg border-2 border-primary/20 shadow-lg">
-                    <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative">
+                    <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative overflow-hidden">
                       {!qrCodeError ? (
                         <Image
                           src="/qr-code.png"
                           alt="Payment QR Code"
                           width={256}
                           height={256}
-                          className="rounded-lg"
+                          className="rounded-lg w-full h-full object-contain"
                           onError={() => setQrCodeError(true)}
                         />
                       ) : (
@@ -985,17 +1014,46 @@ export default function DonationPage() {
               </div>
             </div>
 
+            {/* Bank Account Details */}
+            <div className="w-full max-w-md mx-auto p-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20">
+              <h4 className="font-semibold text-center mb-4 flex items-center justify-center gap-2">
+                <Building className="h-5 w-5 text-primary" />
+                Bank Account Details
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Account Number:</span>
+                  <span className="font-semibold text-foreground">077722010002763</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">IFSC Code:</span>
+                  <span className="font-semibold text-foreground">UBIN0907774</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Bank:</span>
+                  <span className="font-semibold text-foreground text-right">Union Bank of India</span>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-muted-foreground font-medium">Branch:</span>
+                  <span className="font-semibold text-foreground text-right">Mira Bhayander Road (Kasturi Park) Branch, Thane - 401107</span>
+                </div>
+              </div>
+              <p className="text-xs text-center text-muted-foreground mt-4 pt-4 border-t border-border">
+                You can also transfer directly to this bank account
+              </p>
+            </div>
+
             {/* QR Code Display */}
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="p-6 bg-white rounded-lg border-2 border-primary/20 shadow-lg">
-                <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative">
+                <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative overflow-hidden">
                   {!generalQrCodeError ? (
                     <Image
                       src="/qr-code.png"
                       alt="Payment QR Code"
                       width={256}
                       height={256}
-                      className="rounded-lg"
+                      className="rounded-lg w-full h-full object-contain"
                       onError={() => setGeneralQrCodeError(true)}
                     />
                   ) : (
