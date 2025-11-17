@@ -45,7 +45,7 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: "Visit Us",
-      details: "Shop No, New Sagar Samrat, 2, Cabin Cross Rd, Hema Kunj, Narmada Nagar, Bhayandar East, Thane, Mira Bhayandar, Maharashtra 401105",
+      details: "Shop No. 2, New Sagar Samrat, Opp. Blossoms School, Narmada Nagar, Bhayandar (East), Thane – 401105, Maharashtra, India",
       description: "Our main office location",
     },
     {
@@ -231,7 +231,7 @@ export default function ContactPage() {
                 ></iframe>
               </div>
               <div className="mt-4 text-center">
-                <p className="text-sm text-muted-foreground">Shop No, New Sagar Samrat, 2, Cabin Cross Rd, Hema Kunj, Narmada Nagar, Bhayandar East, Thane, Mira Bhayandar, Maharashtra 401105</p>
+                <p className="text-sm text-muted-foreground">Shop No. 2, New Sagar Samrat, Opp. Blossoms School, Narmada Nagar, Bhayandar (East), Thane – 401105, Maharashtra, India</p>
                 <a 
                   href="https://www.google.com/maps/place/Anshika+Helping+Hands+Foundation/@19.3040151,72.8533853,17z/data=!3m1!4b1!4m6!3m5!1s0x3be7b167bbe02049:0x19667a7b339ad0e!8m2!3d19.3040101!4d72.8559602!16s%2Fg%2F11yd6sfds1?hl=en-GB&entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"

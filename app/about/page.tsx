@@ -4,7 +4,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { Heart, Target, Eye, Users, Award, Globe, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
+import { Heart, Target, Eye, Users, Award, Globe, Calendar, ChevronLeft, ChevronRight, Sprout, Handshake, Stethoscope, GraduationCap, Shield } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 
@@ -83,92 +83,74 @@ export default function AboutPage() {
 
   const values = [
     {
-      title: "Compassion",
+      title: "💖 Compassion",
       description:
-        "We approach every situation with empathy and understanding, putting people first in all our initiatives.",
+        "We believe kindness can change lives. Every action we take begins with empathy and the desire to ease someone's pain or struggle. We treat everyone with respect, care, and understanding — because helping others is at the heart of who we are.",
       icon: Heart,
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
-      title: "Integrity",
+      title: "🌱 Integrity",
       description:
-        "We maintain the highest standards of honesty and transparency in all our actions and financial dealings.",
-      icon: Target,
+        "We work with honesty, transparency, and accountability in all our programs and partnerships. Every donation, every effort, and every project is handled with complete sincerity and responsibility.",
+      icon: Shield,
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
-      title: "Empowerment",
-      description: "We believe in empowering communities to create sustainable positive change from within.",
-      icon: Users,
+      title: "🎓 Empowerment",
+      description: "We don't just give help — we build strength. Through education, skills, and awareness, we empower individuals to become self-reliant and confident to create their own success.",
+      icon: GraduationCap,
       color: "text-secondary",
       bgColor: "bg-secondary/10",
     },
     {
-      title: "Innovation",
+      title: "🩺 Commitment to Service",
       description:
-        "We continuously seek creative solutions to address complex social challenges with modern approaches.",
-      icon: Eye,
+        "Our promise is to serve those who need us the most. We are dedicated to making a real difference, not just through words but through consistent and meaningful action.",
+      icon: Stethoscope,
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
-  ]
-
-  const achievements = [
     {
-      year: "2015",
-      title: "Foundation Established",
-      description: "Started with a small team of 5 volunteers in rural Maharashtra",
-      icon: Calendar,
+      title: "🌍 Sustainability",
+      description:
+        "We believe in creating long-lasting solutions that benefit both people and the planet. From education to healthcare to environmental programs, our focus is always on sustainable impact for future generations.",
+      icon: Sprout,
+      color: "text-accent",
+      bgColor: "bg-accent/10",
     },
     {
-      year: "2017",
-      title: "First Education Center",
-      description: "Opened our first learning center serving 50 children",
-      icon: Target,
-    },
-    {
-      year: "2019",
-      title: "Healthcare Initiative",
-      description: "Launched mobile health clinics reaching 10,000+ people annually",
-      icon: Heart,
-    },
-    {
-      year: "2021",
-      title: "National Recognition",
-      description: "Received the National NGO Excellence Award for community impact",
-      icon: Award,
-    },
-    {
-      year: "2023",
-      title: "Multi-State Operations",
-      description: "Expanded operations to 8 states across India",
-      icon: Globe,
+      title: "🤝 Unity & Collaboration",
+      description:
+        "We know that true change happens when people come together. By working hand in hand with communities, volunteers, partners, and supporters, we build stronger and more connected societies.",
+      icon: Handshake,
+      color: "text-secondary",
+      bgColor: "bg-secondary/10",
     },
   ]
 
   const teamMembers = [
     {
-      name: "Anshika Sharma",
-      role: "Founder & Director",
-      image: "/young-indian-woman-entrepreneur-smiling.jpg",
-      description: "Social entrepreneur with 10+ years in community development",
-      education: "MBA in Social Entrepreneurship",
+      name: "Pankaj Mishra",
+      role: "Trustee & Founder",
+      description: "A visionary leader and a devoted father whose personal journey inspired the creation of the foundation. Pankaj leads with compassion, guiding every initiative to ensure help reaches those who need it the most.",
     },
     {
-      name: "Dr. Rajesh Kumar",
-      role: "Healthcare Program Director",
-      image: "/middle-aged-indian-man-healthcare-volunteer.jpg",
-      description: "Medical doctor specializing in rural healthcare delivery",
-      education: "MBBS, MD Community Medicine",
+      name: "Nisha Mishra",
+      role: "Member",
+      description: "A strong pillar of support and dedication, Nisha contributes actively to women empowerment and health awareness programs. Her caring nature and community spirit keep the foundation's heart alive.",
     },
     {
-      name: "Priya Patel",
-      role: "Education Program Manager",
-      image: "/young-indian-woman-teacher-with-children.jpg",
-      description: "Former teacher with expertise in inclusive education",
-      education: "M.Ed in Special Education",
+      name: "Kishan Suthar",
+      role: "Member",
+      description: "Focused on education and youth development, Kishan works closely with local communities to provide learning opportunities and skill-based programs for underprivileged children and young adults.",
+    },
+    {
+      name: "Amit Shukla",
+      role: "Member",
+      description: "A passionate advocate for environmental care and community well-being, Amit helps organize awareness drives and sustainability projects that promote clean and green living.",
     },
   ]
 
@@ -276,260 +258,208 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
+          <motion.div 
+            className="text-center mb-12 lg:mb-16"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">🌟 About Us</h2>
+            <h3 className="text-xl lg:text-2xl font-semibold text-foreground mb-6">The Heart Behind Anshika Helping Hands Foundation (AHHF)</h3>
+            <div className="max-w-3xl mx-auto space-y-3">
+              <p className="text-muted-foreground leading-relaxed">
+                Every great mission begins with a personal story — a story of courage, compassion, and the will to create change.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                The Anshika Helping Hands Foundation was founded with love and hope by Mr. Pankaj, a devoted father who turned his family&apos;s struggle into a mission to serve others.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="max-w-5xl mx-auto"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeInUp}
+          >
+            {/* Anshika's Story */}
+            <Card className="border-border shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-2xl lg:text-3xl mb-2">💖 The Story of Anshika – The Inspiration Behind Our Name</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5 text-muted-foreground leading-relaxed text-base lg:text-lg">
+                <p>
+                  Anshika, the second child of our trustee Mr. Pankaj, was born a happy and smiling baby.
+                </p>
+                <p>
+                  When she was just 2 years old, her parents discovered that she had a hearing disability. The news came as a shock — their world stopped for a moment.
+                </p>
+                <p>
+                  Doctors advised that an urgent ear operation was needed, costing around ₹8–15 lakhs, a huge amount for the family.
+                </p>
+                <p>
+                  Pankaj tried everything — he approached hospitals, applied for government schemes, and sought support for over a year and a half. Unfortunately, no help came.
+                </p>
+                <p>
+                  In the end, Pankaj and his wife decided to sell her jewelry to arrange the money for Anshika&apos;s operation.
+                </p>
+                <p>
+                  Finally, after months of struggle, the operation was successful.
+                </p>
+                <div className="p-6 bg-primary/5 rounded-lg border-l-4 border-primary my-6">
+                  <p className="font-semibold text-foreground text-lg mb-2">
+                    The day Anshika heard her father&apos;s voice for the first time, tears of joy rolled down his cheeks — and that moment changed everything.
+                  </p>
+                </div>
+                <p className="font-semibold text-primary text-lg mt-6">
+                  That was the day Pankaj made a promise to himself —
+                </p>
+                <blockquote className="border-l-4 border-primary pl-6 py-4 italic text-foreground font-medium text-lg lg:text-xl bg-primary/5 rounded-r-lg my-6">
+                  &quot;If God has given me the strength to overcome this struggle, I will dedicate my life to helping others who face the same pain.&quot;
+                </blockquote>
+                <p className="font-semibold text-foreground text-lg mt-6">
+                  And from that promise, Anshika Helping Hands Foundation (AHHF) was born.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-card to-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
+            {/* Mission Section */}
+            <motion.div 
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeInLeft}
             >
-              <motion.h2 
-                className="text-3xl font-bold text-foreground mb-6"
-                variants={fadeInUp}
-              >
-                Our Journey of Impact
-              </motion.h2>
-              <motion.div 
-                className="space-y-4 text-muted-foreground leading-relaxed"
-                variants={staggerContainer}
-              >
-                <motion.p variants={fadeInUp}>
-                  Anshika Helping Hands Foundation was born from a simple yet powerful belief: that every person
-                  deserves access to basic necessities like quality education, healthcare, nutritious food, and safe
-                  shelter. What started as a grassroots initiative in a small village in Maharashtra has grown into a
-                  comprehensive organization serving over 15,000 people across 8 states in India.
-                </motion.p>
-                <motion.p variants={fadeInUp}>
-                  Our journey began in 2015 when our founder, Anshika Sharma, witnessed the struggles of children in her
-                  village who couldn't attend school due to poverty. Determined to make a difference, she started with
-                  just ₹5,000 of her own savings and a dream to transform lives. Today, we work with a network of 500+
-                  passionate volunteers, dedicated staff, and supportive partners to implement programs that create
-                  sustainable change.
-                </motion.p>
-                <motion.p variants={fadeInUp}>
-                  We believe that true development comes from within communities themselves. That's why our approach
-                  focuses on empowerment, capacity building, and creating local leadership to ensure our impact
-                  continues long after our direct involvement. Every program we run is designed with community
-                  participation at its core.
-                </motion.p>
-                <motion.p variants={fadeInUp}>
-                  From our humble beginnings, we've grown to operate 25+ education centers, conduct 50+ healthcare camps
-                  annually, and provide food security to thousands of families. Our work has been recognized nationally,
-                  but our greatest achievement remains the smiles on the faces of those whose lives we've touched.
-                </motion.p>
-              </motion.div>
+              <Card className="border-border shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl lg:text-3xl mb-4">🌱 Our Mission</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                    To bring positive change in society by helping people in three important areas of life — where Anshika&apos;s story continues to inspire hope and action:
+                  </p>
+                  
+                  <div className="space-y-4 mt-6">
+                    <div className="p-5 bg-primary/5 rounded-lg border-l-4 border-primary hover:bg-primary/10 transition-colors">
+                      <h4 className="font-semibold text-lg mb-3">Skill & Education Development</h4>
+                      <p className="text-muted-foreground leading-relaxed text-sm lg:text-base">
+                        We help individuals, especially youth, learn useful skills and get career guidance so they can earn and live with dignity.
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed mt-2 text-sm lg:text-base">
+                        Pankaj never wants anyone to suffer due to a lack of money or opportunity the way he once did.
+                      </p>
+                    </div>
+
+                    <div className="p-5 bg-accent/5 rounded-lg border-l-4 border-accent hover:bg-accent/10 transition-colors">
+                      <h4 className="font-semibold text-lg mb-3">Healthcare & Wellness</h4>
+                      <p className="text-muted-foreground leading-relaxed text-sm lg:text-base">
+                        We organize free health check-up camps, consultations, and awareness programs so that no one is left untreated because of financial struggle — just like Anshika once was.
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed mt-2 text-sm lg:text-base">
+                        A healthy family is the foundation of a happy community.
+                      </p>
+                    </div>
+
+                    <div className="p-5 bg-secondary/5 rounded-lg border-l-4 border-secondary hover:bg-secondary/10 transition-colors">
+                      <h4 className="font-semibold text-lg mb-3">Environmental Conservation</h4>
+                      <p className="text-muted-foreground leading-relaxed text-sm lg:text-base">
+                        We believe that a clean and green environment is the root of good health and peace of mind.
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed mt-2 text-sm lg:text-base">
+                        When nature is healthy, our lives are balanced.
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed mt-2 text-sm lg:text-base">
+                        That&apos;s why we conduct cleanliness drives, tree plantations, and awareness programs for a sustainable future.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
+
+            {/* Vision Section */}
             <motion.div 
-              className="relative"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, amount: 0.3 }}
               variants={fadeInRight}
             >
-              <motion.div 
-                className="relative w-full h-96 rounded-2xl overflow-hidden shadow-2xl"
-                whileHover={{ scale: 1.02, rotateY: 5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Image
-                  src="/founder-of-ngo-working-with-community-members--ins.jpg"
-                  alt="Our founder working with community"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </motion.div>
-              <motion.div 
-                className="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-lg"
-                initial={{ opacity: 0, scale: 0.8, x: -20 }}
-                whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="text-2xl font-bold text-primary">8</div>
-                <div className="text-sm text-muted-foreground">States Covered</div>
-              </motion.div>
-              <motion.div 
-                className="absolute -top-6 -right-6 bg-white rounded-xl p-4 shadow-lg"
-                initial={{ opacity: 0, scale: 0.8, x: 20 }}
-                whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.7, duration: 0.5 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="text-2xl font-bold text-accent">2015</div>
-                <div className="text-sm text-muted-foreground">Founded</div>
-              </motion.div>
+              <Card className="border-border shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl lg:text-3xl mb-4">🌍 Our Vision</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                    To create a compassionate India where no one suffers in silence — where every child can learn, every person can access healthcare, and every community thrives in a clean environment.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                    We dream of expanding our support across India, reaching every corner where people need help, guidance, and hope.
+                  </p>
+                </CardContent>
+              </Card>
             </motion.div>
           </div>
-        </div>
-      </section>
 
-      <section className="py-20 bg-gradient-to-br from-muted to-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Together We Can Make a Difference */}
           <motion.div 
-            className="text-center mb-16"
+            className="max-w-4xl mx-auto"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Journey & Milestones</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              From a small village initiative to a nationally recognized organization, here are the key milestones that
-              mark our journey of creating positive change.
-            </p>
-          </motion.div>
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-primary/20"></div>
-            <motion.div 
-              className="space-y-12"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={staggerContainer}
-            >
-              {achievements.map((achievement, index) => (
-                <motion.div 
-                  key={index} 
-                  className={`flex items-center ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}>
-                    <motion.div
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Card className="border-border hover:shadow-lg transition-all duration-300">
-                        <CardHeader>
-                          <div className="flex items-center gap-3">
-                            <motion.div
-                              className={`p-2 rounded-full ${index % 3 === 0 ? "bg-primary/10" : index % 3 === 1 ? "bg-accent/10" : "bg-secondary/10"}`}
-                              whileHover={{ rotate: 360 }}
-                              transition={{ duration: 0.5 }}
-                            >
-                              <achievement.icon
-                                className={`h-5 w-5 ${index % 3 === 0 ? "text-primary" : index % 3 === 1 ? "text-accent" : "text-secondary"}`}
-                              />
-                            </motion.div>
-                            <div>
-                              <CardTitle className="text-lg">{achievement.title}</CardTitle>
-                              <div className="text-sm font-semibold text-primary">{achievement.year}</div>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <CardDescription className="leading-relaxed">{achievement.description}</CardDescription>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  </div>
-                  <motion.div 
-                    className="relative z-10"
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-4 h-4 bg-primary rounded-full border-4 border-background"></div>
-                  </motion.div>
-                  <div className="w-1/2"></div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission & Vision */}
-      <section className="py-20 bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInLeft}>
-              <motion.div
-                whileHover={{ y: -10, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="border-border hover:shadow-xl transition-all duration-300">
-                  <CardHeader className="text-center">
-                    <motion.div 
-                      className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4 mx-auto"
-                      whileHover={{ rotate: 360, scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Target className="h-8 w-8 text-primary" />
-                    </motion.div>
-                    <CardTitle className="text-2xl">Our Mission</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center text-base leading-relaxed">
-                      To empower underprivileged communities across India through comprehensive programs in education,
-                      healthcare, nutrition, and shelter, fostering sustainable development and creating opportunities for
-                      individuals to build better lives for themselves and their families while preserving their cultural
-                      identity and dignity.
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
-
-            <motion.div variants={fadeInRight}>
-              <motion.div
-                whileHover={{ y: -10, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="border-border hover:shadow-xl transition-all duration-300">
-                  <CardHeader className="text-center">
-                    <motion.div 
-                      className="inline-flex items-center justify-center w-16 h-16 bg-secondary/10 rounded-full mb-4 mx-auto"
-                      whileHover={{ rotate: 360, scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Eye className="h-8 w-8 text-secondary" />
-                    </motion.div>
-                    <CardTitle className="text-2xl">Our Vision</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center text-base leading-relaxed">
-                      A world where every individual has equal access to opportunities for growth and development, where
-                      communities are self-sufficient and resilient, and where compassion and solidarity guide our
-                      collective efforts toward a more equitable society free from poverty, inequality, and social
-                      injustice.
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </motion.div>
+            <Card className="border-border shadow-xl hover:shadow-2xl transition-shadow duration-300 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5">
+              <CardHeader className="text-center pb-4">
+                <CardTitle className="text-2xl lg:text-3xl mb-4">💫 Together, We Can Make a Difference</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 text-center">
+                <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                  At Anshika Helping Hands Foundation, every small act of kindness counts.
+                </p>
+                <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                  We invite you to join us — as a volunteer, supporter, or donor — and be part of a movement that began with a little girl&apos;s smile and a father&apos;s unbreakable hope.
+                </p>
+                <blockquote className="border-l-4 border-primary pl-6 py-4 italic text-foreground font-medium mt-6 text-lg lg:text-xl bg-primary/10 rounded-r-lg max-w-2xl mx-auto">
+                  &quot;Helping one person might not change the world, but it could change the world for that one person.&quot;
+                </blockquote>
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-16 lg:py-24 bg-gradient-to-b from-muted/30 to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-12 lg:mb-16"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Values</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              These fundamental values guide everything we do and shape our approach to community development, ensuring
-              we remain true to our mission while adapting to changing needs.
-            </p>
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">🌟 Our Core Values</h2>
+            <div className="text-muted-foreground max-w-2xl mx-auto leading-relaxed space-y-3">
+              <p className="text-base lg:text-lg">
+                These fundamental values guide everything we do and shape our approach to community development.
+              </p>
+              <p className="text-base lg:text-lg">
+                They remind us to stay true to our mission while growing and adapting to the changing needs of society.
+              </p>
+            </div>
           </motion.div>
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
@@ -539,75 +469,22 @@ export default function AboutPage() {
               <motion.div
                 key={index}
                 variants={fadeInUp}
-                whileHover={{ y: -10, scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="border-border text-center hover:shadow-xl transition-all duration-300 group">
-                  <CardHeader>
-                    <motion.div
-                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto transition-all duration-300 ${value.bgColor}`}
-                      whileHover={{ rotate: 360, scale: 1.2 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <value.icon className={`h-8 w-8 ${value.color}`} />
-                    </motion.div>
-                    <CardTitle className="text-xl">{value.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="leading-relaxed">{value.description}</CardDescription>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-br from-card to-muted">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Meet Our Leadership Team</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Our dedicated team of professionals brings together diverse expertise in social work, healthcare,
-              education, and community development to drive our mission forward.
-            </p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-          >
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="border-border text-center hover:shadow-xl transition-all duration-300 overflow-hidden">
-                  <motion.div 
-                    className="relative h-64"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  </motion.div>
-                  <CardHeader>
-                    <CardTitle className="text-xl">{member.name}</CardTitle>
-                    <CardDescription className="text-primary font-medium text-base">{member.role}</CardDescription>
+                <Card className="border-border text-center hover:shadow-xl transition-all duration-300 group h-full">
+                  <CardHeader className="pb-4">
+                    <motion.div
+                      className={`inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 rounded-full mb-4 mx-auto transition-all duration-300 ${value.bgColor}`}
+                      whileHover={{ rotate: 360, scale: 1.15 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <value.icon className={`h-8 w-8 lg:h-10 lg:w-10 ${value.color}`} />
+                    </motion.div>
+                    <CardTitle className="text-lg lg:text-xl">{value.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-2">{member.description}</p>
-                    <p className="text-xs text-accent font-medium">{member.education}</p>
+                    <CardDescription className="leading-relaxed text-sm lg:text-base">{value.description}</CardDescription>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -616,23 +493,105 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-warm-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 lg:py-24 bg-gradient-to-br from-card to-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-12"
+            className="text-center mb-12 lg:mb-16"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Our Impact in Numbers</h2>
-            <p className="text-white/90 max-w-2xl mx-auto leading-relaxed">
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">👥 Meet Our Leadership Team</h2>
+            <div className="text-muted-foreground max-w-2xl mx-auto leading-relaxed space-y-3">
+              <p className="text-base lg:text-lg">
+                Our strength lies in our people — a passionate team committed to serving communities with compassion, honesty, and purpose.
+              </p>
+              <p className="text-base lg:text-lg">
+                Each member of Anshika Helping Hands Foundation brings unique experience in social work, healthcare, education, and community development, working together to make a real difference in people&apos;s lives.
+              </p>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            className="mb-12 lg:mb-16"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeInUp}
+          >
+            <h3 className="text-2xl lg:text-3xl font-semibold text-foreground mb-8 lg:mb-12 text-center">🌟 Leadership & Core Members</h3>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={staggerContainer}
+            >
+              {teamMembers.map((member, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Card className="border-border hover:shadow-xl transition-all duration-300 h-full">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-lg lg:text-xl mb-2">{member.name}</CardTitle>
+                      <CardDescription className="text-primary font-medium text-sm lg:text-base">{member.role}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">{member.description}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Extended Team Section */}
+          <motion.div 
+            className="mt-16 lg:mt-20 pt-12 lg:pt-16 border-t-2 border-border"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+          >
+            <div className="text-center max-w-3xl mx-auto">
+              <h3 className="text-2xl lg:text-3xl font-semibold text-foreground mb-6">💫 Our Extended Team</h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                  Beyond our core members, many more volunteers, supporters, and field workers form the backbone of our foundation.
+                </p>
+                <p className="text-muted-foreground leading-relaxed text-base lg:text-lg">
+                  They work tirelessly in different parts of India — organizing health camps, educational drives, and environmental awareness programs — spreading the message of kindness and hope every day.
+                </p>
+                <p className="text-muted-foreground leading-relaxed font-medium text-base lg:text-lg mt-6">
+                  Together, we are building a movement where every helping hand creates a stronger, healthier, and happier India.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16 lg:py-24 bg-warm-gradient relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-12 lg:mb-16"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeInUp}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 lg:mb-6">Our Impact in Numbers</h2>
+            <p className="text-white/90 max-w-2xl mx-auto leading-relaxed text-base lg:text-lg">
               These numbers represent real lives transformed, communities empowered, and hope restored.
             </p>
           </motion.div>
           <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
@@ -652,7 +611,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div 
-                  className="text-3xl lg:text-4xl font-bold text-white mb-2"
+                  className="text-3xl lg:text-5xl font-bold text-white mb-2 lg:mb-3"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
@@ -660,7 +619,7 @@ export default function AboutPage() {
                 >
                   {stat.number}
                 </motion.div>
-                <div className="text-white/80">{stat.label}</div>
+                <div className="text-white/80 text-sm lg:text-base">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>

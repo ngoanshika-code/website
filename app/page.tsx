@@ -390,11 +390,11 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Focus Areas</h2>
             <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3">
               At Anshika Helping Hands Foundation (AHHF), we work with one goal — to bring real change in people&apos;s lives.
-            </p>
-            <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3">
+            
+             className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3"
               Our mission is to help individuals grow with education, stay healthy, and protect our environment for a better tomorrow.
-            </p>
-            <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            
+            className="text-muted-foreground max-w-3xl mx-auto leading-relaxed"
               We mainly focus on three key areas that make the biggest difference in every community.
             </p>
           </motion.div>
@@ -556,12 +556,10 @@ export default function HomePage() {
           >
             <p>
               Together, we can bring hope, health, and happiness to those who need it most.
-            </p>
-            <p>
+        
               Your small act of kindness can change lives, support education, improve healthcare, and protect our environment.
-            </p>
-            <p>
-              Let&apos;s join hands to build a brighter, stronger, and more compassionate India — one step at a time.
+            
+            Let&apos;s join hands to build a brighter, stronger, and more compassionate India — one step at a time.
             </p>
           </motion.div>
           <motion.div 

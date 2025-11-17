@@ -109,7 +109,7 @@ export function Footer() {
               <li className="flex items-start text-muted-foreground">
                 <MapPin className="h-4 w-4 mr-3 text-primary mt-0.5" />
                 <div className="text-sm">
-                  <p className="mb-1">Shop No, New Sagar Samrat, 2, Cabin Cross Rd, Hema Kunj, Narmada Nagar, Bhayandar East, Thane, Mira Bhayandar, Maharashtra 401105</p>
+                  <p className="mb-1">Shop No. 2, New Sagar Samrat, Opp. Blossoms School, Narmada Nagar, Bhayandar (East), Thane – 401105, Maharashtra, India</p>
                   <a 
                     href="https://share.google/lv8Tan60Ino69gCx1" 
                     target="_blank"

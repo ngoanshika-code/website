@@ -20,6 +20,7 @@ import {
   Users,
   GraduationCap,
   HandHeart,
+  QrCode,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -95,6 +96,9 @@ export default function DonationPage() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(true)
   const [campaignError, setCampaignError] = useState<string | null>(null)
+  const [qrCodeError, setQrCodeError] = useState(false)
+  const [isGeneralDonationDialogOpen, setIsGeneralDonationDialogOpen] = useState(false)
+  const [generalQrCodeError, setGeneralQrCodeError] = useState(false)
 
   const predefinedAmounts = ["100", "500", "1000", "2500", "5000", "10000"]
 
@@ -132,12 +136,23 @@ export default function DonationPage() {
       customAmount: "",
     }))
     setDonationStep(1)
+    setQrCodeError(false)
     setIsDonationDialogOpen(true)
   }
 
   const handleViewDetails = (campaign: Campaign) => {
     // Navigate to campaign details page
     router.push(`/donation/${campaign._id}`)
+  }
+
+  const handleGeneralDonate = () => {
+    const amount = customAmount || selectedAmount
+    if (!amount || parseInt(amount) < 100) {
+      alert("Please enter a valid amount (minimum ₹100)")
+      return
+    }
+    setGeneralQrCodeError(false)
+    setIsGeneralDonationDialogOpen(true)
   }
 
   const handleFormSubmit = () => {
@@ -179,6 +194,7 @@ export default function DonationPage() {
       recurring: false,
     })
     setDonationStep(1)
+    setQrCodeError(false)
   }
 
   const donationCategories = [
@@ -545,43 +561,12 @@ export default function DonationPage() {
                   </div>
                 </div>
 
-                {/* Payment Method */}
-                <div>
-                  <Label className="text-base font-semibold mb-4 block">Payment Method</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Button
-                      variant="outline"
-                      className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all duration-200"
-                    >
-                      <CreditCard className="h-6 w-6 text-primary" />
-                      <span className="font-medium">Credit/Debit Card</span>
-                      <span className="text-xs text-muted-foreground">Visa, Mastercard, RuPay</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all duration-200"
-                    >
-                      <Smartphone className="h-6 w-6 text-primary" />
-                      <span className="font-medium">UPI/Digital Wallet</span>
-                      <span className="text-xs text-muted-foreground">PhonePe, GPay, Paytm</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent hover:bg-primary/5 hover:border-primary/50 transition-all duration-200"
-                    >
-                      <Building className="h-6 w-6 text-primary" />
-                      <span className="font-medium">Net Banking</span>
-                      <span className="text-xs text-muted-foreground">All major banks</span>
-                    </Button>
-                  </div>
-                </div>
-
                 <Button
-                  asChild
                   size="lg"
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg h-12"
+                  onClick={handleGeneralDonate}
                 >
-                  <Link href="/donation/form">Donate ₹{customAmount || selectedAmount || "0"} Now</Link>
+                  Donate ₹{customAmount || selectedAmount || "0"} Now
                 </Button>
               </CardContent>
             </Card>
@@ -698,12 +683,12 @@ export default function DonationPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Heart className="h-5 w-5 text-primary" />
-              {donationStep === 1 ? "Donation Details" : "Payment Method"}
+              {donationStep === 1 ? "Donation Details" : "Complete Payment"}
             </DialogTitle>
             <DialogDescription>
               {donationStep === 1 
-                ? `Supporting: ${selectedCampaign?.title}` 
-                : "Choose your preferred payment method"
+                ? `Supporting: ${selectedCampaign?.title || "General Donation"}` 
+                : "Scan the QR code to complete your donation"
               }
             </DialogDescription>
           </DialogHeader>
@@ -849,7 +834,7 @@ export default function DonationPage() {
               </div>
             </div>
           ) : (
-            // Step 2: Payment Method
+            // Step 2: Payment QR Code
             <div className="space-y-6">
               {/* Donation Summary */}
               <div className="p-4 bg-muted/50 rounded-lg">
@@ -857,7 +842,7 @@ export default function DonationPage() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Campaign:</span>
-                    <span className="font-medium">{selectedCampaign?.title}</span>
+                    <span className="font-medium">{selectedCampaign?.title || "General Donation"}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Donor:</span>
@@ -867,7 +852,7 @@ export default function DonationPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Amount:</span>
-                    <span className="font-bold text-primary">
+                    <span className="font-bold text-primary text-lg">
                       ₹{(donationForm.customAmount || donationForm.amount || "0").toLocaleString()}
                     </span>
                   </div>
@@ -880,78 +865,184 @@ export default function DonationPage() {
                 </div>
               </div>
 
-              {/* Payment Methods */}
-              <div className="space-y-4">
-                <h3 className="font-semibold">Choose Payment Method</h3>
-                <RadioGroup
-                  value={paymentMethod}
-                  onValueChange={setPaymentMethod}
-                  className="grid grid-cols-1 gap-4"
-                >
-                  <div className="relative">
-                    <RadioGroupItem value="card" id="card" className="peer sr-only" />
-                    <Label
-                      htmlFor="card"
-                      className="flex items-center justify-between p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3">
-                        <CreditCard className="h-6 w-6 text-primary" />
-                        <div>
-                          <div className="font-medium">Credit/Debit Card</div>
-                          <div className="text-sm text-muted-foreground">Visa, Mastercard, RuPay</div>
-                        </div>
-                      </div>
-                    </Label>
-                  </div>
-                  <div className="relative">
-                    <RadioGroupItem value="upi" id="upi" className="peer sr-only" />
-                    <Label
-                      htmlFor="upi"
-                      className="flex items-center justify-between p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Smartphone className="h-6 w-6 text-primary" />
-                        <div>
-                          <div className="font-medium">UPI/Digital Wallet</div>
-                          <div className="text-sm text-muted-foreground">PhonePe, GPay, Paytm</div>
-                        </div>
-                      </div>
-                    </Label>
-                  </div>
-                  <div className="relative">
-                    <RadioGroupItem value="netbanking" id="netbanking" className="peer sr-only" />
-                    <Label
-                      htmlFor="netbanking"
-                      className="flex items-center justify-between p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Building className="h-6 w-6 text-primary" />
-                        <div>
-                          <div className="font-medium">Net Banking</div>
-                          <div className="text-sm text-muted-foreground">All major banks</div>
-                        </div>
-                      </div>
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
+              {/* QR Code Payment Section */}
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h3 className="font-semibold text-xl mb-2 flex items-center justify-center gap-2">
+                    <QrCode className="h-6 w-6 text-primary" />
+                    Scan to Pay
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Scan the QR code below using any UPI app (PhonePe, GPay, Paytm, etc.) to complete your donation
+                  </p>
+                </div>
 
-              {/* Action Buttons */}
-              <div className="flex justify-between">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setDonationStep(1)}
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-                <Button onClick={handlePaymentSubmit} className="bg-primary hover:bg-primary/90">
-                  Complete Donation
-                  <Heart className="h-4 w-4 ml-2" />
-                </Button>
+                {/* QR Code Display */}
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="p-6 bg-white rounded-lg border-2 border-primary/20 shadow-lg">
+                    <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative">
+                      {!qrCodeError ? (
+                        <Image
+                          src="/qr-code.png"
+                          alt="Payment QR Code"
+                          width={256}
+                          height={256}
+                          className="rounded-lg"
+                          onError={() => setQrCodeError(true)}
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center justify-center p-8 text-center bg-muted/30 rounded-lg w-full h-full">
+                          <QrCode className="h-24 w-24 text-muted-foreground mb-4" />
+                          <p className="text-sm text-muted-foreground font-medium">QR Code Image</p>
+                          <p className="text-xs text-muted-foreground mt-2">Please add your QR code image at /public/qr-code.png</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Payment Instructions */}
+                  <div className="w-full max-w-md space-y-3 p-4 bg-muted/50 rounded-lg">
+                    <h4 className="font-semibold text-center">Payment Instructions</h4>
+                    <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+                      <li>Open any UPI app on your phone (PhonePe, GPay, Paytm, etc.)</li>
+                      <li>Tap on &quot;Scan QR Code&quot; option</li>
+                      <li>Point your camera at the QR code above</li>
+                      <li>Enter the amount: <span className="font-semibold text-primary">₹{(donationForm.customAmount || donationForm.amount || "0").toLocaleString()}</span></li>
+                      <li>Complete the payment</li>
+                      <li>You will receive a confirmation email at <span className="font-medium">{donationForm.email}</span></li>
+                    </ol>
+                  </div>
+
+                  {/* Alternative Payment Info */}
+                  <div className="w-full max-w-md p-4 bg-primary/5 rounded-lg border border-primary/20">
+                    <p className="text-sm text-center text-muted-foreground">
+                      <span className="font-semibold">UPI ID:</span> anshikahelpinghands@paytm
+                    </p>
+                    <p className="text-xs text-center text-muted-foreground mt-1">
+                      You can also send payment directly to this UPI ID
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-between pt-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setDonationStep(1)}
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Form
+                  </Button>
+                  <Button 
+                    onClick={handlePaymentSubmit} 
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    I&apos;ve Completed Payment
+                    <Heart className="h-4 w-4 ml-2" />
+                  </Button>
+                </div>
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* General Donation QR Code Dialog */}
+      <Dialog open={isGeneralDonationDialogOpen} onOpenChange={(open) => {
+        setIsGeneralDonationDialogOpen(open)
+        if (!open) {
+          setGeneralQrCodeError(false)
+        }
+      }}>
+        <DialogContent className="w-[90vw] max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <QrCode className="h-5 w-5 text-primary" />
+              Complete Your Donation
+            </DialogTitle>
+            <DialogDescription>
+              Scan the QR code below to complete your donation of ₹{(customAmount || selectedAmount || "0").toLocaleString()}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {/* Donation Summary */}
+            <div className="p-4 bg-muted/50 rounded-lg">
+              <h3 className="font-semibold mb-3">Donation Summary</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Category:</span>
+                  <span className="font-medium">
+                    {donationCategories.find(cat => cat.id === donationType)?.title || "General Fund"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Amount:</span>
+                  <span className="font-bold text-primary text-lg">
+                    ₹{(customAmount || selectedAmount || "0").toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* QR Code Display */}
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="p-6 bg-white rounded-lg border-2 border-primary/20 shadow-lg">
+                <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative">
+                  {!generalQrCodeError ? (
+                    <Image
+                      src="/qr-code.png"
+                      alt="Payment QR Code"
+                      width={256}
+                      height={256}
+                      className="rounded-lg"
+                      onError={() => setGeneralQrCodeError(true)}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center p-8 text-center bg-muted/30 rounded-lg w-full h-full">
+                      <QrCode className="h-24 w-24 text-muted-foreground mb-4" />
+                      <p className="text-sm text-muted-foreground font-medium">QR Code Image</p>
+                      <p className="text-xs text-muted-foreground mt-2">Please add your QR code image at /public/qr-code.png</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Payment Instructions */}
+              <div className="w-full space-y-3 p-4 bg-muted/50 rounded-lg">
+                <h4 className="font-semibold text-center">Payment Instructions</h4>
+                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+                  <li>Open any UPI app on your phone (PhonePe, GPay, Paytm, etc.)</li>
+                  <li>Tap on &quot;Scan QR Code&quot; option</li>
+                  <li>Point your camera at the QR code above</li>
+                  <li>Enter the amount: <span className="font-semibold text-primary">₹{(customAmount || selectedAmount || "0").toLocaleString()}</span></li>
+                  <li>Complete the payment</li>
+                  <li>You will receive a confirmation email after payment</li>
+                </ol>
+              </div>
+
+              {/* Alternative Payment Info */}
+              <div className="w-full p-4 bg-primary/5 rounded-lg border border-primary/20">
+                <p className="text-sm text-center text-muted-foreground">
+                  <span className="font-semibold">UPI ID:</span> anshikahelpinghands@paytm
+                </p>
+                <p className="text-xs text-center text-muted-foreground mt-1">
+                  You can also send payment directly to this UPI ID
+                </p>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end pt-4">
+              <Button 
+                onClick={() => setIsGeneralDonationDialogOpen(false)} 
+                className="bg-primary hover:bg-primary/90"
+              >
+                I&apos;ve Completed Payment
+                <Heart className="h-4 w-4 ml-2" />
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
 
