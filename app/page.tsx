@@ -268,33 +268,6 @@ export default function HomePage() {
     },
   }
 
-  const blogs = [
-    {
-      title: "Empowering Women Through Skill Development",
-      excerpt: "Discover how our vocational training programs are transforming lives and creating economic independence for women in rural communities.",
-      image: "/women-entrepreneurs-working-together.jpg",
-      date: "March 15, 2024",
-      author: "Anshika Foundation",
-      category: "Women Empowerment",
-    },
-    {
-      title: "Healthcare Camps: Bringing Medical Care to Remote Villages",
-      excerpt: "Our mobile healthcare initiative reaches thousands of underserved families, providing free medical check-ups and treatments in remote areas.",
-      image: "/mobile-health-clinic-in-rural-area.jpg",
-      date: "March 8, 2024",
-      author: "Anshika Foundation",
-      category: "Healthcare",
-    },
-    {
-      title: "Education for All: Building Brighter Futures",
-      excerpt: "Learn about our comprehensive education programs that support underprivileged children with scholarships, learning resources, and digital literacy training.",
-      image: "/children-studying-in-classroom.jpg",
-      date: "February 28, 2024",
-      author: "Anshika Foundation",
-      category: "Education",
-    },
-  ]
-
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -389,13 +362,9 @@ export default function HomePage() {
           >
             <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Focus Areas</h2>
             <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3">
-              At Anshika Helping Hands Foundation (AHHF), we work with one goal — to bring real change in people&apos;s lives.
-            
-             className="text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-3"
-              Our mission is to help individuals grow with education, stay healthy, and protect our environment for a better tomorrow.
-            
-            className="text-muted-foreground max-w-3xl mx-auto leading-relaxed"
-              We mainly focus on three key areas that make the biggest difference in every community.
+            At Anshika Helping Hands Foundation (AHHF), we work with one goal — to bring real change in people’s lives.
+Our mission is to help individuals grow with education, stay healthy, and protect our environment for a better tomorrow.
+We mainly focus on three key areas that make the biggest difference in every community.
             </p>
           </motion.div>
           <motion.div 
@@ -473,65 +442,6 @@ export default function HomePage() {
               </Card>
             </motion.div>
           )}
-        </div>
-      </section>
-
-      <section className="py-20 bg-gradient-to-br from-card to-muted">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-16"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Latest Blogs</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Stay updated with our latest initiatives, impact stories, and insights on community development and social change.
-            </p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-          >
-            {blogs.map((blog, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -10, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300">
-                  <motion.div 
-                    className="relative h-48"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Image src={blog.image || "/placeholder.svg"} alt={blog.title} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-primary text-primary-foreground">{blog.category}</Badge>
-                    </div>
-                  </motion.div>
-                  <CardContent className="p-6">
-                    <div className="flex items-center text-sm text-muted-foreground mb-3">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      {blog.date}
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-3">{blog.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed mb-4">{blog.excerpt}</p>
-                    <Button variant="ghost" className="w-full">
-                      Read More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
