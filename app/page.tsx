@@ -6,6 +6,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import {
   Heart,
   Users,
   BookOpen,
@@ -35,6 +44,13 @@ export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
   const [activeProgramId, setActiveProgramId] = useState("education")
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    occupation: "",
+  })
 
   // Animation variants
   const fadeInUp = {
@@ -532,15 +548,22 @@ export default function HomePage() {
             className="text-3xl font-bold text-white mb-6"
             variants={fadeInUp}
           >
-            Ready to Make a Difference?
+            💫 Ready to Make a Difference?
           </motion.h2>
-          <motion.p 
-            className="text-xl text-white/90 mb-8 leading-relaxed"
+          <motion.div 
+            className="text-xl text-white/90 mb-8 leading-relaxed space-y-4"
             variants={fadeInUp}
           >
-            Your support can transform lives and build stronger communities. Join us in our mission to create lasting
-            positive change across India. Every contribution, no matter the size, makes a meaningful impact.
-          </motion.p>
+            <p>
+              Together, we can bring hope, health, and happiness to those who need it most.
+            </p>
+            <p>
+              Your small act of kindness can change lives, support education, improve healthcare, and protect our environment.
+            </p>
+            <p>
+              Let&apos;s join hands to build a brighter, stronger, and more compassionate India — one step at a time.
+            </p>
+          </motion.div>
           <motion.div 
             className="flex flex-col sm:flex-row gap-4 justify-center"
             variants={staggerContainer}
@@ -551,11 +574,11 @@ export default function HomePage() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button 
-                  asChild 
                   size="lg" 
                   className="bg-white text-primary hover:bg-white/90 font-semibold"
+                  onClick={() => setIsDialogOpen(true)}
                 >
-                  <Link href="/donation/form">Start Donating</Link>
+                  Be a Change Maker
                 </Button>
               </motion.div>
             </motion.div>
@@ -570,12 +593,94 @@ export default function HomePage() {
                   variant="outline"
                   className="border-white text-white hover:bg-white hover:text-primary bg-transparent font-semibold"
                 >
-                  <Link href="/contact">Get Involved</Link>
+                  <Link href="/donation/form">Donate & Support</Link>
                 </Button>
               </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
+
+        {/* Be a Change Maker Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Be a Change Maker</DialogTitle>
+              <DialogDescription>
+                Join us in making a difference! Fill out the form below to get involved.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-sm font-medium">
+                  Name
+                </label>
+                <Input
+                  id="name"
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-sm font-medium">
+                  Phone
+                </label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="occupation" className="text-sm font-medium">
+                  Occupation
+                </label>
+                <Input
+                  id="occupation"
+                  placeholder="Enter your occupation"
+                  value={formData.occupation}
+                  onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsDialogOpen(false)
+                  setFormData({ name: "", phone: "", email: "", occupation: "" })
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  // Handle form submission here
+                  console.log("Form submitted:", formData)
+                  setIsDialogOpen(false)
+                  setFormData({ name: "", phone: "", email: "", occupation: "" })
+                  // You can add a toast notification here
+                }}
+              >
+                Submit
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </section>
 
       
