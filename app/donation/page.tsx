@@ -21,6 +21,8 @@ import {
   GraduationCap,
   HandHeart,
   QrCode,
+  Sprout,
+  CheckCircle,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -40,6 +42,7 @@ import {
   Eye,
   ArrowRight,
   ArrowLeft,
+  Upload,
 } from "lucide-react"
 
 interface Campaign {
@@ -77,7 +80,7 @@ export default function DonationPage() {
   const router = useRouter()
   const [selectedAmount, setSelectedAmount] = useState("500")
   const [customAmount, setCustomAmount] = useState("")
-  const [donationType, setDonationType] = useState("general")
+  const [donationType, setDonationType] = useState("education")
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
   const [isDonationDialogOpen, setIsDonationDialogOpen] = useState(false)
   const [donationStep, setDonationStep] = useState(1) // 1: Form, 2: Payment
@@ -99,6 +102,9 @@ export default function DonationPage() {
   const [qrCodeError, setQrCodeError] = useState(false)
   const [isGeneralDonationDialogOpen, setIsGeneralDonationDialogOpen] = useState(false)
   const [generalQrCodeError, setGeneralQrCodeError] = useState(false)
+  const [cvFile, setCvFile] = useState<File | null>(null)
+  const [cvFileName, setCvFileName] = useState<string>("")
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false)
 
   const predefinedAmounts = ["100", "500", "1000", "2500", "5000", "10000"]
 
@@ -155,6 +161,15 @@ export default function DonationPage() {
     setIsGeneralDonationDialogOpen(true)
   }
 
+  const handleSubmitDonation = () => {
+    const amount = customAmount || selectedAmount
+    if (!amount || parseInt(amount) < 100) {
+      alert("Please enter a valid amount (minimum ₹100)")
+      return
+    }
+    setIsConfirmationDialogOpen(true)
+  }
+
   const handleFormSubmit = () => {
     // Validate form
     if (!donationForm.firstName || !donationForm.lastName || !donationForm.email || !donationForm.phone) {
@@ -199,52 +214,28 @@ export default function DonationPage() {
 
   const donationCategories = [
     {
-      id: "general",
-      title: "General Fund",
-      description: "Support all our programs and operations",
-      icon: Heart,
+      id: "education",
+      title: "Skill & Education Development",
+      description: "Empowering Minds, Building Futures",
+      icon: GraduationCap,
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
-      id: "education",
-      title: "Education & Skills",
-      description: "Fund schools, vocational training, and digital literacy",
-      icon: GraduationCap,
-      color: "text-secondary",
-      bgColor: "bg-secondary/10",
-    },
-    {
       id: "healthcare",
       title: "Healthcare & Wellness",
-      description: "Support medical camps and health awareness programs",
+      description: "Healing Hearts, Saving Lives",
       icon: Stethoscope,
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
-      id: "food",
-      title: "Food Security",
-      description: "Fight hunger through nutrition and farming programs",
-      icon: Utensils,
-      color: "text-primary",
-      bgColor: "bg-primary/10",
-    },
-    {
-      id: "shelter",
-      title: "Shelter & Housing",
-      description: "Provide safe housing and infrastructure development",
-      icon: Home,
+      id: "environment",
+      title: "Environmental Conservation",
+      description: "Protecting Nature, Securing Tomorrow",
+      icon: Sprout,
       color: "text-secondary",
       bgColor: "bg-secondary/10",
-    },
-    {
-      id: "women",
-      title: "Women Empowerment",
-      description: "Support women's entrepreneurship and leadership programs",
-      icon: HandHeart,
-      color: "text-accent",
-      bgColor: "bg-accent/10",
     },
   ]
 
@@ -271,10 +262,10 @@ export default function DonationPage() {
       impact: "10,000+ patients treated",
     },
     {
-      title: "Women Empowerment",
-      description: "Self-help groups have empowered women to become entrepreneurs",
+      title: "Environmental Conservation",
+      description: "Protecting Nature, Securing Tomorrow",
       image: "/women-entrepreneurs-working-together.jpg",
-      impact: "500+ women empowered",
+      impact: "500+ Protecting Nature, Securing Tomorrow",
     },
   ]
 
@@ -559,14 +550,66 @@ export default function DonationPage() {
                     <Label htmlFor="message">Message (Optional)</Label>
                     <Textarea id="message" placeholder="Share why you're donating or any special message" />
                   </div>
+                  <div>
+                    <Label htmlFor="cv-upload" className="text-sm font-medium">
+                      Upload CV (Optional)
+                    </Label>
+                    <div className="mt-2">
+                      <Input
+                        id="cv-upload"
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            setCvFile(file)
+                            setCvFileName(file.name)
+                          }
+                        }}
+                        className="hidden"
+                      />
+                      <Label
+                        htmlFor="cv-upload"
+                        className="flex items-center gap-2 cursor-pointer p-3 border-2 border-dashed border-border rounded-lg hover:border-primary/50 transition-colors"
+                      >
+                        <Upload className="h-5 w-5 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">
+                          {cvFileName || "Choose file or drag and drop"}
+                        </span>
+                      </Label>
+                      {cvFileName && (
+                        <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-green-600">✓ {cvFileName}</span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setCvFile(null)
+                              setCvFileName("")
+                              const input = document.getElementById("cv-upload") as HTMLInputElement
+                              if (input) input.value = ""
+                            }}
+                            className="h-6 px-2 text-xs"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      )}
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Accepted formats: PDF, DOC, DOCX (Max 5MB)
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <Button
                   size="lg"
+                  type="button"
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg h-12"
-                  onClick={handleGeneralDonate}
+                  onClick={handleSubmitDonation}
                 >
-                  Donate ₹{customAmount || selectedAmount || "0"} Now
+                  Submit
                 </Button>
               </CardContent>
             </Card>
@@ -574,26 +617,58 @@ export default function DonationPage() {
 
           {/* Sidebar */}
           <div className="space-y-8">
-            {/* Impact Examples */}
+            {/* QR Code & Bank Details */}
             <Card className="border-border shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-primary" />
-                  Your Impact
+                  <QrCode className="h-5 w-5 text-primary" />
+                  Payment Details
                 </CardTitle>
-                <CardDescription>See how your donation makes a difference</CardDescription>
+                <CardDescription>Scan QR code or transfer directly</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {impactExamples.map((example, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start space-x-3 p-3 rounded-lg bg-gradient-to-r from-primary/5 to-transparent border-l-2 border-primary/20"
-                    >
-                      <div className="font-bold text-primary min-w-fit text-sm">{example.amount}</div>
-                      <div className="text-sm text-muted-foreground leading-relaxed">{example.impact}</div>
+              <CardContent className="space-y-6">
+                {/* QR Code */}
+                <div className="flex flex-col items-center justify-center">
+                  <div className="p-4 bg-white rounded-lg border-2 border-primary/20 shadow-md">
+                    <div className="w-48 h-48 bg-white flex items-center justify-center rounded-lg relative overflow-hidden">
+                      <Image
+                        src="/qr-code.png"
+                        alt="Payment QR Code"
+                        width={192}
+                        height={192}
+                        className="rounded-lg w-full h-full object-contain"
+                      />
                     </div>
-                  ))}
+                  </div>
+                </div>
+
+                {/* Bank Account Details */}
+                <div className="p-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20">
+                  <h4 className="font-semibold text-center mb-4 flex items-center justify-center gap-2">
+                    <Building className="h-5 w-5 text-primary" />
+                    Bank Account Details
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground font-medium">Account Number:</span>
+                      <span className="font-semibold text-foreground">077722010002763</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground font-medium">IFSC Code:</span>
+                      <span className="font-semibold text-foreground">UBIN0907774</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground font-medium">Bank:</span>
+                      <span className="font-semibold text-foreground text-right">Union Bank of India</span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-muted-foreground font-medium">Branch:</span>
+                      <span className="font-semibold text-foreground text-right">Mira Bhayander Road (Kasturi Park) Branch, Thane - 401107</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-center text-muted-foreground mt-4 pt-4 border-t border-border">
+                    You can also transfer directly to this bank account
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -1002,7 +1077,7 @@ export default function DonationPage() {
                 <div className="flex justify-between">
                   <span>Category:</span>
                   <span className="font-medium">
-                    {donationCategories.find(cat => cat.id === donationType)?.title || "General Fund"}
+                    {donationCategories.find(cat => cat.id === donationType)?.title || "Charitable Cause"}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -1100,6 +1175,31 @@ export default function DonationPage() {
                 <Heart className="h-4 w-4 ml-2" />
               </Button>
             </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={isConfirmationDialogOpen} onOpenChange={setIsConfirmationDialogOpen}>
+        <DialogContent className="w-[90vw] max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-center justify-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="h-10 w-10 text-green-600" />
+              </div>
+              <span className="text-2xl">Donation Submitted Successfully!</span>
+            </DialogTitle>
+            <DialogDescription className="text-center text-base pt-4">
+              Your donation has been submitted successfully. You will receive a confirmation email shortly.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center pt-4">
+            <Button 
+              onClick={() => setIsConfirmationDialogOpen(false)} 
+              className="bg-primary hover:bg-primary/90"
+            >
+              Close
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

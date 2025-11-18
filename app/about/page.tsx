@@ -7,6 +7,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Heart, Target, Eye, Users, Award, Globe, Calendar, ChevronLeft, ChevronRight, Sprout, Handshake, Stethoscope, GraduationCap, Shield } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import type { CarouselApi } from "@/components/ui/carousel"
 
 export default function AboutPage() {
   // Animation variants
@@ -152,7 +154,48 @@ export default function AboutPage() {
       role: "Member",
       description: "A passionate advocate for environmental care and community well-being, Amit helps organize awareness drives and sustainability projects that promote clean and green living.",
     },
+    {
+      name: "Shubham Dubey",
+      role: "Member",
+      description: "Dedicated to community service and social development, Shubham brings passion and commitment to our foundation's mission of creating positive change.",
+    },
+    {
+      name: "Ankit Mishra",
+      role: "Member",
+      description: "An active contributor to our programs, Ankit works tirelessly to support our initiatives and help make a meaningful impact in the communities we serve.",
+    },
+    {
+      name: "Jitendra Upadhyay",
+      role: "Member",
+      description: "Committed to our cause, Jitendra plays a vital role in organizing and executing our various programs, ensuring they reach those who need them most.",
+    },
   ]
+
+  // Carousel autoplay state
+  const [teamCarouselApi, setTeamCarouselApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  // Autoplay functionality for team carousel
+  useEffect(() => {
+    if (!teamCarouselApi) return
+
+    setCurrent(teamCarouselApi.selectedScrollSnap())
+
+    teamCarouselApi.on("select", () => {
+      setCurrent(teamCarouselApi.selectedScrollSnap())
+    })
+  }, [teamCarouselApi])
+
+  // Auto-advance carousel every 3 seconds
+  useEffect(() => {
+    if (!teamCarouselApi) return
+
+    const interval = setInterval(() => {
+      teamCarouselApi.scrollNext()
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [teamCarouselApi])
 
   return (
     <div className="min-h-screen bg-background">
@@ -521,32 +564,41 @@ export default function AboutPage() {
             variants={fadeInUp}
           >
             <h3 className="text-2xl lg:text-3xl font-semibold text-foreground mb-8 lg:mb-12 text-center">🌟 Leadership & Core Members</h3>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={staggerContainer}
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              setApi={setTeamCarouselApi}
+              className="w-full"
             >
-              {teamMembers.map((member, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Card className="border-border hover:shadow-xl transition-all duration-300 h-full">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="text-lg lg:text-xl mb-2">{member.name}</CardTitle>
-                      <CardDescription className="text-primary font-medium text-sm lg:text-base">{member.role}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">{member.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {teamMembers.map((member, index) => (
+                  <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                    <motion.div
+                      initial="initial"
+                      whileInView="animate"
+                      viewport={{ once: true, amount: 0.2 }}
+                      variants={fadeInUp}
+                      whileHover={{ y: -10, scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Card className="border-border hover:shadow-xl transition-all duration-300 h-full">
+                        <CardHeader className="pb-4">
+                          <CardTitle className="text-lg lg:text-xl mb-2">{member.name}</CardTitle>
+                          <CardDescription className="text-primary font-medium text-sm lg:text-base">{member.role}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">{member.description}</p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 bg-background/80 hover:bg-background border-border" />
+              <CarouselNext className="right-0 bg-background/80 hover:bg-background border-border" />
+            </Carousel>
           </motion.div>
 
           {/* Extended Team Section */}

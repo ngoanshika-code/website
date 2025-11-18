@@ -64,8 +64,50 @@ import Link from "next/link"
 import Image from "next/image"
 import { DonationFormPopup } from "@/components/donation-form-popup"
 
+// Type definitions
+interface Milestone {
+  amount: string
+  description: string
+  completed: boolean
+}
+
+interface Campaign {
+  _id: string
+  title: string
+  description: string
+  aboutCampaign?: string
+  goalAmount: number
+  raisedAmount: number
+  backersCount: number
+  daysLeft: number
+  startDate?: string | Date
+  endDate?: string | Date
+  location: string
+  organizer: string
+  category: string
+  categoryName: string
+  status: string
+  progress: number
+  expectedBeneficiaries?: string
+  expectedDuration?: string
+  impactDescription?: string
+  taxDeductible?: boolean
+  securePayment?: boolean
+  transparentReporting?: boolean
+  milestones?: Milestone[]
+  images?: string[]
+  featuredImage?: string
+  createdAt?: string | Date
+}
+
+interface EditCampaignFormProps {
+  campaign: Campaign
+  onClose: () => void
+  onSave: (campaign: Campaign) => void
+}
+
 // Edit Campaign Form Component
-function EditCampaignForm({ campaign, onClose, onSave }) {
+function EditCampaignForm({ campaign, onClose, onSave }: EditCampaignFormProps) {
   const [formData, setFormData] = useState({
     // Campaign Information
     title: campaign.title || '',
@@ -110,9 +152,9 @@ function EditCampaignForm({ campaign, onClose, onSave }) {
     featuredImage: campaign.featuredImage || '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [newImages, setNewImages] = useState([])
-  const [imagePreviews, setImagePreviews] = useState([])
-  const [imagesToRemove, setImagesToRemove] = useState([])
+  const [newImages, setNewImages] = useState<File[]>([])
+  const [imagePreviews, setImagePreviews] = useState<string[]>([])
+  const [imagesToRemove, setImagesToRemove] = useState<string[]>([])
 
   const categories = [
     { value: 'education', label: 'Education & Skills' },
@@ -130,14 +172,14 @@ function EditCampaignForm({ campaign, onClose, onSave }) {
     { value: 'cancelled', label: 'Cancelled' },
   ]
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const updateMilestone = (index, field, value) => {
+  const updateMilestone = (index: number, field: keyof Milestone, value: string | boolean) => {
     setFormData(prev => ({
       ...prev,
-      milestones: prev.milestones.map((milestone, i) => 
+      milestones: prev.milestones.map((milestone: Milestone, i: number) => 
         i === index ? { ...milestone, [field]: value } : milestone
       )
     }))
@@ -150,53 +192,53 @@ function EditCampaignForm({ campaign, onClose, onSave }) {
     }))
   }
 
-  const removeMilestone = (index) => {
+  const removeMilestone = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      milestones: prev.milestones.filter((_, i) => i !== index)
+      milestones: prev.milestones.filter((_: Milestone, i: number) => i !== index)
     }))
   }
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files || [])
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []) as File[]
     if (files.length + formData.images.length + newImages.length > 3) {
       alert("Maximum 3 images allowed")
       return
     }
     
-    const previewUrls = files.map(file => URL.createObjectURL(file))
+    const previewUrls = files.map((file: File) => URL.createObjectURL(file))
     
     setNewImages(prev => [...prev, ...files])
     setImagePreviews(prev => [...prev, ...previewUrls])
   }
 
-  const removeExistingImage = (index) => {
+  const removeExistingImage = (index: number) => {
     const imageToRemove = formData.images[index]
     setImagesToRemove(prev => [...prev, imageToRemove])
     setFormData(prev => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index),
+      images: prev.images.filter((_: string, i: number) => i !== index),
       featuredImage: prev.featuredImage === imageToRemove ? (prev.images[0] || '') : prev.featuredImage
     }))
   }
 
-  const removeNewImage = (index) => {
+  const removeNewImage = (index: number) => {
     if (imagePreviews[index]) {
       URL.revokeObjectURL(imagePreviews[index])
     }
     
-    setNewImages(prev => prev.filter((_, i) => i !== index))
-    setImagePreviews(prev => prev.filter((_, i) => i !== index))
+    setNewImages(prev => prev.filter((_: File, i: number) => i !== index))
+    setImagePreviews(prev => prev.filter((_: string, i: number) => i !== index))
   }
 
-  const setFeaturedImage = (imageUrl) => {
+  const setFeaturedImage = (imageUrl: string) => {
     setFormData(prev => ({
       ...prev,
       featuredImage: imageUrl
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -669,25 +711,25 @@ function EditCampaignForm({ campaign, onClose, onSave }) {
 
 export default function DonationsManagementPage() {
   const router = useRouter()
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [categoryFilter, setCategoryFilter] = useState("all")
   const [locationFilter, setLocationFilter] = useState("")
   const [organizerFilter, setOrganizerFilter] = useState("")
-  const [startDateFilter, setStartDateFilter] = useState(null)
-  const [endDateFilter, setEndDateFilter] = useState(null)
+  const [startDateFilter, setStartDateFilter] = useState<Date | undefined>(undefined)
+  const [endDateFilter, setEndDateFilter] = useState<Date | undefined>(undefined)
   const [minGoalAmount, setMinGoalAmount] = useState("")
   const [maxGoalAmount, setMaxGoalAmount] = useState("")
   const [minRaisedAmount, setMinRaisedAmount] = useState("")
   const [maxRaisedAmount, setMaxRaisedAmount] = useState("")
-  const [selectedDonation, setSelectedDonation] = useState(null)
-  const [selectedCampaign, setSelectedCampaign] = useState(null)
+  const [selectedDonation, setSelectedDonation] = useState<any>(null)
+  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null)
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [campaigns, setCampaigns] = useState([])
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false)
 
   const fetchCampaigns = async () => {
@@ -857,7 +899,7 @@ export default function DonationsManagementPage() {
     },
   ]
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case "active":
         return <CheckCircle className="h-4 w-4 text-green-500" />
@@ -872,7 +914,7 @@ export default function DonationsManagementPage() {
     }
   }
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
         return <Badge variant="default" className="bg-green-500">Active</Badge>
@@ -887,7 +929,7 @@ export default function DonationsManagementPage() {
     }
   }
 
-  const getCategoryIcon = (category) => {
+  const getCategoryIcon = (category: string) => {
     switch (category) {
       case "education":
         return <GraduationCap className="h-4 w-4 text-blue-500" />
@@ -904,7 +946,7 @@ export default function DonationsManagementPage() {
     }
   }
 
-  const getPaymentMethodIcon = (method) => {
+  const getPaymentMethodIcon = (method: string) => {
     switch (method) {
       case "card":
         return <CreditCard className="h-4 w-4" />
@@ -917,7 +959,7 @@ export default function DonationsManagementPage() {
     }
   }
 
-  const filteredCampaigns = campaigns.filter(campaign => {
+  const filteredCampaigns = campaigns.filter((campaign: Campaign) => {
     // Search filter
     const matchesSearch = campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          campaign.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -938,8 +980,8 @@ export default function DonationsManagementPage() {
     const matchesOrganizer = !organizerFilter || campaign.organizer.toLowerCase().includes(organizerFilter.toLowerCase())
     
     // Date range filters
-    const campaignStartDate = new Date(campaign.startDate || campaign.createdAt)
-    const campaignEndDate = new Date(campaign.endDate)
+    const campaignStartDate = new Date(campaign.startDate || campaign.createdAt || new Date())
+    const campaignEndDate = campaign.endDate ? new Date(campaign.endDate) : new Date()
     
     const matchesStartDate = !startDateFilter || campaignStartDate >= startDateFilter
     const matchesEndDate = !endDateFilter || campaignEndDate <= endDateFilter
@@ -958,17 +1000,17 @@ export default function DonationsManagementPage() {
            matchesMinGoal && matchesMaxGoal && matchesMinRaised && matchesMaxRaised
   })
 
-  const handleViewCampaign = (campaign) => {
+  const handleViewCampaign = (campaign: Campaign) => {
     setSelectedCampaign(campaign)
     setIsViewDialogOpen(true)
   }
 
-  const handleEditCampaign = (campaign) => {
+  const handleEditCampaign = (campaign: Campaign) => {
     setSelectedCampaign(campaign)
     setIsEditDialogOpen(true)
   }
 
-  const handleDeleteCampaign = async (campaign) => {
+  const handleDeleteCampaign = async (campaign: Campaign) => {
     if (!confirm(`Are you sure you want to delete the campaign "${campaign.title}"? This action cannot be undone.`)) {
       return
     }
@@ -992,7 +1034,7 @@ export default function DonationsManagementPage() {
     }
   }
 
-  const handleCreateDonation = async (campaignData) => {
+  const handleCreateDonation = async (campaignData: Campaign) => {
     try {
       console.log("New campaign created:", campaignData)
       alert(`Campaign "${campaignData.title}" created successfully!`)
@@ -1010,8 +1052,8 @@ export default function DonationsManagementPage() {
     setCategoryFilter("all")
     setLocationFilter("")
     setOrganizerFilter("")
-    setStartDateFilter(null)
-    setEndDateFilter(null)
+    setStartDateFilter(undefined)
+    setEndDateFilter(undefined)
     setMinGoalAmount("")
     setMaxGoalAmount("")
     setMinRaisedAmount("")
@@ -1216,7 +1258,7 @@ export default function DonationsManagementPage() {
                       <Calendar
                         mode="single"
                         selected={startDateFilter}
-                        onSelect={setStartDateFilter}
+                        onSelect={(date) => setStartDateFilter(date)}
                         initialFocus
                       />
                     </PopoverContent>
@@ -1235,7 +1277,7 @@ export default function DonationsManagementPage() {
                       <Calendar
                         mode="single"
                         selected={endDateFilter}
-                        onSelect={setEndDateFilter}
+                        onSelect={(date) => setEndDateFilter(date)}
                         initialFocus
                       />
                     </PopoverContent>
@@ -1371,7 +1413,7 @@ export default function DonationsManagementPage() {
                             <div className="text-sm">{campaign.location}</div>
                           </TableCell>
                           <TableCell>
-                            <div className="text-sm">{new Date(campaign.endDate).toLocaleDateString()}</div>
+                            <div className="text-sm">{campaign.endDate ? new Date(campaign.endDate).toLocaleDateString() : "N/A"}</div>
                             <div className="text-xs text-muted-foreground">{campaign.daysLeft || 0} days left</div>
                           </TableCell>
                           <TableCell className="text-right">
@@ -1490,7 +1532,7 @@ export default function DonationsManagementPage() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">End Date</label>
-                  <p className="text-lg">{new Date(selectedCampaign.endDate).toLocaleDateString()}</p>
+                  <p className="text-lg">{selectedCampaign.endDate ? new Date(selectedCampaign.endDate as string | Date).toLocaleDateString() : "N/A"}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Days Left</label>
@@ -1498,7 +1540,7 @@ export default function DonationsManagementPage() {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Created Date</label>
-                  <p className="text-lg">{new Date(selectedCampaign.createdAt).toLocaleDateString()}</p>
+                  <p className="text-lg">{selectedCampaign.createdAt ? new Date(selectedCampaign.createdAt as string | Date).toLocaleDateString() : "N/A"}</p>
                 </div>
               </div>
               
@@ -1513,11 +1555,11 @@ export default function DonationsManagementPage() {
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">Milestones</label>
                   <div className="mt-2 space-y-2">
-                    {selectedCampaign.milestones.map((milestone, index) => (
+                    {selectedCampaign.milestones?.map((milestone: Milestone, index: number) => (
                       <div key={index} className="p-3 bg-muted/50 rounded-lg">
-                        <div className="font-medium">{milestone.title}</div>
+                        <div className="font-medium">Amount: ₹{milestone.amount}</div>
                         <div className="text-sm text-muted-foreground">{milestone.description}</div>
-                        <div className="text-sm text-muted-foreground">Target: ₹{milestone.targetAmount?.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Status: {milestone.completed ? "Completed" : "Pending"}</div>
                       </div>
                     ))}
                   </div>

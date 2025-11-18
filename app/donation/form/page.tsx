@@ -26,6 +26,7 @@ import {
   Home,
   Utensils,
   HandHeart,
+  Sprout,
 } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -62,7 +63,7 @@ export default function DonationFormPage() {
     phone: "",
     amount: "",
     customAmount: "",
-    donationType: "general",
+    donationType: "education",
     message: "",
     anonymous: false,
     recurring: false,
@@ -77,52 +78,28 @@ export default function DonationFormPage() {
 
   const donationCategories = [
     {
-      id: "general",
-      title: "General Fund",
-      description: "Support all our programs and operations",
-      icon: Heart,
+      id: "education",
+      title: "Skill & Education Development",
+      description: "Empowering Minds, Building Futures",
+      icon: GraduationCap,
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
-      id: "education",
-      title: "Education & Skills",
-      description: "Fund schools, vocational training, and digital literacy",
-      icon: GraduationCap,
-      color: "text-secondary",
-      bgColor: "bg-secondary/10",
-    },
-    {
       id: "healthcare",
       title: "Healthcare & Wellness",
-      description: "Support medical camps and health awareness programs",
+      description: "Healing Hearts, Saving Lives",
       icon: Stethoscope,
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
-      id: "food",
-      title: "Food Security",
-      description: "Fight hunger through nutrition and farming programs",
-      icon: Utensils,
-      color: "text-primary",
-      bgColor: "bg-primary/10",
-    },
-    {
-      id: "shelter",
-      title: "Shelter & Housing",
-      description: "Provide safe housing and infrastructure development",
-      icon: Home,
+      id: "environment",
+      title: "Environmental Conservation",
+      description: "Protecting Nature, Securing Tomorrow",
+      icon: Sprout,
       color: "text-secondary",
       bgColor: "bg-secondary/10",
-    },
-    {
-      id: "women",
-      title: "Women Empowerment",
-      description: "Support women's entrepreneurship and leadership programs",
-      icon: HandHeart,
-      color: "text-accent",
-      bgColor: "bg-accent/10",
     },
   ]
 
@@ -184,7 +161,7 @@ export default function DonationFormPage() {
         customerName: `${formData.firstName} ${formData.lastName}`,
         customerEmail: formData.email,
         customerPhone: formData.phone,
-        description: `Donation for ${selectedCategory?.title || 'General Fund'}`,
+        description: `Donation for ${selectedCategory?.title || 'Charitable Cause'}`,
         notes: {
           donationType: formData.donationType,
           message: formData.message,
