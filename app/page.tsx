@@ -283,8 +283,6 @@ export default function HomePage() {
             priority
           />
         </div>
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/50"></div>
 
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-20">
