@@ -30,23 +30,21 @@ import { motion } from "framer-motion"
 
 const programData = {
   "education-skill-development": {
-    title: "Education & Skill Development",
+    title: "Skill & Education Development",
     subtitle: "Empowering Minds, Building Futures",
     icon: GraduationCap,
-    responsibilities: [
-      "Comprehensive education programs for underprivileged children",
-      "Vocational training and skill development courses",
-      "Digital literacy initiatives for sustainable growth",
-      "Scholarship programs for deserving students",
-      "Teacher training and capacity building workshops",
-      "Library and learning resource centers",
+    intro: [
+      "Education is the first step towards a better life, and skills are what help people build that life.",
+      "At AHHF, we make sure that every child and youth gets the support they need to learn, grow, and succeed.",
+      "We work on:",
     ],
-    challenges: [
-      "Limited access to quality education in remote areas",
-      "High dropout rates due to financial constraints",
-      "Lack of digital literacy in rural communities",
-      "Shortage of trained teachers and educational resources",
+    bullets: [
+      "📚 Providing Educational Support: Distributing free books, stationery, school supplies, and other learning materials to students from underprivileged families.",
+      "🎓 Skill Development Programs: Helping people learn practical and job-ready skills like computer knowledge, communication, and technical training so they can earn a stable income.",
+      "🧭 Career Guidance & Counseling: Guiding students and youth about the right courses, skills, and career paths that suit their interests and help them achieve success.",
+      "💬 Motivational & Awareness Sessions: Encouraging young people to stay positive, keep learning, and work hard toward their dreams.",
     ],
+    closing: "Our aim is to build confident individuals who can stand on their own feet and contribute positively to society.",
     gallery: [
       "/children-studying-in-classroom.jpg",
       "/children-learning-with-computers-in-classroom.jpg",
@@ -63,20 +61,19 @@ const programData = {
     title: "Healthcare & Wellness",
     subtitle: "Healing Hearts, Saving Lives",
     icon: Stethoscope,
-    responsibilities: [
-      "Mobile health clinics for remote communities",
-      "Preventive care and health awareness programs",
-      "Mental health support and counseling services",
-      "Free medical camps and health check-ups",
-      "Maternal and child healthcare programs",
-      "Chronic disease management and support",
+    intro: [
+      "Good health is the foundation of a happy life.",
+      "Many people in our communities cannot afford regular health check-ups or proper medical guidance — and that's where we step in.",
+      "We organize and support:",
     ],
-    challenges: [
-      "Limited healthcare access in remote villages",
-      "High cost of medical treatment for the poor",
-      "Lack of awareness about preventive healthcare",
-      "Shortage of medical facilities and professionals",
+    bullets: [
+      "🩺 Free Health Check-up Camps: Bringing doctors and healthcare professionals to local areas so that people can get medical check-ups without spending money.",
+      "💊 Free Medical Consultancy: Providing free advice and basic treatment guidance to help people take care of their health.",
+      "🍎 Health & Fitness Awareness: Teaching simple ways to stay fit — such as yoga, proper diet, and daily exercise — to improve overall well-being.",
+      "📄 Government Health Scheme Assistance: Helping people understand and apply for government health benefits like Ayushman Bharat and other schemes.",
+      "❤️ Mental & Emotional Wellness Sessions: Promoting awareness about mental health and stress management to create a more balanced life.",
     ],
+    closing: "Our vision is to create a Healthy and Happy India where everyone has access to healthcare and the knowledge to live a healthy lifestyle.",
     gallery: [
       "/mobile-health-clinic-in-rural-area.jpg",
       "/rural-healthcare-facility-construction.jpg",
@@ -183,20 +180,19 @@ const programData = {
     title: "Environmental Conservation",
     subtitle: "Protecting Nature, Securing Tomorrow",
     icon: Globe,
-    responsibilities: [
-      "Tree plantation and afforestation drives",
-      "Waste management and recycling programs",
-      "Renewable energy and solar projects",
-      "Water conservation and rainwater harvesting",
-      "Environmental awareness campaigns",
-      "Climate change adaptation programs",
+    intro: [
+      "The environment is our home — it gives us air to breathe, water to drink, and food to eat.",
+      "At AHHF, we believe it is our duty to protect and care for our planet so that our future generations can also enjoy its beauty.",
+      "Our environmental efforts include:",
     ],
-    challenges: [
-      "Deforestation and environmental degradation",
-      "Pollution and waste management issues",
-      "Climate change impacts on communities",
-      "Limited awareness about environmental protection",
+    bullets: [
+      "🌳 Tree Plantation Drives: Organizing regular plantation events and encouraging people to plant trees in their localities.",
+      "🧹 Cleanliness & Awareness Camps: Conducting cleanliness drives in schools, communities, and public areas to promote the importance of hygiene and waste management.",
+      "🔄 Reduce, Reuse, Recycle Programs: Teaching people how to manage waste properly and reduce plastic usage.",
+      "💧 Water & Energy Conservation Awareness: Guiding families and students on saving water, reducing electricity waste, and living a sustainable lifestyle.",
+      "🌎 Eco-Education for Children: Conducting fun and informative sessions for school children to make them understand how to take care of our planet.",
     ],
+    closing: "We believe that a clean and green environment means a healthy and safe life for everyone.",
     gallery: [
       "/ancient-temple-with-deity-statue-restoration-work.jpg",
       "/abstract-geometric-shapes.png",
@@ -295,39 +291,6 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-          >
-            {program.stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="text-center group"
-                variants={fadeInUp}
-              >
-                <motion.div
-                  className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 bg-primary/10 transition-all duration-300"
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <stat.icon className="h-8 w-8 text-primary" />
-                </motion.div>
-                <div className="text-3xl font-bold text-foreground mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* Gallery Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -368,82 +331,73 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* Responsibilities Section */}
+      {/* Program Details Section */}
       <section className="py-16 bg-muted/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-12"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl font-bold text-foreground mb-4">What We Do</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our comprehensive approach ensures holistic impact and sustainable development.
-            </p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
+            variants={fadeInUp}
           >
-            {program.responsibilities.map((item, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="border-border hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <CheckCircle className="h-5 w-5 text-primary" />
-                      </div>
-                      <p className="text-foreground leading-relaxed">{item}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+            <Card className="border-border shadow-lg">
+              <CardHeader className="pb-4">
+                <p className="text-sm font-semibold text-primary uppercase tracking-wide mb-2">
+                  {program.subtitle}
+                </p>
+                <CardTitle className="text-3xl mb-6">{program.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 leading-relaxed">
+                {/* Intro paragraphs */}
+                {program.intro && program.intro.map((text, idx) => (
+                  <p key={idx} className="text-muted-foreground text-lg">
+                    {text}
+                  </p>
+                ))}
+                
+                {/* Bullet points */}
+                {program.bullets && (
+                  <ul className="mt-6 space-y-4 text-muted-foreground">
+                    {program.bullets.map((item, idx) => (
+                      <li key={idx} className="flex gap-3 items-start">
+                        <span className="text-lg leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                
+                {/* Closing statement */}
+                {program.closing && (
+                  <p className="pt-4 font-medium text-foreground text-lg">
+                    {program.closing}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </section>
 
-      {/* Challenges Section */}
+      {/* Together for Better Tomorrow Section */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-12"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
             variants={fadeInUp}
           >
-            <h2 className="text-3xl font-bold text-foreground mb-4">Challenges We Address</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Understanding the problems is the first step towards creating lasting solutions.
-            </p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-          >
-            {program.challenges.map((item, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="border-red-200 bg-red-50/50 hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                        <Target className="h-5 w-5 text-red-600" />
-                      </div>
-                      <p className="text-foreground leading-relaxed">{item}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5 shadow-lg">
+              <CardContent className="p-8 text-center">
+                <h2 className="text-2xl font-bold text-foreground mb-4">
+                  💖 Together for a Better Tomorrow
+                </h2>
+                <p className="text-muted-foreground text-lg leading-relaxed max-w-3xl mx-auto">
+                  At Anshika Helping Hands Foundation, we believe that change begins with a helping hand.
+                  By supporting education, health, and the environment, we are building a stronger and more compassionate society — one step at a time.
+                </p>
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </section>

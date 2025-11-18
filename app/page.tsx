@@ -39,11 +39,12 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { useRouter } from "next/navigation"
 
 export default function HomePage() {
+  const router = useRouter()
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0)
-  const [activeProgramId, setActiveProgramId] = useState("education")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
@@ -51,6 +52,16 @@ export default function HomePage() {
     email: "",
     occupation: "",
   })
+
+  // Map program IDs to program page slugs
+  const getProgramSlug = (id: string) => {
+    const slugMap: Record<string, string> = {
+      education: "education-skill-development",
+      healthcare: "healthcare-wellness",
+      environment: "environmental-conservation",
+    }
+    return slugMap[id] || id
+  }
 
   // Animation variants
   const fadeInUp = {
@@ -213,61 +224,6 @@ export default function HomePage() {
     },
   ]
 
-  const programDetails: Record<string, { title: string; subtitle: string; intro: string[]; bullets: string[]; closing: string }> = {
-    education: {
-      title: "Skill & Education Development",
-      subtitle: "Empowering Minds, Building Futures",
-      intro: [
-        "Education is the first step towards a better life, and skills are what help people build that life.",
-        "At AHHF, we make sure that every child and youth gets the support they need to learn, grow, and succeed.",
-        "We work on:",
-      ],
-      bullets: [
-        "📚 Providing Educational Support: Distributing free books, stationery, school supplies, and other learning materials to students from underprivileged families.",
-        "🎓 Skill Development Programs: Helping people learn practical and job-ready skills like computer knowledge, communication, and technical training so they can earn a stable income.",
-        "🧭 Career Guidance & Counseling: Guiding students and youth about the right courses, skills, and career paths that suit their interests and help them achieve success.",
-        "💬 Motivational & Awareness Sessions: Encouraging young people to stay positive, keep learning, and work hard toward their dreams.",
-      ],
-      closing: "Our aim is to build confident individuals who can stand on their own feet and contribute positively to society.",
-    },
-    healthcare: {
-      title: "Healthcare & Wellness",
-      subtitle: "Healing Hearts, Saving Lives",
-      intro: [
-        "Good health is the foundation of a happy life.",
-        "Many people in our communities cannot afford regular health check-ups or proper medical guidance — and that’s where we step in.",
-        "We organize and support:",
-      ],
-      bullets: [
-        "🩺 Free Health Check-up Camps: Bringing doctors and healthcare professionals to local areas so that people can get medical check-ups without spending money.",
-        "💊 Free Medical Consultancy: Providing free advice and basic treatment guidance to help people take care of their health.",
-        "🍎 Health & Fitness Awareness: Teaching simple ways to stay fit — such as yoga, proper diet, and daily exercise — to improve overall well-being.",
-        "📄 Government Health Scheme Assistance: Helping people understand and apply for government health benefits like Ayushman Bharat and other schemes.",
-        "❤️ Mental & Emotional Wellness Sessions: Promoting awareness about mental health and stress management to create a more balanced life.",
-      ],
-      closing:
-        "Our vision is to create a Healthy and Happy India where everyone has access to healthcare and the knowledge to live a healthy lifestyle.",
-    },
-    environment: {
-      title: "Environmental Conservation",
-      subtitle: "Protecting Nature, Securing Tomorrow",
-      intro: [
-        "The environment is our home — it gives us air to breathe, water to drink, and food to eat.",
-        "At AHHF, we believe it is our duty to protect and care for our planet so that our future generations can also enjoy its beauty.",
-        "Our environmental efforts include:",
-      ],
-      bullets: [
-        "🌳 Tree Plantation Drives: Organizing regular plantation events and encouraging people to plant trees in their localities.",
-        "🧹 Cleanliness & Awareness Camps: Conducting cleanliness drives in schools, communities, and public areas to promote the importance of hygiene and waste management.",
-        "🔄 Reduce, Reuse, Recycle Programs: Teaching people how to manage waste properly and reduce plastic usage.",
-        "💧 Water & Energy Conservation Awareness: Guiding families and students on saving water, reducing electricity waste, and living a sustainable lifestyle.",
-        "🌎 Eco-Education for Children: Conducting fun and informative sessions for school children to make them understand how to take care of our planet.",
-      ],
-      closing:
-        "We believe that a clean and green environment means a healthy and safe life for everyone.",
-    },
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -378,14 +334,10 @@ We mainly focus on three key areas that make the biggest difference in every com
                 variants={fadeInUp}
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
-                onClick={() => setActiveProgramId(program.id)}
+                onClick={() => router.push(`/programs/${getProgramSlug(program.id)}`)}
                 className="cursor-pointer"
               >
-                <Card
-                  className={`border-border hover:shadow-xl transition-all duration-300 group ${
-                    activeProgramId === program.id ? "ring-2 ring-primary shadow-xl" : ""
-                  }`}
-                >
+                <Card className="border-border hover:shadow-xl transition-all duration-300 group">
                   <CardHeader className="text-center pb-4">
                     <motion.div
                       className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto transition-all duration-300 ${program.bgColor}`}
@@ -401,45 +353,6 @@ We mainly focus on three key areas that make the biggest difference in every com
               </motion.div>
             ))}
           </motion.div>
-          {activeProgramId && (
-            <motion.div
-              className="mt-12 max-w-5xl mx-auto"
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeInUp}
-            >
-              <Card className="border-border shadow-lg">
-                <CardHeader className="pb-2">
-                  <p className="text-sm font-semibold text-primary uppercase tracking-wide">
-                    {programDetails[activeProgramId].subtitle}
-                  </p>
-                  <CardTitle className="text-2xl">{programDetails[activeProgramId].title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 leading-relaxed">
-                  {programDetails[activeProgramId].intro.map((text, idx) => (
-                    <p key={idx} className="text-muted-foreground">
-                      {text}
-                    </p>
-                  ))}
-                  <ul className="mt-2 space-y-2 text-muted-foreground">
-                    {programDetails[activeProgramId].bullets.map((item, idx) => (
-                      <li key={idx} className="flex gap-2">
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="pt-2 font-medium text-foreground">
-                    {programDetails[activeProgramId].closing}
-                  </p>
-                  <p className="pt-2 text-sm text-muted-foreground">
-                    💖 Together for a Better Tomorrow — by supporting education, health, and the environment, we are
-                    building a stronger and more compassionate society, one step at a time.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
         </div>
       </section>
 

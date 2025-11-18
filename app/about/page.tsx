@@ -627,57 +627,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24 bg-warm-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-12 lg:mb-16"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 lg:mb-6">Our Impact in Numbers</h2>
-            <p className="text-white/90 max-w-2xl mx-auto leading-relaxed text-base lg:text-lg">
-              These numbers represent real lives transformed, communities empowered, and hope restored.
-            </p>
-          </motion.div>
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainer}
-          >
-            {[
-              { number: "15,000+", label: "Lives Transformed" },
-              { number: "120+", label: "Communities Served" },
-              { number: "25+", label: "Education Centers" },
-              { number: "500+", label: "Volunteers" },
-            ].map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="text-center"
-                variants={scaleIn}
-                whileHover={{ scale: 1.1, y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.div 
-                  className="text-3xl lg:text-5xl font-bold text-white mb-2 lg:mb-3"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5, type: "spring" }}
-                >
-                  {stat.number}
-                </motion.div>
-                <div className="text-white/80 text-sm lg:text-base">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       <Footer />
     </div>
   )

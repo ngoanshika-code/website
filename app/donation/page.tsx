@@ -291,130 +291,98 @@ export default function DonationPage() {
       <section className="py-16 bg-gradient-to-br from-muted to-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Active Donation Campaigns</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Focus Areas</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Choose from our ongoing campaigns and make a direct impact on the causes you care about most
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {isLoadingCampaigns ? (
-              // Loading state
-              Array.from({ length: 6 }).map((_, index) => (
-                <Card key={index} className="border-border overflow-hidden">
-                  <div className="relative h-48 bg-muted animate-pulse"></div>
-                  <CardContent className="p-6">
-                    <div className="space-y-3">
-                      <div className="h-4 bg-muted rounded animate-pulse"></div>
-                      <div className="h-4 bg-muted rounded animate-pulse w-3/4"></div>
-                      <div className="h-8 bg-muted rounded animate-pulse"></div>
-                      <div className="h-2 bg-muted rounded animate-pulse"></div>
-                      <div className="flex gap-2">
-                        <div className="flex-1 h-10 bg-muted rounded animate-pulse"></div>
-                        <div className="flex-1 h-10 bg-muted rounded animate-pulse"></div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
-            ) : campaignError ? (
-              // Error state
-              <div className="col-span-full text-center py-12">
-                <div className="text-red-500 mb-4">
-                  <Heart className="h-12 w-12 mx-auto mb-2" />
-                  <h3 className="text-lg font-semibold">Failed to load campaigns</h3>
-                  <p className="text-muted-foreground mb-4">{campaignError}</p>
-                  <Button onClick={fetchCampaigns} variant="outline">
-                    Try Again
-                  </Button>
-                </div>
-              </div>
-            ) : campaigns.length === 0 ? (
-              // Empty state
-              <div className="col-span-full text-center py-12">
-                <div className="text-muted-foreground">
-                  <Heart className="h-12 w-12 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No campaigns available</h3>
-                  <p>Check back later for new donation campaigns</p>
-                </div>
-              </div>
-            ) : (
-              // Campaigns display
-              campaigns.map((campaign) => (
+            {donationCategories.map((category) => {
+              const getImage = (id: string) => {
+                switch (id) {
+                  case "education":
+                    return "/children-studying-in-classroom.jpg"
+                  case "healthcare":
+                    return "/mobile-health-clinic-in-rural-area.jpg"
+                  case "environment":
+                    return "/Anshika1.jpeg"
+                  default:
+                    return "/placeholder.svg"
+                }
+              }
+
+              const getSlug = (id: string) => {
+                const slugMap: Record<string, string> = {
+                  education: "education-skill-development",
+                  healthcare: "healthcare-wellness",
+                  environment: "environmental-conservation",
+                }
+                return slugMap[id] || id
+              }
+
+              return (
                 <Card
-                  key={campaign._id}
+                  key={category.id}
                   className="border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <Image
-                      src={campaign.featuredImage || campaign.images?.[0] || "https://res.cloudinary.com/djyp5yzil/image/upload/v1759814188/donation-campaigns/placeholder.svg"}
-                      alt={campaign.title}
+                      src={getImage(category.id)}
+                      alt={category.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
                       <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                        {campaign.categoryName}
+                        {category.title}
                       </span>
                     </div>
                     <div className="absolute top-4 right-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        campaign.status === 'active' ? 'bg-green-500 text-white' :
-                        campaign.status === 'completed' ? 'bg-blue-500 text-white' :
-                        campaign.status === 'paused' ? 'bg-yellow-500 text-white' :
-                        'bg-gray-500 text-white'
-                      }`}>
-                        {campaign.status}
+                      <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                        Active
                       </span>
                     </div>
                   </div>
                   <CardContent className="p-6">
-                    <h3 className="font-semibold text-lg mb-3 line-clamp-2 leading-tight">{campaign.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{campaign.description}</p>
-
-                    <div className="space-y-3 mb-4">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-2xl font-bold text-primary">₹{campaign.raisedAmount?.toLocaleString() || 0}</span>
-                        <span className="text-muted-foreground">Raised of ₹{campaign.goalAmount?.toLocaleString() || 0}</span>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`p-2 rounded-full ${category.bgColor}`}>
+                        <category.icon className={`h-6 w-6 ${category.color}`} />
                       </div>
-
-                      <Progress value={campaign.progress || 0} className="h-2" />
-
-                      <div className="flex justify-between items-center text-sm text-muted-foreground">
-                        <span>{campaign.progress || 0}% Complete</span>
-                        <span className="flex items-center gap-1">
-                          <Users className="h-4 w-4" />
-                          {campaign.backersCount || 0} Backers
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center text-xs text-muted-foreground">
-                        <span>📍 {campaign.location}</span>
-                        <span>⏰ {campaign.daysLeft || 0} days left</span>
+                      <div>
+                        <h3 className="font-semibold text-lg leading-tight">{category.title}</h3>
+                        <p className="text-sm text-muted-foreground">{category.description}</p>
                       </div>
                     </div>
 
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        className="flex-1"
-                        onClick={() => handleViewDetails(campaign)}
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Details
-                      </Button>
-                      <Button 
-                        className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold"
-                        onClick={() => handleDonateNow(campaign)}
-                        disabled={campaign.status !== 'active'}
-                      >
-                        <Heart className="h-4 w-4 mr-2" />
-                        {campaign.status === 'active' ? 'Donate Now' : 'Campaign Ended'}
-                      </Button>
+                    <div className="mt-6">
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          className="flex-1"
+                          asChild
+                        >
+                          <Link href={`/programs/${getSlug(category.id)}`}>
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Details
+                          </Link>
+                        </Button>
+                        <Button 
+                          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold"
+                          onClick={() => {
+                            setDonationType(category.id)
+                            setIsGeneralDonationDialogOpen(true)
+                            setGeneralQrCodeError(false)
+                          }}
+                        >
+                          <Heart className="h-4 w-4 mr-2" />
+                          Donate
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))
-            )}
+              )
+            })}
           </div>
         </div>
       </section>
