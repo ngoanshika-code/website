@@ -32,11 +32,11 @@ import Image from "next/image"
 // Gallery Form Component
 function GalleryForm({ galleryItem, onClose, onSave }) {
   const [formData, setFormData] = useState({
-    title: galleryItem?.title || '',
-    description: galleryItem?.description || '',
+    title: '',
+    description: '',
     category: galleryItem?.category || 'education',
     location: galleryItem?.location || '',
-    date: galleryItem?.date ? new Date(galleryItem.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+    date: new Date().toISOString().split('T')[0],
     tags: galleryItem?.tags?.join(', ') || '',
     featured: galleryItem?.featured || false,
     active: galleryItem?.active !== undefined ? galleryItem.active : true,
@@ -78,8 +78,8 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
 
     try {
       const formDataToSend = new FormData()
-      formDataToSend.append('title', formData.title)
-      formDataToSend.append('description', formData.description)
+      formDataToSend.append('title', '')
+      formDataToSend.append('description', '')
       formDataToSend.append('category', formData.category)
       formDataToSend.append('location', formData.location)
       formDataToSend.append('date', formData.date)
@@ -139,27 +139,6 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Title *</Label>
-          <Input
-            id="title"
-            value={formData.title}
-            onChange={(e) => handleInputChange('title', e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="description">Description *</Label>
-          <Textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => handleInputChange('description', e.target.value)}
-            rows={3}
-            required
-          />
-        </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="category">Category *</Label>
@@ -186,16 +165,6 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
               required
             />
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="date">Date</Label>
-          <Input
-            id="date"
-            type="date"
-            value={formData.date}
-            onChange={(e) => handleInputChange('date', e.target.value)}
-          />
         </div>
 
         <div className="space-y-2">
@@ -357,9 +326,10 @@ export default function DashboardGalleryPage() {
   ]
 
   const filteredItems = galleryItems.filter(item => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.location.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSearch = searchTerm === "" || 
+                         item.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (item.tags && item.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase())))
     const matchesCategory = categoryFilter === "all" || item.category === categoryFilter
     return matchesSearch && matchesCategory
   })
@@ -370,7 +340,7 @@ export default function DashboardGalleryPage() {
   }
 
   const handleDelete = async (item) => {
-    if (!confirm(`Are you sure you want to delete "${item.title}"?`)) {
+    if (!confirm(`Are you sure you want to delete this gallery item?`)) {
       return
     }
 
@@ -536,12 +506,13 @@ export default function DashboardGalleryPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredItems.map((item) => (
-                <Card key={item._id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative h-48">
+                <Card key={item._id} className="overflow-hidden hover:shadow-lg transition-shadow group">
+                  <div className="relative w-full aspect-square">
                     <Image
                       src={item.image}
-                      alt={item.title}
+                      alt={item.title || "Gallery image"}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover"
                     />
                     <div className="absolute top-2 left-2 flex gap-1">
@@ -559,37 +530,25 @@ export default function DashboardGalleryPage() {
                         </Badge>
                       )}
                     </div>
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold mb-2 line-clamp-1">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                      {item.description}
-                    </p>
-                    <div className="text-xs text-muted-foreground mb-3">
-                      <div>{item.location}</div>
-                      <div>{new Date(item.date).toLocaleDateString()}</div>
-                    </div>
-                    <div className="flex gap-2">
+                    <div className="absolute bottom-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button
-                        variant="outline"
+                        variant="secondary"
                         size="sm"
                         onClick={() => handleEdit(item)}
-                        className="flex-1"
+                        className="h-8 w-8 p-0"
                       >
-                        <Edit className="h-3 w-3 mr-1" />
-                        Edit
+                        <Edit className="h-3 w-3" />
                       </Button>
                       <Button
                         variant="destructive"
                         size="sm"
                         onClick={() => handleDelete(item)}
-                        className="flex-1"
+                        className="h-8 w-8 p-0"
                       >
-                        <Trash2 className="h-3 w-3 mr-1" />
-                        Delete
+                        <Trash2 className="h-3 w-3" />
                       </Button>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               ))}
             </div>

@@ -12,6 +12,8 @@ import {
   Bell,
   ChevronLeft,
   ChevronRight,
+  BookOpen,
+  Folder,
 } from "lucide-react"
 import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
@@ -46,6 +48,16 @@ export function DashboardSidebar({ user, onLogout }: DashboardSidebarProps) {
       label: "Gallery",
       icon: ImageIcon,
       href: "/dashboard/gallery",
+    },
+    {
+      label: "Blogs",
+      icon: BookOpen,
+      href: "/dashboard/blogs",
+    },
+    {
+      label: "Media",
+      icon: Folder,
+      href: "/dashboard/media",
     },
   ]
 

@@ -14,6 +14,8 @@ export function Navigation() {
     { href: "/about", label: "About" },
     { href: "/donation", label: "Donation" },
     { href: "/gallery", label: "Gallery" },
+    { href: "/blogs", label: "Blogs" },
+    { href: "/media", label: "Media" },
     { href: "/contact", label: "Contact" },
   ]
 

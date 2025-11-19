@@ -162,8 +162,10 @@ export default function GalleryPage() {
   ]
 
   const filteredImages = displayImages.filter(image => {
-    const matchesSearch = image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         image.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = searchTerm === "" ||
+                         image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         image.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (image.tags && image.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
     const matchesCategory = selectedCategory === "all" || image.category === selectedCategory
     return matchesSearch && matchesCategory
@@ -257,11 +259,12 @@ export default function GalleryPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredImages.map((image) => (
                 <Card key={image.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative h-48">
+                  <div className="relative w-full aspect-square">
                     <Image
                       src={image.image}
-                      alt={image.title}
+                      alt={image.title || "Gallery image"}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover"
                     />
                     <div className="absolute top-2 left-2">
@@ -278,67 +281,34 @@ export default function GalleryPage() {
                       </Button>
                     </div>
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold mb-2 line-clamp-1">{image.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                      {image.description}
-                    </p>
-                    <div className="flex items-center text-xs text-muted-foreground">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      {new Date(image.date).toLocaleDateString()}
-                    </div>
-                  </CardContent>
                 </Card>
               ))}
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredImages.map((image) => (
-                <Card key={image.id} className="overflow-hidden">
-                  <div className="flex">
-                    <div className="relative w-32 h-24 flex-shrink-0">
-                      <Image
-                        src={image.image}
-                        alt={image.title}
-                        fill
-                        className="object-cover"
-                      />
+                <Card key={image.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="relative w-full aspect-square">
+                    <Image
+                      src={image.image}
+                      alt={image.title || "Gallery image"}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                      className="object-cover"
+                    />
+                    <div className="absolute top-2 left-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {image.category}
+                      </Badge>
                     </div>
-                    <CardContent className="flex-1 p-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-semibold">{image.title}</h3>
-                            <Badge variant="secondary" className="text-xs">
-                              {image.category}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {image.description}
-                          </p>
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {new Date(image.date).toLocaleDateString()}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              {image.location}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex gap-2 ml-4">
-                          <Button size="sm" variant="outline">
-                            <Download className="h-3 w-3 mr-1" />
-                            Download
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Share2 className="h-3 w-3 mr-1" />
-                            Share
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
+                    <div className="absolute top-2 right-2 flex gap-1">
+                      <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
+                        <Heart className="h-3 w-3" />
+                      </Button>
+                      <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
+                        <Share2 className="h-3 w-3" />
+                      </Button>
+                    </div>
                   </div>
                 </Card>
               ))}
