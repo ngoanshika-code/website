@@ -4,7 +4,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { Heart, Target, Eye, Users, Award, Globe, Calendar, ChevronLeft, ChevronRight, Sprout, Handshake, Stethoscope, GraduationCap, Shield } from "lucide-react"
+import { Heart, Target, Users, Sprout, Handshake, Stethoscope, GraduationCap, Shield } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
@@ -43,45 +43,6 @@ export default function AboutPage() {
     animate: { opacity: 1, scale: 1 },
     transition: { duration: 0.5, ease: "easeOut" }
   }
-
-  const heroSlides = [
-    {
-      id: 1,
-      title: "About Anshika Helping Hands Foundation",
-      subtitle: "Serving Communities Since 2015",
-      description: "Founded with a vision to create lasting positive change, we have been serving underprivileged communities across India with dedication, compassion, and innovative approaches to social development.",
-      image: "/founder-of-ngo-working-with-community-members--ins.jpg",
-      icon: Heart,
-      stats: { number: "15,000+", label: "Lives Transformed" }
-    },
-    {
-      id: 2,
-      title: "Education for All",
-      subtitle: "Empowering Through Learning",
-      description: "We believe education is the foundation of change. Our 25+ education centers provide quality learning opportunities to children who would otherwise be left behind.",
-      image: "/children-studying-in-classroom.jpg",
-      icon: Users,
-      stats: { number: "25+", label: "Education Centers" }
-    },
-    {
-      id: 3,
-      title: "Healthcare Access",
-      subtitle: "Bringing Hope & Healing",
-      description: "Our mobile health clinics and healthcare initiatives ensure that quality medical care reaches the most remote and underserved communities across India.",
-      image: "/mobile-health-clinic-in-rural-area.jpg",
-      icon: Heart,
-      stats: { number: "50+", label: "Health Camps Annually" }
-    },
-    {
-      id: 4,
-      title: "Community Development",
-      subtitle: "Building Sustainable Futures",
-      description: "We work hand-in-hand with communities to create sustainable development programs that empower people to build better lives for themselves and their families.",
-      image: "/diverse-group-of-volunteers-helping-community-memb.jpg",
-      icon: Target,
-      stats: { number: "120+", label: "Communities Served" }
-    }
-  ]
 
   const values = [
     {
@@ -200,106 +161,6 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-
-      <section className="relative h-[70vh] flex items-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/founder-of-ngo-working-with-community-members--ins.jpg"
-            alt="About hero background"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/90 via-red-400/90 to-pink-400/90"></div>
-        <div className="absolute inset-0 bg-black/20"></div>
-        
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-15">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-yellow-200 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-blue-200 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent>
-              {heroSlides.map((slide) => (
-                <CarouselItem key={slide.id}>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full">
-                    <motion.div 
-                      className="text-center lg:text-left"
-                      initial="initial"
-                      animate="animate"
-                      variants={staggerContainer}
-                    >
-                      <motion.div 
-                        className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/30"
-                        variants={fadeInUp}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <slide.icon className="h-4 w-4 text-primary" />
-                        <span className="text-primary text-sm font-semibold">{slide.subtitle}</span>
-                      </motion.div>
-                      <motion.h1 
-                        className="text-4xl lg:text-5xl font-bold text-white mb-6"
-                        variants={fadeInUp}
-                      >
-                        {slide.title}
-                      </motion.h1>
-                      <motion.p 
-                        className="text-xl text-white/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8"
-                        variants={fadeInUp}
-                      >
-                        {slide.description}
-                      </motion.p>
-                      <motion.div 
-                        className="inline-flex items-center gap-4 bg-white/20 backdrop-blur-sm rounded-xl px-6 py-4 border border-white/30"
-                        variants={scaleIn}
-                        whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.3)" }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="text-3xl font-bold text-white">{slide.stats.number}</div>
-                        <div className="text-white/90 text-sm">{slide.stats.label}</div>
-                      </motion.div>
-                    </motion.div>
-                    <motion.div 
-                      className="relative"
-                      initial="initial"
-                      animate="animate"
-                      variants={fadeInRight}
-                    >
-                      <motion.div 
-                        className="relative w-full h-52 lg:h-64 rounded-2xl overflow-hidden shadow-2xl"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <Image
-                          src={slide.image}
-                          alt={slide.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                      </motion.div>
-                    </motion.div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 border-white/30 text-white" />
-            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 border-white/30 text-white" />
-          </Carousel>
-        </div>
-      </section>
 
       <section className="py-16 lg:py-24 bg-gradient-to-b from-background to-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

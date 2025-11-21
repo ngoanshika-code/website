@@ -7,43 +7,36 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, User, BookOpen, Upload, X, Image as ImageIcon } from "lucide-react"
+import { Layers, Upload, X, Image as ImageIcon, Edit, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 
-interface Blog {
+interface Banner {
   _id?: string
-  title: string
-  subtitle: string
   image: string
-  date: string
-  author: string
-  category: string
+  order?: number
+  active?: boolean
   createdAt?: string
 }
 
-export default function DashboardBlogsPage() {
+export default function DashboardBannersPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [blogs, setBlogs] = useState<Blog[]>([])
-  const [isLoadingBlogs, setIsLoadingBlogs] = useState(false)
+  const [banners, setBanners] = useState<Banner[]>([])
+  const [isLoadingBanners, setIsLoadingBanners] = useState(false)
   const [showForm, setShowForm] = useState(false)
-  const [editingBlog, setEditingBlog] = useState<Blog | null>(null)
+  const [editingBanner, setEditingBanner] = useState<Banner | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
 
-  const [formData, setFormData] = useState<Blog>({
-    title: "",
-    subtitle: "",
+  const [formData, setFormData] = useState<Banner>({
     image: "",
-    date: new Date().toISOString().split('T')[0],
-    author: "Anshika Foundation",
-    category: "Education",
+    order: 0,
+    active: true,
   })
 
   useEffect(() => {
@@ -69,23 +62,26 @@ export default function DashboardBlogsPage() {
 
   useEffect(() => {
     if (user?.role === 'admin') {
-      fetchBlogs()
+      fetchBanners()
     }
   }, [user])
 
-  const fetchBlogs = async () => {
-    setIsLoadingBlogs(true)
+  const fetchBanners = async () => {
+    setIsLoadingBanners(true)
     try {
       // In a real app, this would fetch from your API
       // For now, we'll use localStorage
-      const storedBlogs = localStorage.getItem("blogs")
-      if (storedBlogs) {
-        setBlogs(JSON.parse(storedBlogs))
+      const storedBanners = localStorage.getItem("banners")
+      if (storedBanners) {
+        const parsedBanners = JSON.parse(storedBanners)
+        // Sort by order
+        const sortedBanners = parsedBanners.sort((a: Banner, b: Banner) => (a.order || 0) - (b.order || 0))
+        setBanners(sortedBanners)
       }
     } catch (error) {
-      console.error("Error fetching blogs:", error)
+      console.error("Error fetching banners:", error)
     } finally {
-      setIsLoadingBlogs(false)
+      setIsLoadingBanners(false)
     }
   }
 
@@ -105,6 +101,11 @@ export default function DashboardBlogsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (!formData.image) {
+      alert("Please upload an image")
+      return
+    }
+
     try {
       let imageUrl = formData.image
 
@@ -115,87 +116,83 @@ export default function DashboardBlogsPage() {
         imageUrl = imagePreview || formData.image
       }
 
-      const blogData: Blog = {
+      const bannerData: Banner = {
         ...formData,
         image: imageUrl,
       }
 
-      if (editingBlog?._id) {
-        // Update existing blog
-        const updatedBlogs = blogs.map(blog =>
-          blog._id === editingBlog._id ? { ...blogData, _id: editingBlog._id } : blog
+      if (editingBanner?._id) {
+        // Update existing banner
+        const updatedBanners = banners.map(banner =>
+          banner._id === editingBanner._id ? { ...bannerData, _id: editingBanner._id } : banner
         )
-        setBlogs(updatedBlogs)
-        localStorage.setItem("blogs", JSON.stringify(updatedBlogs))
+        setBanners(updatedBanners)
+        localStorage.setItem("banners", JSON.stringify(updatedBanners))
         // Dispatch custom event to notify other components
-        window.dispatchEvent(new Event('blogsUpdated'))
+        window.dispatchEvent(new Event('bannersUpdated'))
       } else {
-        // Create new blog
-        const newBlog: Blog = {
-          ...blogData,
+        // Create new banner
+        const newBanner: Banner = {
+          ...bannerData,
           _id: Date.now().toString(),
           createdAt: new Date().toISOString(),
+          order: formData.order || banners.length,
         }
-        const updatedBlogs = [newBlog, ...blogs]
-        setBlogs(updatedBlogs)
-        localStorage.setItem("blogs", JSON.stringify(updatedBlogs))
+        const updatedBanners = [...banners, newBanner]
+        setBanners(updatedBanners)
+        localStorage.setItem("banners", JSON.stringify(updatedBanners))
         // Dispatch custom event to notify other components
-        window.dispatchEvent(new Event('blogsUpdated'))
+        window.dispatchEvent(new Event('bannersUpdated'))
       }
 
       // Reset form
       setFormData({
-        title: "",
-        subtitle: "",
         image: "",
-        date: new Date().toISOString().split('T')[0],
-        author: "Anshika Foundation",
-        category: "Education",
+        order: banners.length,
+        active: true,
       })
       setImagePreview(null)
       setImageFile(null)
-      setEditingBlog(null)
+      setEditingBanner(null)
       setShowForm(false)
-      alert(editingBlog ? "Blog updated successfully!" : "Blog created successfully!")
+      fetchBanners() // Refresh to get sorted order
+      alert(editingBanner ? "Banner updated successfully!" : "Banner created successfully!")
     } catch (error) {
-      console.error("Error saving blog:", error)
-      alert("Error saving blog. Please try again.")
+      console.error("Error saving banner:", error)
+      alert("Error saving banner. Please try again.")
     }
   }
 
-  const handleEdit = (blog: Blog) => {
-    setEditingBlog(blog)
-    setFormData(blog)
-    setImagePreview(blog.image)
+  const handleEdit = (banner: Banner) => {
+    setEditingBanner(banner)
+    setFormData(banner)
+    setImagePreview(banner.image)
     setImageFile(null)
     setShowForm(true)
   }
 
-  const handleDelete = (blogId: string) => {
-    if (!confirm('Are you sure you want to delete this blog?')) {
+  const handleDelete = (bannerId: string) => {
+    if (!confirm('Are you sure you want to delete this banner?')) {
       return
     }
 
-    const updatedBlogs = blogs.filter(blog => blog._id !== blogId)
-    setBlogs(updatedBlogs)
-    localStorage.setItem("blogs", JSON.stringify(updatedBlogs))
+    const updatedBanners = banners.filter(banner => banner._id !== bannerId)
+    setBanners(updatedBanners)
+    localStorage.setItem("banners", JSON.stringify(updatedBanners))
     // Dispatch custom event to notify other components
-    window.dispatchEvent(new Event('blogsUpdated'))
-    alert("Blog deleted successfully!")
+    window.dispatchEvent(new Event('bannersUpdated'))
+    alert("Banner deleted successfully!")
   }
 
   const handleCancel = () => {
     setFormData({
-      title: "",
-      subtitle: "",
       image: "",
-      date: new Date().toISOString().split('T')[0],
-      author: "Anshika Foundation",
-      category: "Education",
+      order: banners.length,
+      active: true,
     })
     setImagePreview(null)
     setImageFile(null)
-    setEditingBlog(null)
+    setEditingBanner(null)
     setShowForm(false)
   }
 
@@ -219,8 +216,6 @@ export default function DashboardBlogsPage() {
     return null
   }
 
-  const categories = ["Education", "Healthcare", "Environment", "Community", "General"]
-
   return (
     <div className="min-h-screen bg-background flex">
       <DashboardSidebar user={user} onLogout={handleLogout} />
@@ -231,28 +226,25 @@ export default function DashboardBlogsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-2">
-                  Blogs Management
+                  Banners Management
                 </h1>
                 <p className="text-muted-foreground">
-                  Create and manage blog posts
+                  Create and manage homepage hero banners
                 </p>
               </div>
               <Button onClick={() => {
                 setShowForm(true)
-                setEditingBlog(null)
+                setEditingBanner(null)
                 setFormData({
-                  title: "",
-                  subtitle: "",
                   image: "",
-                  date: new Date().toISOString().split('T')[0],
-                  author: "Anshika Foundation",
-                  category: "Education",
+                  order: banners.length,
+                  active: true,
                 })
                 setImagePreview(null)
                 setImageFile(null)
               }}>
-                <BookOpen className="h-4 w-4 mr-2" />
-                Create New Blog
+                <Layers className="h-4 w-4 mr-2" />
+                Add New Banner
               </Button>
             </div>
           </div>
@@ -262,17 +254,17 @@ export default function DashboardBlogsPage() {
           {showForm && (
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>{editingBlog ? "Edit Blog" : "Create New Blog"}</CardTitle>
-                <CardDescription>Fill in the details to create a new blog post</CardDescription>
+                <CardTitle>{editingBanner ? "Edit Banner" : "Create New Banner"}</CardTitle>
+                <CardDescription>Upload an image for the homepage hero section</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Image Upload */}
                   <div>
-                    <Label htmlFor="image">Blog Image</Label>
+                    <Label htmlFor="image">Banner Image *</Label>
                     <div className="mt-2">
                       {imagePreview ? (
-                        <div className="relative w-full h-64 rounded-lg overflow-hidden border border-border">
+                        <div className="relative w-full h-96 rounded-lg overflow-hidden border border-border">
                           <Image
                             src={imagePreview}
                             alt="Preview"
@@ -296,7 +288,7 @@ export default function DashboardBlogsPage() {
                       ) : (
                         <label
                           htmlFor="image-upload"
-                          className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
+                          className="flex flex-col items-center justify-center w-full h-96 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
                         >
                           <div className="flex flex-col items-center justify-center pt-5 pb-6">
                             <Upload className="h-10 w-10 text-muted-foreground mb-3" />
@@ -317,71 +309,32 @@ export default function DashboardBlogsPage() {
                     </div>
                   </div>
 
-                  {/* Title */}
+                  {/* Order */}
                   <div>
-                    <Label htmlFor="title">Title *</Label>
+                    <Label htmlFor="order">Display Order</Label>
                     <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      placeholder="Enter blog title"
-                      required
+                      id="order"
+                      type="number"
+                      min="0"
+                      value={formData.order || 0}
+                      onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                      placeholder="Display order (lower numbers appear first)"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Lower numbers will appear first in the hero slider
+                    </p>
                   </div>
 
-                  {/* Subtitle */}
-                  <div>
-                    <Label htmlFor="subtitle">Subtitle *</Label>
-                    <Textarea
-                      id="subtitle"
-                      value={formData.subtitle}
-                      onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                      placeholder="Enter blog subtitle/description"
-                      rows={3}
-                      required
+                  {/* Active Status */}
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="active"
+                      checked={formData.active !== false}
+                      onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                      className="rounded border-gray-300"
                     />
-                  </div>
-
-                  {/* Date */}
-                  <div>
-                    <Label htmlFor="date">Date *</Label>
-                    <Input
-                      id="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  {/* Category */}
-                  <div>
-                    <Label htmlFor="category">Category *</Label>
-                    <select
-                      id="category"
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      required
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Author */}
-                  <div>
-                    <Label htmlFor="author">Author *</Label>
-                    <Input
-                      id="author"
-                      value={formData.author}
-                      onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                      placeholder="Enter author name"
-                      required
-                    />
+                    <Label htmlFor="active">Active (show on homepage)</Label>
                   </div>
 
                   {/* Form Actions */}
@@ -390,7 +343,7 @@ export default function DashboardBlogsPage() {
                       Cancel
                     </Button>
                     <Button type="submit">
-                      {editingBlog ? "Update Blog" : "Create Blog"}
+                      {editingBanner ? "Update Banner" : "Create Banner"}
                     </Button>
                   </div>
                 </form>
@@ -398,71 +351,64 @@ export default function DashboardBlogsPage() {
             </Card>
           )}
 
-          {/* Blogs List */}
+          {/* Banners List */}
           <Card>
             <CardHeader>
-              <CardTitle>All Blogs</CardTitle>
-              <CardDescription>Manage your blog posts</CardDescription>
+              <CardTitle>All Banners</CardTitle>
+              <CardDescription>Manage your homepage hero banners</CardDescription>
             </CardHeader>
             <CardContent>
-              {isLoadingBlogs ? (
+              {isLoadingBanners ? (
                 <div className="text-center py-8">
                   <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-2"></div>
-                  <p className="text-muted-foreground">Loading blogs...</p>
+                  <p className="text-muted-foreground">Loading banners...</p>
                 </div>
-              ) : blogs.length === 0 ? (
+              ) : banners.length === 0 ? (
                 <div className="text-center py-12">
-                  <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No blogs found</h3>
-                  <p className="text-muted-foreground mb-4">Create your first blog post to get started</p>
+                  <Layers className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">No banners found</h3>
+                  <p className="text-muted-foreground mb-4">Create your first banner to display on the homepage</p>
                   <Button onClick={() => setShowForm(true)}>
-                    <BookOpen className="h-4 w-4 mr-2" />
-                    Create Blog
+                    <Layers className="h-4 w-4 mr-2" />
+                    Add Banner
                   </Button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {blogs.map((blog) => (
-                    <Card key={blog._id} className="overflow-hidden group hover:shadow-lg transition-all">
-                      <div className="relative h-48 overflow-hidden">
+                  {banners.map((banner) => (
+                    <Card key={banner._id} className="overflow-hidden group hover:shadow-lg transition-all">
+                      <div className="relative h-64 overflow-hidden">
                         <Image
-                          src={blog.image || "/placeholder.svg"}
-                          alt={blog.title}
+                          src={banner.image || "/placeholder.svg"}
+                          alt="Banner"
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        <div className="absolute top-2 left-2">
-                          <Badge className="bg-primary text-white">{blog.category}</Badge>
+                        <div className="absolute top-2 right-2 flex gap-2">
+                          {banner.active !== false && (
+                            <Badge className="bg-green-600 text-white">Active</Badge>
+                          )}
+                          <Badge className="bg-primary text-white">Order: {banner.order || 0}</Badge>
                         </div>
                       </div>
-                      <CardHeader>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                          <Calendar className="h-4 w-4" />
-                          <span>{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                        </div>
-                        <CardTitle className="text-lg line-clamp-2">{blog.title}</CardTitle>
-                        <CardDescription className="line-clamp-2">{blog.subtitle}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                          <User className="h-4 w-4" />
-                          <span>{blog.author}</span>
-                        </div>
+                      <CardContent className="p-4">
                         <div className="flex gap-2">
                           <Button
                             variant="outline"
                             size="sm"
                             className="flex-1"
-                            onClick={() => handleEdit(blog)}
+                            onClick={() => handleEdit(banner)}
                           >
+                            <Edit className="h-4 w-4 mr-2" />
                             Edit
                           </Button>
                           <Button
                             variant="destructive"
                             size="sm"
                             className="flex-1"
-                            onClick={() => handleDelete(blog._id!)}
+                            onClick={() => handleDelete(banner._id!)}
                           >
+                            <Trash2 className="h-4 w-4 mr-2" />
                             Delete
                           </Button>
                         </div>

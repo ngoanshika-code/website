@@ -203,7 +203,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-2">For urgent matters or emergencies:</p>
-                <p className="font-semibold text-foreground">+91 99204 46089</p>
+                <p className="font-semibold text-foreground">+91 77382 58951</p>
                 <p className="text-xs text-muted-foreground mt-1">Available 24/7 for emergency situations</p>
               </CardContent>
             </Card>

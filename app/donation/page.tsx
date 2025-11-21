@@ -23,6 +23,7 @@ import {
   QrCode,
   Sprout,
   CheckCircle,
+  Upload,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -42,7 +43,6 @@ import {
   Eye,
   ArrowRight,
   ArrowLeft,
-  Upload,
 } from "lucide-react"
 
 interface Campaign {
@@ -102,9 +102,19 @@ export default function DonationPage() {
   const [qrCodeError, setQrCodeError] = useState(false)
   const [isGeneralDonationDialogOpen, setIsGeneralDonationDialogOpen] = useState(false)
   const [generalQrCodeError, setGeneralQrCodeError] = useState(false)
-  const [cvFile, setCvFile] = useState<File | null>(null)
-  const [cvFileName, setCvFileName] = useState<string>("")
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false)
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
+  const [receiptFile, setReceiptFile] = useState<File | null>(null)
+  const [receiptFileName, setReceiptFileName] = useState<string>("")
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    message: "",
+  })
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({})
+  const [receiptError, setReceiptError] = useState("")
 
   const predefinedAmounts = ["100", "500", "1000", "2500", "5000", "10000"]
 
@@ -161,13 +171,46 @@ export default function DonationPage() {
     setIsGeneralDonationDialogOpen(true)
   }
 
-  const handleSubmitDonation = () => {
+  const handleNextButton = () => {
+    // Validate all fields
+    const errors: { [key: string]: string } = {}
+    
+    if (!formData.firstName.trim()) {
+      errors.firstName = "First name is required"
+    }
+    
+    if (!formData.lastName.trim()) {
+      errors.lastName = "Last name is required"
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = "Email is required"
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email is invalid"
+    }
+    
+    if (!formData.phone.trim()) {
+      errors.phone = "Phone number is required"
+    } else if (!/^\d{10}$/.test(formData.phone.replace(/\D/g, ""))) {
+      errors.phone = "Phone number must be 10 digits"
+    }
+    
+    if (!formData.message.trim()) {
+      errors.message = "Message is required"
+    }
+    
     const amount = customAmount || selectedAmount
     if (!amount || parseInt(amount) < 100) {
-      alert("Please enter a valid amount (minimum ₹100)")
+      errors.amount = "Please select or enter a valid amount (minimum ₹100)"
+    }
+    
+    setFormErrors(errors)
+    
+    if (Object.keys(errors).length > 0) {
       return
     }
-    setIsConfirmationDialogOpen(true)
+    
+    setIsPaymentModalOpen(true)
   }
 
   const handleFormSubmit = () => {
@@ -432,42 +475,65 @@ export default function DonationPage() {
                 {/* Donation Category */}
                 <div>
                   <Label className="text-base font-semibold mb-4 block">Choose Donation Category</Label>
-                  <RadioGroup
-                    value={donationType}
-                    onValueChange={setDonationType}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                  >
-                    {donationCategories.map((category) => (
-                      <div key={category.id} className="relative">
-                        <RadioGroupItem value={category.id} id={category.id} className="peer sr-only" />
-                        <Label
-                          htmlFor={category.id}
-                          className="flex items-center space-x-3 cursor-pointer p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200"
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {donationCategories.map((category) => {
+                      const isSelected = donationType === category.id
+                      return (
+                        <div
+                          key={category.id}
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setDonationType(category.id)
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault()
+                              setDonationType(category.id)
+                            }
+                          }}
+                          className={`relative flex items-center space-x-3 cursor-pointer p-4 rounded-lg border-2 transition-all duration-200 select-none ${
+                            isSelected
+                              ? "border-primary bg-primary/10 shadow-lg ring-2 ring-primary/20"
+                              : "border-border hover:border-primary/50 hover:bg-muted/50"
+                          }`}
                         >
-                          <div className={`p-2 rounded-full ${category.bgColor}`}>
+                          <div className={`p-2 rounded-full ${category.bgColor} ${isSelected ? "ring-2 ring-primary ring-offset-2 scale-110" : ""} transition-all duration-200`}>
                             <category.icon className={`h-5 w-5 ${category.color}`} />
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium">{category.title}</div>
-                            <div className="text-sm text-muted-foreground">{category.description}</div>
+                            <div className={`font-semibold text-base ${isSelected ? "text-primary" : "text-foreground"}`}>{category.title}</div>
+                            <div className={`text-sm ${isSelected ? "text-primary/80" : "text-muted-foreground"}`}>{category.description}</div>
                           </div>
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
+                          {isSelected && (
+                            <div className="absolute top-2 right-2 animate-in fade-in zoom-in duration-200">
+                              <div className="bg-primary rounded-full p-1">
+                                <CheckCircle className="h-4 w-4 text-white" />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
 
                 {/* Donation Amount */}
                 <div>
-                  <Label className="text-base font-semibold mb-4 block">Select Donation Amount</Label>
+                  <Label className="text-base font-semibold mb-4 block">Select Donation Amount *</Label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                     {predefinedAmounts.map((amount) => (
                       <Button
                         key={amount}
+                        type="button"
                         variant={selectedAmount === amount ? "default" : "outline"}
                         onClick={() => {
                           setSelectedAmount(amount)
                           setCustomAmount("")
+                          if (formErrors.amount) {
+                            setFormErrors(prev => ({ ...prev, amount: "" }))
+                          }
                         }}
                         className="h-12 font-semibold"
                       >
@@ -482,92 +548,113 @@ export default function DonationPage() {
                     <Input
                       id="custom-amount"
                       type="number"
-                      placeholder="Enter custom amount"
+                      placeholder="Enter custom amount (minimum ₹100)"
                       value={customAmount}
                       onChange={(e) => {
                         setCustomAmount(e.target.value)
                         setSelectedAmount("")
+                        if (formErrors.amount) {
+                          setFormErrors(prev => ({ ...prev, amount: "" }))
+                        }
                       }}
-                      className="mt-2"
+                      className={`mt-2 ${formErrors.amount ? "border-red-500" : ""}`}
+                      min="100"
                     />
+                    {formErrors.amount && <p className="text-red-500 text-sm mt-1">{formErrors.amount}</p>}
                   </div>
                 </div>
 
                 {/* Personal Information */}
                 <div className="space-y-4">
-                  <Label className="text-base font-semibold">Personal Information</Label>
+                  <Label className="text-base font-semibold">Personal Information *</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="first-name">First Name</Label>
-                      <Input id="first-name" placeholder="Enter your first name" />
-                    </div>
-                    <div>
-                      <Label htmlFor="last-name">Last Name</Label>
-                      <Input id="last-name" placeholder="Enter your last name" />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" type="email" placeholder="Enter your email" />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="Enter your phone number" />
-                  </div>
-                  <div>
-                    <Label htmlFor="message">Message (Optional)</Label>
-                    <Textarea id="message" placeholder="Share why you're donating or any special message" />
-                  </div>
-                  <div>
-                    <Label htmlFor="cv-upload" className="text-sm font-medium">
-                      Upload CV (Optional)
-                    </Label>
-                    <div className="mt-2">
-                      <Input
-                        id="cv-upload"
-                        type="file"
-                        accept=".pdf,.doc,.docx"
+                      <Label htmlFor="first-name">First Name *</Label>
+                      <Input 
+                        id="first-name" 
+                        placeholder="Enter your first name" 
+                        value={formData.firstName}
                         onChange={(e) => {
-                          const file = e.target.files?.[0]
-                          if (file) {
-                            setCvFile(file)
-                            setCvFileName(file.name)
+                          setFormData(prev => ({ ...prev, firstName: e.target.value }))
+                          if (formErrors.firstName) {
+                            setFormErrors(prev => ({ ...prev, firstName: "" }))
                           }
                         }}
-                        className="hidden"
+                        className={formErrors.firstName ? "border-red-500" : ""}
+                        required
                       />
-                      <Label
-                        htmlFor="cv-upload"
-                        className="flex items-center gap-2 cursor-pointer p-3 border-2 border-dashed border-border rounded-lg hover:border-primary/50 transition-colors"
-                      >
-                        <Upload className="h-5 w-5 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">
-                          {cvFileName || "Choose file or drag and drop"}
-                        </span>
-                      </Label>
-                      {cvFileName && (
-                        <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                          <span className="text-green-600">✓ {cvFileName}</span>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setCvFile(null)
-                              setCvFileName("")
-                              const input = document.getElementById("cv-upload") as HTMLInputElement
-                              if (input) input.value = ""
-                            }}
-                            className="h-6 px-2 text-xs"
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      )}
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Accepted formats: PDF, DOC, DOCX (Max 5MB)
-                      </p>
+                      {formErrors.firstName && <p className="text-red-500 text-sm mt-1">{formErrors.firstName}</p>}
                     </div>
+                    <div>
+                      <Label htmlFor="last-name">Last Name *</Label>
+                      <Input 
+                        id="last-name" 
+                        placeholder="Enter your last name" 
+                        value={formData.lastName}
+                        onChange={(e) => {
+                          setFormData(prev => ({ ...prev, lastName: e.target.value }))
+                          if (formErrors.lastName) {
+                            setFormErrors(prev => ({ ...prev, lastName: "" }))
+                          }
+                        }}
+                        className={formErrors.lastName ? "border-red-500" : ""}
+                        required
+                      />
+                      {formErrors.lastName && <p className="text-red-500 text-sm mt-1">{formErrors.lastName}</p>}
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      value={formData.email}
+                      onChange={(e) => {
+                        setFormData(prev => ({ ...prev, email: e.target.value }))
+                        if (formErrors.email) {
+                          setFormErrors(prev => ({ ...prev, email: "" }))
+                        }
+                      }}
+                      className={formErrors.email ? "border-red-500" : ""}
+                      required
+                    />
+                    {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Input 
+                      id="phone" 
+                      type="tel" 
+                      placeholder="Enter your phone number" 
+                      value={formData.phone}
+                      onChange={(e) => {
+                        setFormData(prev => ({ ...prev, phone: e.target.value }))
+                        if (formErrors.phone) {
+                          setFormErrors(prev => ({ ...prev, phone: "" }))
+                        }
+                      }}
+                      className={formErrors.phone ? "border-red-500" : ""}
+                      required
+                    />
+                    {formErrors.phone && <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>}
+                  </div>
+                  <div>
+                    <Label htmlFor="message">Message *</Label>
+                    <Textarea 
+                      id="message" 
+                      placeholder="Share why you're donating or any special message" 
+                      value={formData.message}
+                      onChange={(e) => {
+                        setFormData(prev => ({ ...prev, message: e.target.value }))
+                        if (formErrors.message) {
+                          setFormErrors(prev => ({ ...prev, message: "" }))
+                        }
+                      }}
+                      className={formErrors.message ? "border-red-500" : ""}
+                      required
+                    />
+                    {formErrors.message && <p className="text-red-500 text-sm mt-1">{formErrors.message}</p>}
                   </div>
                 </div>
 
@@ -575,9 +662,9 @@ export default function DonationPage() {
                   size="lg"
                   type="button"
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg h-12"
-                  onClick={handleSubmitDonation}
+                  onClick={handleNextButton}
                 >
-                  Submit
+                  Next
                 </Button>
               </CardContent>
             </Card>
@@ -675,42 +762,7 @@ export default function DonationPage() {
             </Card>
 
             {/* Contact Info */}
-            <Card className="border-border shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-accent" />
-                  Need Help?
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                  Have questions about donating? Our team is here to help you make a meaningful contribution.
-                </p>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="text-lg">📧</div>
-                    <div>
-                      <div className="font-medium">Email</div>
-                      <div className="text-muted-foreground">donations@anshikahelpinghands.org</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-lg">📞</div>
-                    <div>
-                      <div className="font-medium">Phone</div>
-                      <div className="text-muted-foreground">+91 98765 43210</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-lg">⏰</div>
-                    <div>
-                      <div className="font-medium">Hours</div>
-                      <div className="text-muted-foreground">Mon-Fri: 9 AM - 6 PM</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
       </div>
@@ -1140,6 +1192,157 @@ export default function DonationPage() {
                 className="bg-primary hover:bg-primary/90"
               >
                 I&apos;ve Completed Payment
+                <Heart className="h-4 w-4 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Payment Modal with QR Code and Account Details */}
+      <Dialog open={isPaymentModalOpen} onOpenChange={(open) => {
+        setIsPaymentModalOpen(open)
+        if (!open) {
+          setReceiptFile(null)
+          setReceiptFileName("")
+          setReceiptError("")
+        }
+      }}>
+        <DialogContent className="w-[90vw] max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <QrCode className="h-5 w-5 text-primary" />
+              Complete Your Payment
+            </DialogTitle>
+            <DialogDescription>
+              Scan the QR code or transfer directly to complete your donation of ₹{(customAmount || selectedAmount || "0").toLocaleString()}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-4">
+            {/* QR Code */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="p-6 bg-white rounded-lg border-2 border-primary/20 shadow-lg">
+                <div className="w-64 h-64 bg-white flex items-center justify-center rounded-lg relative overflow-hidden">
+                  <Image
+                    src="/qr-code.png"
+                    alt="Payment QR Code"
+                    width={256}
+                    height={256}
+                    className="rounded-lg w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Bank Account Details */}
+            <div className="w-full max-w-md mx-auto p-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg border-2 border-primary/20">
+              <h4 className="font-semibold text-center mb-4 flex items-center justify-center gap-2">
+                <Building className="h-5 w-5 text-primary" />
+                Bank Account Details
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Account Number:</span>
+                  <span className="font-semibold text-foreground">077722010002763</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">IFSC Code:</span>
+                  <span className="font-semibold text-foreground">UBIN0907774</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground font-medium">Bank:</span>
+                  <span className="font-semibold text-foreground text-right">Union Bank of India</span>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-muted-foreground font-medium">Branch:</span>
+                  <span className="font-semibold text-foreground text-right">Mira Bhayander Road (Kasturi Park) Branch, Thane - 401107</span>
+                </div>
+              </div>
+              <p className="text-xs text-center text-muted-foreground mt-4 pt-4 border-t border-border">
+                You can also transfer directly to this bank account
+              </p>
+            </div>
+
+            {/* Upload Receipt Section */}
+            <div className="w-full max-w-md mx-auto space-y-4">
+              <Label className="text-base font-semibold block">Upload Receipt *</Label>
+              <div className="mt-2">
+                <Input
+                  id="receipt-upload"
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      setReceiptFile(file)
+                      setReceiptFileName(file.name)
+                      setReceiptError("")
+                    }
+                  }}
+                  className="hidden"
+                  required
+                />
+                <Label
+                  htmlFor="receipt-upload"
+                  className={`flex items-center gap-2 cursor-pointer p-4 border-2 border-dashed rounded-lg transition-colors bg-muted/30 ${
+                    receiptError ? "border-red-500 hover:border-red-600" : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <Upload className="h-5 w-5 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    {receiptFileName || "Choose file or drag and drop"}
+                  </span>
+                </Label>
+                {receiptFileName && (
+                  <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="text-green-600">✓ {receiptFileName}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setReceiptFile(null)
+                        setReceiptFileName("")
+                        setReceiptError("")
+                        const input = document.getElementById("receipt-upload") as HTMLInputElement
+                        if (input) input.value = ""
+                      }}
+                      className="h-6 px-2 text-xs"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                )}
+                {receiptError && <p className="text-red-500 text-sm mt-1">{receiptError}</p>}
+                <p className="text-xs text-muted-foreground mt-1">
+                  Accepted formats: PDF, JPG, PNG, DOC, DOCX (Max 5MB)
+                </p>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 pt-4">
+              <Button 
+                variant="outline"
+                onClick={() => setIsPaymentModalOpen(false)} 
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={() => {
+                  // Validate receipt upload
+                  if (!receiptFile) {
+                    setReceiptError("Please upload a receipt")
+                    return
+                  }
+                  
+                  setIsPaymentModalOpen(false)
+                  setIsConfirmationDialogOpen(true)
+                }}
+                className="bg-primary hover:bg-primary/90"
+              >
+                Submit
                 <Heart className="h-4 w-4 ml-2" />
               </Button>
             </div>

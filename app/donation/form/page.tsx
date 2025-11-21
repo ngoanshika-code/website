@@ -291,30 +291,49 @@ export default function DonationFormPage() {
                 <CardContent className="space-y-6">
                   {/* Donation Category */}
                   <div>
-                    <Label className="text-base font-semibold mb-4 block">Donation Category</Label>
-                    <RadioGroup
-                      value={formData.donationType}
-                      onValueChange={(value) => handleInputChange("donationType", value)}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                    >
-                      {donationCategories.map((category) => (
-                        <div key={category.id} className="relative">
-                          <RadioGroupItem value={category.id} id={category.id} className="peer sr-only" />
-                          <Label
-                            htmlFor={category.id}
-                            className="flex items-center space-x-3 cursor-pointer p-4 rounded-lg border-2 border-border hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all duration-200"
+                    <Label className="text-base font-semibold mb-4 block">Choose Donation Category</Label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {donationCategories.map((category) => {
+                        const isSelected = formData.donationType === category.id
+                        return (
+                          <div
+                            key={category.id}
+                            role="button"
+                            tabIndex={0}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              handleInputChange("donationType", category.id)
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                handleInputChange("donationType", category.id)
+                              }
+                            }}
+                            className={`relative flex items-center space-x-3 cursor-pointer p-4 rounded-lg border-2 transition-all duration-200 select-none ${
+                              isSelected
+                                ? "border-primary bg-primary/10 shadow-lg ring-2 ring-primary/20"
+                                : "border-border hover:border-primary/50 hover:bg-muted/50"
+                            }`}
                           >
-                            <div className={`p-2 rounded-full ${category.bgColor}`}>
+                            <div className={`p-2 rounded-full ${category.bgColor} ${isSelected ? "ring-2 ring-primary ring-offset-2 scale-110" : ""} transition-all duration-200`}>
                               <category.icon className={`h-5 w-5 ${category.color}`} />
                             </div>
                             <div className="flex-1">
-                              <div className="font-medium">{category.title}</div>
-                              <div className="text-sm text-muted-foreground">{category.description}</div>
+                              <div className={`font-semibold text-base ${isSelected ? "text-primary" : "text-foreground"}`}>{category.title}</div>
+                              <div className={`text-sm ${isSelected ? "text-primary/80" : "text-muted-foreground"}`}>{category.description}</div>
                             </div>
-                          </Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
+                            {isSelected && (
+                              <div className="absolute top-2 right-2 animate-in fade-in zoom-in duration-200">
+                                <div className="bg-primary rounded-full p-1">
+                                  <CheckCircle className="h-4 w-4 text-white" />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
                   </div>
 
                   {/* Donation Amount */}

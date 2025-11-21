@@ -14,6 +14,7 @@ import {
   ChevronRight,
   BookOpen,
   Folder,
+  Layers,
 } from "lucide-react"
 import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
@@ -58,6 +59,11 @@ export function DashboardSidebar({ user, onLogout }: DashboardSidebarProps) {
       label: "Media",
       icon: Folder,
       href: "/dashboard/media",
+    },
+    {
+      label: "Banners",
+      icon: Layers,
+      href: "/dashboard/banners",
     },
   ]
 

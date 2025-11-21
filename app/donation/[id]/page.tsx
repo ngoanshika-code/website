@@ -179,7 +179,7 @@ export default function CampaignDetailsPage() {
         console.log("Campaign images:", result.campaign.images)
         console.log("Campaign featuredImage:", result.campaign.featuredImage)
         console.log("Image count:", result.campaign.images?.length || 0)
-        console.log("Images array details:", result.campaign.images?.map((url, index) => ({ index, url })))
+        console.log("Images array details:", result.campaign.images?.map((url: string, index: number) => ({ index, url })))
       } else {
         setError("Campaign not found")
         console.error("Failed to fetch campaign:", result.error)
@@ -255,8 +255,10 @@ export default function CampaignDetailsPage() {
 
   const goToImage = (index: number) => {
     setCurrentImageIndex(index)
-    console.log('Go to image clicked:', index, 'of', campaign.images?.length || 0)
-    console.log('Image URL:', campaign.images?.[index])
+    if (campaign) {
+      console.log('Go to image clicked:', index, 'of', campaign.images?.length || 0)
+      console.log('Image URL:', campaign.images?.[index])
+    }
   }
 
   if (isLoading) {

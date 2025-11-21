@@ -34,6 +34,7 @@ import {
   Calendar,
   ArrowRight,
   Target,
+  User,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -53,6 +54,9 @@ export default function HomePage() {
     occupation: "",
   })
 
+  const [banners, setBanners] = useState<Array<{ image: string; _id?: string; order?: number; active?: boolean }>>([])
+  const [blogs, setBlogs] = useState<Array<{ _id?: string; title: string; subtitle: string; image: string; date: string; author: string; category: string }>>([])
+
   // Map program IDs to program page slugs
   const getProgramSlug = (id: string) => {
     const slugMap: Record<string, string> = {
@@ -62,6 +66,68 @@ export default function HomePage() {
     }
     return slugMap[id] || id
   }
+
+  // Fetch banners from localStorage
+  useEffect(() => {
+    const fetchBanners = () => {
+      try {
+        const storedBanners = localStorage.getItem("banners")
+        if (storedBanners) {
+          const parsedBanners = JSON.parse(storedBanners)
+          // Filter active banners and sort by order
+          const activeBanners = parsedBanners
+            .filter((banner: { active?: boolean }) => banner.active !== false)
+            .sort((a: { order?: number }, b: { order?: number }) => (a.order || 0) - (b.order || 0))
+          setBanners(activeBanners)
+        }
+      } catch (error) {
+        console.error("Error fetching banners:", error)
+      }
+    }
+
+    fetchBanners()
+    // Listen for storage changes and custom events to update banners in real-time
+    const handleBannersUpdate = () => {
+      fetchBanners()
+    }
+    window.addEventListener('storage', fetchBanners)
+    window.addEventListener('bannersUpdated', handleBannersUpdate)
+    return () => {
+      window.removeEventListener('storage', fetchBanners)
+      window.removeEventListener('bannersUpdated', handleBannersUpdate)
+    }
+  }, [])
+
+  // Fetch blogs from localStorage
+  useEffect(() => {
+    const fetchBlogs = () => {
+      try {
+        const storedBlogs = localStorage.getItem("blogs")
+        if (storedBlogs) {
+          const parsedBlogs = JSON.parse(storedBlogs)
+          // Get latest 6 blogs, sorted by date (newest first)
+          const latestBlogs = parsedBlogs
+            .sort((a: { date: string }, b: { date: string }) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .slice(0, 6)
+          setBlogs(latestBlogs)
+        }
+      } catch (error) {
+        console.error("Error fetching blogs:", error)
+      }
+    }
+
+    fetchBlogs()
+    // Listen for storage changes and custom events to update blogs in real-time
+    const handleBlogsUpdate = () => {
+      fetchBlogs()
+    }
+    window.addEventListener('storage', fetchBlogs)
+    window.addEventListener('blogsUpdated', handleBlogsUpdate)
+    return () => {
+      window.removeEventListener('storage', fetchBlogs)
+      window.removeEventListener('blogsUpdated', handleBlogsUpdate)
+    }
+  }, [])
 
   // Animation variants
   const fadeInUp = {
@@ -181,20 +247,33 @@ export default function HomePage() {
     },
   ]
 
+  // Use banners if available, otherwise use default heroSlides
+  const displaySlides = banners.length > 0 
+    ? banners.map(banner => ({ image: banner.image }))
+    : heroSlides
+
   // Auto-advance slider
   useEffect(() => {
+    if (displaySlides.length === 0) return
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      setCurrentSlide((prev) => (prev + 1) % displaySlides.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [heroSlides.length])
+  }, [displaySlides.length])
+
+  // Reset current slide when slides change
+  useEffect(() => {
+    setCurrentSlide(0)
+  }, [displaySlides.length])
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    if (displaySlides.length === 0) return
+    setCurrentSlide((prev) => (prev + 1) % displaySlides.length)
   }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+    if (displaySlides.length === 0) return
+    setCurrentSlide((prev) => (prev - 1 + displaySlides.length) % displaySlides.length)
   }
 
   const programs = [
@@ -231,13 +310,15 @@ export default function HomePage() {
       <section className="relative h-[70vh] flex items-center overflow-hidden">
         {/* Background Image Slider */}
         <div className="absolute inset-0">
-          <Image
-            src={heroSlides[currentSlide].image || "/placeholder.svg"}
-            alt="Hero background"
-            fill
-            className="object-cover transition-opacity duration-500"
-            priority
-          />
+          {displaySlides.length > 0 && displaySlides[currentSlide] && (
+            <Image
+              src={displaySlides[currentSlide].image || "/placeholder.svg"}
+              alt="Hero background"
+              fill
+              className="object-cover transition-opacity duration-500"
+              priority
+            />
+          )}
         </div>
 
         {/* Background Pattern */}
@@ -248,18 +329,22 @@ export default function HomePage() {
         </div>
 
         {/* Slider Navigation */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500 hover:bg-orange-600 rounded-full p-3 transition-all duration-200 shadow-lg"
-        >
-          <ChevronLeft className="h-6 w-6 text-white" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500 hover:bg-orange-600 rounded-full p-3 transition-all duration-200 shadow-lg"
-        >
-          <ChevronRight className="h-6 w-6 text-white" />
-        </button>
+        {displaySlides.length > 1 && (
+          <>
+            <button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500 hover:bg-orange-600 rounded-full p-3 transition-all duration-200 shadow-lg"
+            >
+              <ChevronLeft className="h-6 w-6 text-white" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-orange-500 hover:bg-orange-600 rounded-full p-3 transition-all duration-200 shadow-lg"
+            >
+              <ChevronRight className="h-6 w-6 text-white" />
+            </button>
+          </>
+        )}
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 w-full">
           <div className="flex flex-col items-center justify-start h-full pt-82">
@@ -290,17 +375,19 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
-                index === currentSlide ? "bg-white scale-125" : "bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
+        {displaySlides.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
+            {displaySlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
+                  index === currentSlide ? "bg-white scale-125" : "bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+        )}
 
 
       </section>
@@ -355,6 +442,95 @@ We mainly focus on three key areas that make the biggest difference in every com
           </motion.div>
         </div>
       </section>
+
+      {/* Blogs Section */}
+      {blogs.length > 0 && (
+        <section className="py-20 bg-muted/50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div 
+              className="text-center mb-16"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
+            >
+              <motion.div 
+                className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 bg-primary/10 mx-auto"
+                variants={fadeInUp}
+              >
+                <BookOpen className="h-8 w-8 text-primary" />
+              </motion.div>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Latest Blogs</h2>
+              <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Read our latest stories of impact, inspiration, and transformation from our journey of creating positive change
+              </p>
+            </motion.div>
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={staggerContainer}
+            >
+              {blogs.slice(0, 6).map((blog, index) => (
+                <motion.div
+                  key={blog._id || index}
+                  variants={fadeInUp}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Card className="border-border hover:shadow-xl transition-all duration-300 overflow-hidden group h-full flex flex-col">
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={blog.image || "/placeholder.svg"}
+                        alt={blog.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <Badge className="bg-primary text-white">{blog.category}</Badge>
+                      </div>
+                    </div>
+                    <CardHeader className="flex-1">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                      </div>
+                      <CardTitle className="text-xl mb-2 line-clamp-2">{blog.title}</CardTitle>
+                      <CardDescription className="line-clamp-3">{blog.subtitle}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                        <User className="h-4 w-4" />
+                        <span>{blog.author}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+            <motion.div 
+              className="text-center"
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={fadeInUp}
+            >
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-white border-primary"
+              >
+                <Link href="/blogs" className="flex items-center gap-2">
+                  View All Blogs
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       <section className="py-20 bg-warm-gradient relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
