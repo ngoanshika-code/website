@@ -2,10 +2,9 @@
 
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Video, Image as ImageIcon, FileText, Download, Play, Calendar } from "lucide-react"
+import { Video, Image as ImageIcon, FileText, Download, Play } from "lucide-react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
@@ -136,7 +135,7 @@ export default function MediaPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8"
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
@@ -150,50 +149,41 @@ export default function MediaPage() {
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="border-border hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
-                  <div className="relative w-full aspect-square overflow-hidden bg-muted">
-                    <Image
-                      src={item.thumbnail || "/placeholder.svg"}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                      {item.type === "video" && (
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="bg-white/90 rounded-full p-4">
-                            <Play className="h-8 w-8 text-primary fill-primary" />
-                          </div>
+                <div className="relative w-full aspect-square overflow-hidden bg-muted rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" style={{ minHeight: '400px' }}>
+                  <Image
+                    src={item.thumbnail || "/placeholder.svg"}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 50vw, 33vw"
+                    className="object-contain group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                    {item.type === "video" && (
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="bg-white/90 rounded-full p-4">
+                          <Play className="h-8 w-8 text-primary fill-primary" />
                         </div>
-                      )}
-                      {item.type === "document" && (
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="bg-white/90 rounded-full p-4">
-                            <Download className="h-8 w-8 text-primary" />
-                          </div>
+                      </div>
+                    )}
+                    {item.type === "document" && (
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="bg-white/90 rounded-full p-4">
+                          <Download className="h-8 w-8 text-primary" />
                         </div>
-                      )}
-                    </div>
-                    <div className="absolute top-2 right-2">
-                      <Badge className="bg-black/50 text-white border-0">
-                        {getTypeIcon(item.type)}
-                      </Badge>
-                    </div>
-                    <div className="absolute top-2 left-2">
-                      <Badge variant="secondary" className="text-xs">
-                        {item.category}
-                      </Badge>
-                    </div>
+                      </div>
+                    )}
                   </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-sm mb-2 line-clamp-2">{item.title}</h3>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Calendar className="h-3 w-3" />
-                      <span>{new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                  <div className="absolute top-2 right-2">
+                    <Badge className="bg-black/50 text-white border-0">
+                      {getTypeIcon(item.type)}
+                    </Badge>
+                  </div>
+                  <div className="absolute top-2 left-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {item.category}
+                    </Badge>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>

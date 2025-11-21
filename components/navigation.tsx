@@ -12,7 +12,6 @@ export function Navigation() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/donation", label: "Donation" },
     { href: "/gallery", label: "Gallery" },
     { href: "/blogs", label: "Blogs" },
     { href: "/media", label: "Media" },
@@ -60,7 +59,7 @@ export function Navigation() {
               </Link>
             ))}
             <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link href="/donation/form">Donate Now</Link>
+              <Link href="/donation">Donate Now</Link>
             </Button>
           </div>
 

@@ -437,7 +437,7 @@ export default function DashboardMediaPage() {
                   </Button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredMedia.map((item) => (
                     <motion.div
                       key={item._id}
@@ -446,58 +446,49 @@ export default function DashboardMediaPage() {
                       whileHover={{ y: -5, scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Card className="overflow-hidden group hover:shadow-lg transition-all cursor-pointer">
-                        <div className="relative w-full aspect-square overflow-hidden bg-muted">
-                          <Image
-                            src={item.image || "/placeholder.svg"}
-                            alt={item.title}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
-                          <div className="absolute top-2 right-2">
-                            <Badge className="bg-black/50 text-white border-0">
-                              {getTypeIcon(item.type)}
-                            </Badge>
-                          </div>
-                          <div className="absolute top-2 left-2">
-                            <Badge variant="secondary" className="text-xs">
-                              {item.category}
-                            </Badge>
-                          </div>
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                            <div className="flex gap-2">
-                              <Button
-                                variant="secondary"
-                                size="sm"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleEdit(item)
-                                }}
-                              >
-                                Edit
-                              </Button>
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  handleDelete(item._id!)
-                                }}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
+                      <div className="relative w-full aspect-square overflow-hidden bg-muted rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer" style={{ minHeight: '400px' }}>
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 50vw, 33vw"
+                          className="object-contain group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div className="absolute top-2 right-2">
+                          <Badge className="bg-black/50 text-white border-0">
+                            {getTypeIcon(item.type)}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-2 left-2">
+                          <Badge variant="secondary" className="text-xs">
+                            {item.category}
+                          </Badge>
+                        </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                          <div className="flex gap-2">
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleEdit(item)
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleDelete(item._id!)
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
                         </div>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold text-sm mb-2 line-clamp-2">{item.title}</h3>
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Calendar className="h-3 w-3" />
-                            <span>{new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
