@@ -163,9 +163,8 @@ export default function GalleryPage() {
 
   const filteredImages = displayImages.filter(image => {
     const matchesSearch = searchTerm === "" ||
-                         image.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         image.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          image.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         image.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (image.tags && image.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
     const matchesCategory = selectedCategory === "all" || image.category === selectedCategory
     return matchesSearch && matchesCategory
@@ -262,7 +261,7 @@ export default function GalleryPage() {
                   <div className="relative w-full aspect-square">
                     <Image
                       src={image.image}
-                      alt={image.title || "Gallery image"}
+                      alt="Gallery image"
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover"
@@ -291,7 +290,7 @@ export default function GalleryPage() {
                   <div className="relative w-full aspect-square">
                     <Image
                       src={image.image}
-                      alt={image.title || "Gallery image"}
+                      alt="Gallery image"
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover"

@@ -51,8 +51,6 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData()
     
-    const title = formData.get('title') as string
-    const description = formData.get('description') as string
     const category = formData.get('category') as string
     const location = formData.get('location') as string
     const date = formData.get('date') as string
@@ -60,17 +58,9 @@ export async function POST(request: NextRequest) {
     const featured = formData.get('featured') === 'true'
     const image = formData.get('image') as File
 
-    // Validate required fields
-    if (!title || !description || !category || !location || !image) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
-        { status: 400 }
-      )
-    }
-
     // Upload image to Cloudinary
     let imageUrl = ''
-    if (image) {
+    if (image && image.size > 0) {
       imageUrl = await uploadToCloudinary(image, 'gallery')
     }
 
@@ -78,17 +68,22 @@ export async function POST(request: NextRequest) {
     const tagsArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : []
 
     // Create gallery item
-    const galleryItem = await Gallery.create({
-      title,
-      description,
+    const galleryItemData: any = {
       image: imageUrl,
-      category,
-      location,
-      date: date || new Date(),
+      date: date ? new Date(date) : new Date(),
       tags: tagsArray,
       featured,
       active: true
-    })
+    }
+
+    if (category) {
+      galleryItemData.category = category
+    }
+    if (location) {
+      galleryItemData.location = location
+    }
+
+    const galleryItem = await Gallery.create(galleryItemData)
 
     return NextResponse.json({
       success: true,

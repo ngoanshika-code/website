@@ -32,11 +32,9 @@ import Image from "next/image"
 // Gallery Form Component
 function GalleryForm({ galleryItem, onClose, onSave }) {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: galleryItem?.category || 'education',
+    category: galleryItem?.category || '',
     location: galleryItem?.location || '',
-    date: new Date().toISOString().split('T')[0],
+    date: galleryItem?.date ? new Date(galleryItem.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
     tags: galleryItem?.tags?.join(', ') || '',
     featured: galleryItem?.featured || false,
     active: galleryItem?.active !== undefined ? galleryItem.active : true,
@@ -78,18 +76,24 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
 
     try {
       const formDataToSend = new FormData()
-      formDataToSend.append('title', '')
-      formDataToSend.append('description', '')
-      formDataToSend.append('category', formData.category)
-      formDataToSend.append('location', formData.location)
+      if (formData.category) {
+        formDataToSend.append('category', formData.category)
+      }
+      if (formData.location) {
+        formDataToSend.append('location', formData.location)
+      }
       formDataToSend.append('date', formData.date)
-      formDataToSend.append('tags', formData.tags)
+      if (formData.tags) {
+        formDataToSend.append('tags', formData.tags)
+      }
       formDataToSend.append('featured', formData.featured.toString())
       formDataToSend.append('active', formData.active.toString())
 
       if (galleryItem) {
         // Update existing
-        formDataToSend.append('existingImage', galleryItem.image)
+        if (galleryItem.image) {
+          formDataToSend.append('existingImage', galleryItem.image)
+        }
         if (imageFile) {
           formDataToSend.append('newImage', imageFile)
         }
@@ -108,12 +112,9 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
         }
       } else {
         // Create new
-        if (!imageFile) {
-          alert('Please select an image')
-          setIsSubmitting(false)
-          return
+        if (imageFile) {
+          formDataToSend.append('image', imageFile)
         }
-        formDataToSend.append('image', imageFile)
 
         const response = await fetch('/api/gallery', {
           method: 'POST',
@@ -141,10 +142,10 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="category">Category *</Label>
-            <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
+            <Label htmlFor="category">Category</Label>
+            <Select value={formData.category || undefined} onValueChange={(value) => handleInputChange('category', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select category" />
+                <SelectValue placeholder="Select category (optional)" />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
@@ -157,12 +158,12 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="location">Location *</Label>
+            <Label htmlFor="location">Location</Label>
             <Input
               id="location"
               value={formData.location}
               onChange={(e) => handleInputChange('location', e.target.value)}
-              required
+              placeholder="Enter location (optional)"
             />
           </div>
         </div>
@@ -178,7 +179,7 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="image">Image *</Label>
+          <Label htmlFor="image">Image</Label>
           <input
             type="file"
             id="image"
@@ -193,7 +194,7 @@ function GalleryForm({ galleryItem, onClose, onSave }) {
             className="w-full"
           >
             <ImageIcon className="h-4 w-4 mr-2" />
-            {imageFile ? 'Change Image' : galleryItem ? 'Update Image' : 'Select Image'}
+            {imageFile ? 'Change Image' : galleryItem ? 'Update Image' : 'Select Image (optional)'}
           </Button>
           {imagePreview && (
             <div className="relative h-48 w-full rounded-lg overflow-hidden mt-2">
@@ -510,7 +511,7 @@ export default function DashboardGalleryPage() {
                   <div className="relative w-full aspect-square">
                     <Image
                       src={item.image}
-                      alt={item.title || "Gallery image"}
+                      alt="Gallery image"
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-cover"

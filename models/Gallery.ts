@@ -1,30 +1,17 @@
 import mongoose from 'mongoose'
 
 const GallerySchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  description: {
-    type: String,
-    required: true,
-    trim: true
-  },
   image: {
     type: String,
-    required: true,
     trim: true
   },
   category: {
     type: String,
-    required: true,
     enum: ['education', 'healthcare', 'women', 'heritage', 'infrastructure', 'food', 'environment', 'other'],
     trim: true
   },
   location: {
     type: String,
-    required: true,
     trim: true
   },
   date: {
@@ -60,6 +47,11 @@ const GallerySchema = new mongoose.Schema({
 // Index for faster queries
 GallerySchema.index({ category: 1, active: 1, createdAt: -1 })
 GallerySchema.index({ featured: 1 })
+
+// Delete the cached model if it exists (to allow schema changes in development)
+if (process.env.NODE_ENV === 'development' && mongoose.models.Gallery) {
+  delete mongoose.models.Gallery
+}
 
 const Gallery = mongoose.models.Gallery || mongoose.model('Gallery', GallerySchema)
 

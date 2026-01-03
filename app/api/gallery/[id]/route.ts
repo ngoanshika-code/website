@@ -43,8 +43,6 @@ export async function PUT(
 
     const formData = await request.formData()
     
-    const title = formData.get('title') as string
-    const description = formData.get('description') as string
     const category = formData.get('category') as string
     const location = formData.get('location') as string
     const date = formData.get('date') as string
@@ -73,12 +71,18 @@ export async function PUT(
     const tagsArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : []
 
     // Update gallery item
-    galleryItem.title = title
-    galleryItem.description = description
-    galleryItem.image = imageUrl
-    galleryItem.category = category
-    galleryItem.location = location
-    galleryItem.date = date || galleryItem.date
+    if (imageUrl) {
+      galleryItem.image = imageUrl
+    }
+    if (category) {
+      galleryItem.category = category
+    }
+    if (location) {
+      galleryItem.location = location
+    }
+    if (date) {
+      galleryItem.date = new Date(date)
+    }
     galleryItem.tags = tagsArray
     galleryItem.featured = featured
     galleryItem.active = active
